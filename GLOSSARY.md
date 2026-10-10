@@ -9,7 +9,7 @@ The physical configuration of the device at a moment, such as book, flat, or ten
 _Avoid_: Mode, pose, orientation
 
 **Fold**:
-The reserved strip where the device bends, which nothing interactive may occupy; it has zero width when the device is flat.
+The reserved strip where the device bends, which nothing interactive may occupy; it is inactive (absent) when the device is flat.
 _Avoid_: Hinge, seam, crease
 
 **Region**:

@@ -23,7 +23,7 @@ _Avoid_: Breakpoint, form factor
 ## Layout
 
 **Arrangement**:
-A layout of two views whose shape (Split or Overlay) is chosen automatically from the Size Class and the active Regions, mirroring Apple's ArrangementView.
+A layout of two views, primary and secondary, in a style the author picks (Split or Overlay), whose frames adapt to Size Class, aspect ratio, and whether the Fold is active; mirrors Apple's ArrangementView.
 _Avoid_: Dual-pane layout, two-up
 
 **Split**:

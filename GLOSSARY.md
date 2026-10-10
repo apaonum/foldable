@@ -27,11 +27,11 @@ A layout of two views, primary and secondary, in a style the author picks (Split
 _Avoid_: Dual-pane layout, two-up
 
 **Split**:
-An Arrangement that places each view in its own Region on either side of the Fold.
+An Arrangement that places the primary and secondary views next to each other along the longer axis, one per Region when the Fold is active.
 _Avoid_: Side-by-side, dual view
 
 **Overlay**:
-An Arrangement that layers one view over the other.
+An Arrangement that layers the primary view over the secondary, separating them into Regions when the Fold is active.
 _Avoid_: Stack, modal
 
 **Displacement**:

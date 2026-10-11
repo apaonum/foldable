@@ -1,0 +1,58 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>keyboard probe</title>
+<style>
+html,body{margin:0;height:100%}
+body{font:12px -apple-system}
+pre{position:absolute;inset:60px 8px 60px;margin:0;overflow:auto;white-space:pre-wrap;word-break:break-all}
+input{position:fixed;z-index:1;width:120px;font-size:16px}
+#tl{top:calc(env(safe-area-inset-top) + 4px);left:calc(env(safe-area-inset-left) + 4px)}
+#tr{top:calc(env(safe-area-inset-top) + 4px);right:calc(env(safe-area-inset-right) + 4px)}
+#bl{bottom:calc(env(safe-area-inset-bottom) + 30px);left:calc(env(safe-area-inset-left) + 4px)}
+#br{bottom:calc(env(safe-area-inset-bottom) + 30px);right:calc(env(safe-area-inset-right) + 4px)}
+#bar{position:fixed;left:0;right:0;bottom:0;height:24px;background:#f80}
+#p,.vh{position:fixed;visibility:hidden;pointer-events:none;top:0;left:0;width:1px}
+#dvh{height:100dvh}#svh{height:100svh}#lvh{height:100lvh}
+</style></head><body>
+<input id="tl" placeholder="top-left"><input id="tr" placeholder="top-right">
+<input id="bl" placeholder="bottom-left"><input id="br" placeholder="bottom-right">
+<pre id="out"></pre><div id="bar"></div>
+<div id="p"></div><div class="vh" id="dvh"></div><div class="vh" id="svh"></div><div class="vh" id="lvh"></div>
+<script>
+const host = new URLSearchParams(location.search).get('host') || 'safari';
+const p = document.getElementById('p');
+function envVal(expr){ p.style.marginLeft = expr; return getComputedStyle(p).marginLeft; }
+function rect(el){ const r = el.getBoundingClientRect(); return [r.x, r.y, r.width, r.height]; }
+function h(id){ return document.getElementById(id).getBoundingClientRect().height; }
+function snap(trigger){
+  const env = {};
+  for (const e of ['top','left','width','height','right','bottom']) env['kb-'+e] = envVal(`env(keyboard-inset-${e}, -9999px)`);
+  for (const s of ['top','right','bottom','left']) env['safe-'+s] = envVal(`env(safe-area-inset-${s}, -9999px)`);
+  const vv = window.visualViewport;
+  const a = document.activeElement;
+  return {
+    src: 'web', host, trigger, t: new Date().toISOString(),
+    inner: [innerWidth, innerHeight], client: [document.documentElement.clientWidth, document.documentElement.clientHeight],
+    vv: vv && {w: vv.width, h: vv.height, offL: vv.offsetLeft, offT: vv.offsetTop, pageT: vv.pageTop, scale: vv.scale},
+    scrollY, dvh: h('dvh'), svh: h('svh'), lvh: h('lvh'), env,
+    virtualKeyboardIn: 'virtualKeyboard' in navigator, vkRect: navigator.virtualKeyboard && (r => [r.x, r.y, r.width, r.height])(navigator.virtualKeyboard.boundingRect),
+    segments: window.viewport?.segments && Array.from(window.viewport.segments, r => [r.x, r.y, r.width, r.height]),
+    focused: a && a.id || null, focusedRect: a && a.id ? rect(a) : null, bar: rect(document.getElementById('bar'))
+  };
+}
+function report(trigger){
+  const s = snap(trigger);
+  document.getElementById('out').textContent = JSON.stringify(s, null, 1);
+  fetch('/log', {method:'POST', body: JSON.stringify(s)}).catch(()=>{});
+}
+let t;
+function settle(trigger){ clearTimeout(t); t = setTimeout(() => report(trigger + ' (settled)'), 700); }
+report('load');
+addEventListener('resize', () => { report('resize'); settle('resize'); });
+visualViewport?.addEventListener('resize', () => { report('vv.resize'); settle('vv.resize'); });
+visualViewport?.addEventListener('scroll', () => settle('vv.scroll'));
+addEventListener('focusin', e => { report('focusin ' + e.target.id); settle('focusin ' + e.target.id); });
+addEventListener('focusout', e => { report('focusout ' + e.target.id); settle('focusout ' + e.target.id); });
+navigator.virtualKeyboard?.addEventListener('geometrychange', () => report('vk.geometrychange'));
+</script></body></html>

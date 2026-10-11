@@ -4,7 +4,7 @@
 
 ### Issue tracker
 
-Issues live in GitHub Issues for `Apaonum/foldable` (via the `gh` CLI). See `docs/agents/issue-tracker.md`.
+Issues live in GitHub Issues for `apaonum/foldable` (via the `gh` CLI). See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

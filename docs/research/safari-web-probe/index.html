@@ -1,0 +1,45 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>web fold probe</title>
+<style>
+body{font:13px -apple-system;margin:0;padding:env(safe-area-inset-top) 8px 8px}
+pre{white-space:pre-wrap;word-break:break-all}
+#p{position:fixed;visibility:hidden;pointer-events:none}
+</style></head><body>
+<h3>web fold probe</h3><pre id="out"></pre><div id="p"></div>
+<script>
+const p = document.getElementById('p');
+const envs = ['left','top','width','height','right','bottom'];
+const idx = [[0,0],[1,0],[0,1]];
+function envVal(expr){ p.style.marginLeft = expr; return getComputedStyle(p).marginLeft; }
+const mqs = ['(device-posture: folded)','(device-posture: continuous)',
+ '(horizontal-viewport-segments: 1)','(horizontal-viewport-segments: 2)',
+ '(vertical-viewport-segments: 1)','(vertical-viewport-segments: 2)',
+ '(min-width: 600px) and (min-height: 600px)'];
+function seg(s){ return s && Array.from(s, r => ({x:r.x,y:r.y,w:r.width,h:r.height})); }
+function snap(trigger){
+  const env = {};
+  for (const [a,b] of idx) for (const e of envs) env[`seg ${a} ${b} ${e}`] = envVal(`env(viewport-segment-${e} ${a} ${b}, -9999px)`);
+  for (const s of ['top','right','bottom','left']) env['safe-'+s] = envVal(`env(safe-area-inset-${s}, -9999px)`);
+  return {
+    trigger, t: new Date().toISOString(), ua: navigator.userAgent, secure: isSecureContext,
+    devicePostureIn: 'devicePosture' in navigator, postureType: navigator.devicePosture?.type,
+    windowViewport: 'viewport' in window, viewportSegments: seg(window.viewport?.segments),
+    visualViewportSegments: seg(window.visualViewport?.segments),
+    mq: Object.fromEntries(mqs.map(q => [q, matchMedia(q).matches])),
+    inner: [innerWidth, innerHeight], client: [document.documentElement.clientWidth, document.documentElement.clientHeight],
+    vv: window.visualViewport && [visualViewport.width, visualViewport.height], env
+  };
+}
+function report(trigger){
+  const s = snap(trigger);
+  document.getElementById('out').textContent = JSON.stringify(s, null, 1);
+  fetch('/log', {method:'POST', body: JSON.stringify(s)}).catch(()=>{});
+}
+report('load');
+addEventListener('resize', () => report('resize'));
+navigator.devicePosture?.addEventListener('change', () => report('devicePosture.change'));
+window.viewport?.addEventListener?.('segmentschange', () => report('viewport.segmentschange'));
+mqs.forEach(q => matchMedia(q).addEventListener('change', () => report('mq ' + q)));
+</script></body></html>

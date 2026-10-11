@@ -17,7 +17,7 @@ One of the areas the Fold divides the display into.
 _Avoid_: Segment, screen, pane
 
 **Size Class**:
-The coarse width category of the available space: compact (outer display) or regular (inner display).
+The coarse width category of the available space, compact or regular. It follows the space, not the display: the inner display can be compact in Split View.
 _Avoid_: Breakpoint, form factor
 
 ## Layout

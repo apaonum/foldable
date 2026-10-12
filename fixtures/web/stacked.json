@@ -1,0 +1,30 @@
+{
+  "name": "stacked",
+  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 15",
+  "viewport": {
+    "width": 669,
+    "height": 871
+  },
+  "segments": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 669,
+      "height": 395.5
+    },
+    {
+      "x": 0,
+      "y": 395.5,
+      "width": 669,
+      "height": 558.5
+    }
+  ],
+  "expected": {
+    "fold": {
+      "x": 0,
+      "y": 375.5,
+      "width": 669,
+      "height": 40
+    }
+  }
+}

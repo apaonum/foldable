@@ -1,0 +1,30 @@
+{
+  "name": "side-by-side-chrome",
+  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 69; innerHeight 596, clientHeight 567",
+  "viewport": {
+    "width": 951,
+    "height": 596
+  },
+  "segments": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 475.5,
+      "height": 961
+    },
+    {
+      "x": 475.5,
+      "y": 0,
+      "width": 475.5,
+      "height": 961
+    }
+  ],
+  "expected": {
+    "fold": {
+      "x": 455.5,
+      "y": 0,
+      "width": 40,
+      "height": 596
+    }
+  }
+}

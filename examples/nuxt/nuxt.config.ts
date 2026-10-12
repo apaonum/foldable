@@ -5,4 +5,6 @@ export default defineNuxtConfig({
   css: ['@foldablejs/core/primitives.css', '~/assets/example.css'],
   devtools: { enabled: false },
   telemetry: false,
+  // Keep :dir() in primitives.css: older CSS targets rewrite it into :lang() lists, which ignore dir="rtl".
+  vite: { build: { cssTarget: ['safari17', 'ios17'] } },
 });

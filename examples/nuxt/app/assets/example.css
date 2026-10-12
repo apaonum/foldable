@@ -11,6 +11,23 @@ main {
 .frame {
   height: 60dvh;
   border: 1px solid #888;
+  /* The box starts after main's padding and its own border; the Fold vars don't. */
+  --foldable-arrangement-offset-x: calc(1rem + 1px);
+}
+
+/* An Arrangement is a non-scrolling app frame: #split or #overlay shows that one full-viewport,
+   so it lines up with the Fold in every Posture. */
+main:has(h2:target) > :not(h2:target + .frame, [data-foldable-displace]) {
+  display: none;
+}
+
+h2:target + .frame {
+  position: fixed;
+  inset: 0;
+  height: auto;
+  border: 0;
+  background: Canvas;
+  --foldable-arrangement-offset-x: 0px;
 }
 
 .view-content {
@@ -25,4 +42,10 @@ main {
   justify-content: center;
   padding: 0.5rem;
   pointer-events: auto;
+}
+
+[data-foldable-displace] {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }

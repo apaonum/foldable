@@ -1,7 +1,7 @@
 /* Arrangement */
 
 /*
- * Shared by Split and Overlay. The box is an app shell with an author-set definite size;
+ * Shared by Split and Overlay. The box is an app frame with an author-set definite size;
  * the views are positioned absolutely inside it because a container query can style only
  * the container's descendants. The defaults use :where() so authors can override them.
  */

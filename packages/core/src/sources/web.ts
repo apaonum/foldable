@@ -14,7 +14,7 @@ export const STALE = Symbol('stale');
  * Segment extents along the line are not clipped to the viewport, so only the line is used.
  */
 export function webFold(segments: readonly Rect[], viewport: Viewport): Rect | null | typeof STALE {
-  // Rotation fires `resize` about 1 s before the segments update. Union, not sum: stacked
+  // Rotation fires `resize` about 1 s before the segments update. Union, not sum: tabletop
   // segments each span the full width.
   const left = Math.min(...segments.map((s) => s.x));
   const right = Math.max(...segments.map((s) => s.x + s.width));

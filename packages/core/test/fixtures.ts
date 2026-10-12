@@ -20,11 +20,11 @@ import version2 from '../../../fixtures/skew/version-2.json';
 import webBookRegular from '../../../fixtures/web/book-regular.json';
 import webFlat from '../../../fixtures/web/flat.json';
 import webOuterPortrait from '../../../fixtures/web/outer-portrait.json';
-import webSideBySide from '../../../fixtures/web/side-by-side.json';
-import webSideBySideChrome from '../../../fixtures/web/side-by-side-chrome.json';
-import webSideBySideTaller from '../../../fixtures/web/side-by-side-taller.json';
-import webStackedChrome from '../../../fixtures/web/stacked-chrome.json';
-import webStacked from '../../../fixtures/web/stacked.json';
+import webBookSegments from '../../../fixtures/web/book-segments.json';
+import webBookSegmentsChrome from '../../../fixtures/web/book-segments-chrome.json';
+import webBookSegmentsTaller from '../../../fixtures/web/book-segments-taller.json';
+import webTabletopSegmentsChrome from '../../../fixtures/web/tabletop-segments-chrome.json';
+import webTabletopSegments from '../../../fixtures/web/tabletop-segments.json';
 import webStaleLandscapeViewport from '../../../fixtures/web/stale-landscape-viewport.json';
 import webStaleOuter from '../../../fixtures/web/stale-outer.json';
 import webStalePortraitViewport from '../../../fixtures/web/stale-portrait-viewport.json';
@@ -89,12 +89,12 @@ export type WebFixture = {
 
 export const webFixtures = [
   webFlat,
-  webSideBySide,
-  webSideBySideTaller,
-  webSideBySideChrome,
+  webBookSegments,
+  webBookSegmentsTaller,
+  webBookSegmentsChrome,
   webUnfoldTransient,
-  webStacked,
-  webStackedChrome,
+  webTabletopSegments,
+  webTabletopSegmentsChrome,
   webStalePortraitViewport,
   webStaleLandscapeViewport,
   webStaleOuter,

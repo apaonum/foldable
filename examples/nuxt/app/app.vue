@@ -17,15 +17,15 @@ const expanded = ref(false);
     </p>
 
     <h2>Split</h2>
-    <section class="shell" v-bind="arrangement({ style: 'split' })">
-      <div class="pane" v-bind="view('primary')">Primary (list)</div>
-      <div class="pane" v-bind="view('secondary')">Secondary (detail)</div>
+    <section class="frame" v-bind="arrangement({ style: 'split' })">
+      <div class="view-content" v-bind="view('primary')">Primary (list)</div>
+      <div class="view-content" v-bind="view('secondary')">Secondary (detail)</div>
     </section>
 
     <h2>Split, vertical axis only</h2>
-    <section class="shell" v-bind="arrangement({ style: 'split', axes: 'vertical' })">
-      <div class="pane" v-bind="view('primary')">Primary</div>
-      <div class="pane" v-bind="view('secondary')">
+    <section class="frame" v-bind="arrangement({ style: 'split', axes: 'vertical' })">
+      <div class="view-content" v-bind="view('primary')">Primary</div>
+      <div class="view-content" v-bind="view('secondary')">
         Secondary (hidden if vertical isn't allowed)
       </div>
     </section>
@@ -33,11 +33,11 @@ const expanded = ref(false);
     <h2>Overlay</h2>
     <!-- Overlay DOM order: secondary first, then primary. -->
     <section
-      class="shell"
+      class="frame"
       v-bind="arrangement({ style: 'overlay', overlayState: expanded ? 'expanded' : 'collapsed' })"
     >
-      <div class="pane" v-bind="view('secondary')">Secondary (map)</div>
-      <div class="pane" v-bind="view('primary')">
+      <div class="view-content" v-bind="view('secondary')">Secondary (map)</div>
+      <div class="view-content" v-bind="view('primary')">
         Primary (controls)
         <button type="button" @click="expanded = !expanded">
           {{ expanded ? 'Collapse' : 'Expand' }}

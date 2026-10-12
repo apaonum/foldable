@@ -6,7 +6,7 @@ export function MailShell() {
   const state = useFoldable();
   return (
     <>
-      <div className="shell" {...arrangement({ style: 'split' })}>
+      <div className="frame" {...arrangement({ style: 'split' })}>
         <nav {...view('primary')} aria-label="Mailboxes">
           {state === SERVER_STATE ? null : <p>Posture: {state.posture}</p>}
         </nav>

@@ -42,9 +42,9 @@ const foldVars = (): Record<string, string | null> => {
   };
 };
 
-describe('side-by-side segments', () => {
+describe('book segments', () => {
   test('give a book Fold on the line between them', async () => {
-    await showFixture('side-by-side');
+    await showFixture('book-segments');
 
     expect(getState()).toEqual({
       posture: 'book',
@@ -72,7 +72,7 @@ describe('side-by-side segments', () => {
 
 describe('stale segments', () => {
   test('rotating to portrait keeps the book Fold until the segments catch up', async () => {
-    await showFixture('side-by-side');
+    await showFixture('book-segments');
     const seen: State[] = [];
     const unsubscribe = subscribe((s) => seen.push(s));
 
@@ -87,10 +87,10 @@ describe('stale segments', () => {
   });
 });
 
-describe('stacked segments', () => {
+describe('tabletop segments', () => {
   test('a segment media query change with no resize gives the tabletop Fold', async () => {
     await showFixture('stale-portrait-viewport');
-    stub.segments = webFixture('stacked').segments;
+    stub.segments = webFixture('tabletop-segments').segments;
 
     queries.get('(vertical-viewport-segments: 2)')?.dispatchEvent(new Event('change'));
 

@@ -19,10 +19,10 @@ Keep navigation containers outside an Arrangement. Don't nest an Arrangement ins
 
 ## Size the Arrangement box
 
-An Arrangement is an app shell. It fills the viewport along the axis that crosses the Fold, it doesn't scroll, and you give it a definite size. The stylesheet makes it a size container, so a box with no definite height collapses to 0.
+An Arrangement is an app frame. It fills the viewport along the axis that crosses the Fold, it doesn't scroll, and you give it a definite size. The stylesheet makes it a size container, so a box with no definite height collapses to 0.
 
 ```css
-.shell {
+.frame {
   height: 100dvh;
 }
 ```
@@ -30,7 +30,7 @@ An Arrangement is an app shell. It fills the viewport along the axis that crosse
 The views are positioned absolutely inside the box. Scroll inside each view, not the box:
 
 ```css
-.shell > [data-foldable-view] {
+.frame > [data-foldable-view] {
   overflow: auto;
 }
 ```
@@ -38,7 +38,7 @@ The views are positioned absolutely inside the box. Scroll inside each view, not
 The Fold vars are relative to the viewport. If the box doesn't start at the viewport origin, set its offset so the views still line up with the Fold:
 
 ```css
-.shell {
+.frame {
   position: fixed;
   inset: 0 0 0 100px;
   --foldable-arrangement-offset-x: 100px;
@@ -51,8 +51,8 @@ The primitives never use the layout margins or the safe area inside an Arrangeme
 
 | State                         | Layout                                                                                                                                         |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| No Fold, box wider than tall  | Side by side. The primary is leading and takes `--foldable-split-ratio` of the width (default `0.5`). No gutter.                               |
-| No Fold, box taller than wide | Stacked. The primary is on top and takes `--foldable-split-ratio` of the height.                                                               |
+| No Fold, box wider than tall  | Horizontal. The primary is leading and takes `--foldable-split-ratio` of the width (default `0.5`). No gutter.                                 |
+| No Fold, box taller than wide | Vertical. The primary is on top and takes `--foldable-split-ratio` of the height.                                                              |
 | Book                          | One view per Region. The primary is in the leading Region, the secondary in the trailing Region. The Fold is the gutter. The ratio is ignored. |
 | Tabletop                      | The primary is in the top Region, the secondary in the bottom Region. The Fold is the gutter.                                                  |
 
@@ -69,13 +69,13 @@ Set `data-foldable-axes="horizontal"` or `"vertical"` to allow only one axis. Wh
 - The secondary gets `display: none`. It stays mounted, so its state survives.
 
 ```html
-<main data-foldable-arrangement="split" data-foldable-axes="horizontal" class="shell">
+<main data-foldable-arrangement="split" data-foldable-axes="horizontal" class="frame">
   <nav data-foldable-view="primary">Mailboxes</nav>
   <article data-foldable-view="secondary">Message</article>
 </main>
 ```
 
-The axis is chosen from the Fold when there is one, otherwise from the box's aspect ratio. `horizontal` means side by side.
+The axis is chosen from the Fold when there is one, otherwise from the box's aspect ratio. `horizontal` means the views sit next to each other along the inline axis, as in book; `vertical` puts one above the other, as in tabletop.
 
 ### Size Class never collapses a Split
 
@@ -105,7 +105,7 @@ The primary has `z-index: 1` in every state, so it stays on top whatever the DOM
 `data-foldable-overlay-state` is yours to set. The stylesheet never changes it, so the state survives Fold changes. A separated Overlay (two Regions) ignores `expanded`. If the attribute is still `expanded` when the Fold goes away, the primary fills the box again.
 
 ```html
-<div data-foldable-arrangement="overlay" data-foldable-overlay-state="collapsed" class="shell">
+<div data-foldable-arrangement="overlay" data-foldable-overlay-state="collapsed" class="frame">
   <div data-foldable-view="secondary">Map</div>
   <div data-foldable-view="primary">
     <button type="button" aria-expanded="false">Show details</button>

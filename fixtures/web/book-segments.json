@@ -1,5 +1,5 @@
 {
-  "name": "side-by-side",
+  "name": "book-segments",
   "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 5",
   "viewport": {
     "width": 951,

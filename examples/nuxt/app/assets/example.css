@@ -8,12 +8,12 @@ main {
   padding: 1rem;
 }
 
-.shell {
+.frame {
   height: 60dvh;
   border: 1px solid #888;
 }
 
-.pane {
+.view-content {
   padding: 1rem;
   background: #eef;
   border: 1px solid #99c;

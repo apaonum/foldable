@@ -1,0 +1,65 @@
+/* Displace */
+
+/*
+ * A fixed, click-through box over the target Region, inside the safe area.
+ * The --foldable-* vars come from the bootstrap, so this needs no JS import.
+ * Fold vars are physical; leading/trailing are resolved against the box's own direction.
+ */
+[data-foldable-displace] {
+  --_displace-left: 0px;
+  --_displace-right: 0px;
+  --_displace-top: 0px;
+  --_displace-bottom: 0px;
+  position: fixed;
+  pointer-events: none;
+  box-sizing: border-box;
+  left: max(var(--foldable-safe-area-left, 0px), var(--_displace-left));
+  right: max(var(--foldable-safe-area-right, 0px), var(--_displace-right));
+  top: max(var(--foldable-safe-area-top, 0px), var(--_displace-top));
+  bottom: max(var(--foldable-safe-area-bottom, 0px), var(--_displace-bottom));
+}
+
+/*
+ * In Split View the Fold can be clipped to the window edge, leaving one Region.
+ * The sign() flags are 1 when the Region on that side exists, so a missing target
+ * falls back to the other Region instead of collapsing to zero size. The 0.5px
+ * threshold absorbs WebKit's float error in 100vw/100vh.
+ */
+html[data-foldable-posture='book'] [data-foldable-displace] {
+  --_displace-fold-end: calc(var(--foldable-fold-x) + var(--foldable-fold-width));
+  --_displace-has-left: max(0, sign(var(--foldable-fold-x) - 0.5px));
+  --_displace-has-right: max(0, sign(100vw - var(--_displace-fold-end) - 0.5px));
+}
+
+/* Physical right Region: trailing in LTR (the default), leading in RTL. */
+html[data-foldable-posture='book']
+  [data-foldable-displace]:dir(ltr):not([data-foldable-displace~='leading']),
+html[data-foldable-posture='book']
+  [data-foldable-displace]:dir(rtl)[data-foldable-displace~='leading'] {
+  --_displace-left: calc(var(--_displace-has-right) * var(--_displace-fold-end));
+  --_displace-right: calc((1 - var(--_displace-has-right)) * (100vw - var(--foldable-fold-x)));
+}
+
+/* Physical left Region: leading in LTR, trailing in RTL (the default). */
+html[data-foldable-posture='book']
+  [data-foldable-displace]:dir(ltr)[data-foldable-displace~='leading'],
+html[data-foldable-posture='book']
+  [data-foldable-displace]:dir(rtl):not([data-foldable-displace~='leading']) {
+  --_displace-left: calc((1 - var(--_displace-has-left)) * var(--_displace-fold-end));
+  --_displace-right: calc(var(--_displace-has-left) * (100vw - var(--foldable-fold-x)));
+}
+
+html[data-foldable-posture='tabletop'] [data-foldable-displace] {
+  --_displace-fold-end: calc(var(--foldable-fold-y) + var(--foldable-fold-height));
+  --_displace-has-top: max(0, sign(var(--foldable-fold-y) - 0.5px));
+  --_displace-has-bottom: max(0, sign(100vh - var(--_displace-fold-end) - 0.5px));
+  --_displace-top: calc(var(--_displace-has-bottom) * var(--_displace-fold-end));
+  --_displace-bottom: calc((1 - var(--_displace-has-bottom)) * (100vh - var(--foldable-fold-y)));
+}
+
+html[data-foldable-posture='tabletop'] [data-foldable-displace~='top'] {
+  --_displace-top: calc((1 - var(--_displace-has-top)) * var(--_displace-fold-end));
+  --_displace-bottom: calc(var(--_displace-has-top) * (100vh - var(--foldable-fold-y)));
+}
+
+/* End Displace */

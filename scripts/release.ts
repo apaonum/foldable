@@ -30,9 +30,12 @@ function readManifest(dir: string): Manifest {
   return manifest;
 }
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  value !== null && typeof value === 'object' && !Array.isArray(value);
+
 function parseManifest(raw: unknown): Manifest | undefined {
-  if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) return undefined;
-  const { name, version, private: isPrivate } = raw as Record<string, unknown>;
+  if (!isRecord(raw)) return undefined;
+  const { name, version, private: isPrivate } = raw;
   if (typeof name !== 'string') return undefined;
   if (version !== undefined && typeof version !== 'string') return undefined;
   if (isPrivate !== undefined && typeof isPrivate !== 'boolean') return undefined;
@@ -52,7 +55,8 @@ export function bumpVersion(root: string, version: string): void {
   if (!VERSION.test(version)) throw new Error(`Expected X.Y.Z, got "${version}"`);
   for (const dir of packageDirs(root)) {
     const path = join(dir, 'package.json');
-    const manifest = JSON.parse(readFileSync(path, 'utf8')) as Record<string, unknown>;
+    const manifest: unknown = JSON.parse(readFileSync(path, 'utf8'));
+    if (!isRecord(manifest)) throw new Error(`${path} is not a valid package manifest`);
     manifest.version = version;
     writeFileSync(path, JSON.stringify(manifest, null, 2) + '\n');
   }

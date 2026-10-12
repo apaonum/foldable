@@ -71,6 +71,8 @@ export function bridgeReader(win: Window, bridge: BridgeGlobal): Reader {
     read: () => parseSnapshot(bridge.state, env),
     listen: (onChange) => {
       win.addEventListener(BRIDGE_CHANGE_EVENT, onChange);
+      // The snapshot carries no viewport size, so Regions also change on a bare resize.
+      win.addEventListener('resize', onChange);
     },
   };
 }

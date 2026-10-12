@@ -1,6 +1,7 @@
 import { page } from 'vitest/browser';
 import { describe, expect, test } from 'vitest';
 import { getState, subscribe } from '../src/index';
+import type { State } from '../src/index';
 import { bridgeFixtures } from './fixtures';
 import { readHtml } from './support/html';
 import { installBridge } from './support/install-bridge';
@@ -8,6 +9,9 @@ import { installBridge } from './support/install-bridge';
 const [first] = bridgeFixtures;
 if (first === undefined) throw new Error('no Bridge fixtures');
 const bridge = installBridge(first.snapshot);
+
+// `resize` lands after page.viewport() resolves.
+const settle = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 100));
 
 describe.each(bridgeFixtures.map((f) => [f.name, f] as const))('push %s', (_, f) => {
   test('<html> gets the CSS vars and attributes', async () => {
@@ -77,5 +81,25 @@ describe('seq', () => {
     expect(seen).toEqual([]);
     expect(getState()).toBe(before);
     expect(document.documentElement.getAttribute('data-foldable-size-class')).toBe('compact');
+  });
+});
+
+describe('resize', () => {
+  test('a resize with no new snapshot re-derives Regions and notifies once', async () => {
+    const flat = bridgeFixtures.find((f) => f.name === 'inner-flat');
+    if (flat === undefined) throw new Error('missing inner-flat fixture');
+    await page.viewport(800, 600);
+    bridge.push(flat.snapshot);
+    await settle();
+    const seen: State[] = [];
+    const unsubscribe = subscribe((s) => seen.push(s));
+
+    await page.viewport(700, 500);
+    await settle();
+    window.dispatchEvent(new Event('resize'));
+    unsubscribe();
+
+    expect(getState().regions).toEqual([{ x: 0, y: 0, width: 700, height: 500 }]);
+    expect(seen.map((s) => s.regions)).toEqual([[{ x: 0, y: 0, width: 700, height: 500 }]]);
   });
 });

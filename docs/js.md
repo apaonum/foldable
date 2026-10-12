@@ -65,6 +65,8 @@ The `web` source exists only in Safari with the **Viewport Segments API** featur
 
 Both recompute on `resize` and on `change` of the Size Class media query, and `web` also on `change` of `(horizontal-viewport-segments: 2)` and `(vertical-viewport-segments: 2)`. Safari fires no `segmentschange` event. Neither source debounces.
 
+The `bridge` source recomputes on each Bridge push and on `resize`. A snapshot carries no viewport size, so a resize with no push still updates `regions`. Like the other sources, it notifies only when the state changed.
+
 ### `SERVER_STATE`
 
 ```ts

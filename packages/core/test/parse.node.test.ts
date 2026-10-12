@@ -38,7 +38,7 @@ describe('parseSnapshot', () => {
   });
 
   test('a missing sizeClass comes from the 520 px rule', () => {
-    const { sizeClass: _, ...sent } = VALID;
+    const sent = { ...VALID, sizeClass: undefined };
     expect(parseSnapshot(sent, { ...env, sizeClass: () => 'compact' })).toEqual({
       ...VALID,
       sizeClass: 'compact',

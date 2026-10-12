@@ -31,3 +31,8 @@ test.each(['../src/index', '../src/bootstrap'])(
     expect(touched).toEqual([]);
   },
 );
+
+test('the bootstrap subpath exposes only toCSS and applyCSS', async () => {
+  const mod = await import('../src/bootstrap');
+  expect(Object.keys(mod).sort()).toEqual(['applyCSS', 'toCSS']);
+});

@@ -9,7 +9,11 @@ export type FakeBridge = {
 };
 
 /** Runs the real bootstrap IIFE and seeds it, as the Bridge's document-start script does. */
-export function installBridge(snapshot: BridgeState): FakeBridge {
+export function installBridge(
+  snapshot: BridgeState,
+  // Overriding the global's version stands in for a bootstrap from another contract version.
+  { version }: { version?: number } = {},
+): FakeBridge {
   const script = document.createElement('script');
   script.textContent = bootstrapSource;
   document.head.append(script);
@@ -17,6 +21,7 @@ export function installBridge(snapshot: BridgeState): FakeBridge {
 
   const bridge = (window as BridgeWindow).__foldableBridge;
   if (bridge === undefined) throw new Error('bootstrap did not define window.__foldableBridge');
+  if (version !== undefined) Object.defineProperty(bridge, 'version', { value: version });
   let lastSeq = 0;
   const push = (next: BridgeState, seq = lastSeq + 1): void => {
     lastSeq = Math.max(lastSeq, seq);

@@ -1,0 +1,25 @@
+{
+  "name": "stale-portrait-viewport",
+  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 11; resize fires before the segments update",
+  "viewport": {
+    "width": 669,
+    "height": 871
+  },
+  "segments": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 951,
+      "height": 428.8333435058594
+    },
+    {
+      "x": 0,
+      "y": 428.8333435058594,
+      "width": 951,
+      "height": 609.1666870117188
+    }
+  ],
+  "expected": {
+    "stale": true
+  }
+}

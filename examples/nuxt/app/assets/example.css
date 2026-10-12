@@ -1,0 +1,28 @@
+/* Demo styling only; layout comes from @foldablejs/core/primitives.css. */
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
+
+main {
+  padding: 1rem;
+}
+
+.shell {
+  height: 60dvh;
+  border: 1px solid #888;
+}
+
+.pane {
+  padding: 1rem;
+  background: #eef;
+  border: 1px solid #99c;
+}
+
+.toolbar {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.5rem;
+  pointer-events: auto;
+}

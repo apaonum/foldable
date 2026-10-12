@@ -219,10 +219,16 @@
     }
 
     @MainActor private static func divisions(of webView: WKWebView) -> [Division] {
-      guard #available(iOS 27.1, *) else { return [] }
-      return webView.reservedRegions(kind: .division).map {
-        Division(frame: Rect($0.frame), isActive: $0.isActive)
-      }
+      // UIKit 9127.0.85 is the iOS 27.1 SDK, the first with reserved regions; older SDKs still
+      // build, and their apps report no Fold.
+      #if canImport(UIKit, _version: 9127.0.85)
+        guard #available(iOS 27.1, *) else { return [] }
+        return webView.reservedRegions(kind: .division).map {
+          Division(frame: Rect($0.frame), isActive: $0.isActive)
+        }
+      #else
+        return []
+      #endif
     }
 
     @MainActor private static func ownerView(of view: UIView) -> UIView? {

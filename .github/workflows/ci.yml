@@ -36,9 +36,18 @@ jobs:
       - run: git diff --exit-code -- Sources/Foldable/Resources/bootstrap.js
 
   swift:
-    runs-on: macos-15
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v7.0.1
+      # Hosted runners have no Xcode 27.1, so the iOS 27.1 reserved-region code is compiled out
+      # (see Bridge.swift); the newest Xcode at least compiles the rest of the UIKit/WebKit code.
+      - name: Select the newest Xcode
+        run: |
+          xcode=$(ls -d /Applications/Xcode_*.app | sort -V | tail -n 1)
+          sudo xcode-select -s "$xcode"
+          xcodebuild -version
       - run: swift format lint --strict --recursive Package.swift Sources Tests
+      # macOS has no UIKit, so these cover only the pure (contract) code.
       - run: swift build
       - run: swift test
+      - run: xcodebuild build -scheme Foldable -destination 'generic/platform=iOS Simulator' -quiet

@@ -84,6 +84,30 @@ html[data-foldable-posture='tabletop'] [data-foldable-arrangement] {
   );
 }
 
+/*
+ * "Near" is the leading (book) or top (tabletop) Region, or the only Region when the Fold is
+ * clipped away from that side. Split's primary and Overlay's near view both use it.
+ */
+html[data-foldable-posture='book'] [data-foldable-arrangement] > [data-foldable-view] {
+  --_arrangement-near-start: calc(
+    (1 - var(--_arrangement-has-leading)) * var(--_arrangement-trailing-start)
+  );
+  --_arrangement-near-size: calc(
+    var(--_arrangement-has-leading) * var(--_arrangement-leading-size) +
+      (1 - var(--_arrangement-has-leading)) * var(--_arrangement-trailing-size)
+  );
+}
+
+html[data-foldable-posture='tabletop'] [data-foldable-arrangement] > [data-foldable-view] {
+  --_arrangement-near-start: calc(
+    (1 - var(--_arrangement-has-top)) * var(--_arrangement-bottom-start)
+  );
+  --_arrangement-near-size: calc(
+    var(--_arrangement-has-top) * var(--_arrangement-top-size) + (1 - var(--_arrangement-has-top)) *
+      var(--_arrangement-bottom-size)
+  );
+}
+
 /* Every view fills the box until a style places it. */
 [data-foldable-arrangement] > [data-foldable-view] {
   position: absolute;
@@ -142,13 +166,8 @@ html[data-foldable-posture='book'] [data-foldable-arrangement='split'] > [data-f
 html[data-foldable-posture='book']
   [data-foldable-arrangement='split']
   > [data-foldable-view='primary'] {
-  inset-inline-start: calc(
-    (1 - var(--_arrangement-has-leading)) * var(--_arrangement-trailing-start)
-  );
-  inline-size: calc(
-    var(--_arrangement-has-leading) * var(--_arrangement-leading-size) +
-      (1 - var(--_arrangement-has-leading)) * var(--_arrangement-trailing-size)
-  );
+  inset-inline-start: var(--_arrangement-near-start);
+  inline-size: var(--_arrangement-near-size);
 }
 
 html[data-foldable-posture='book']
@@ -166,11 +185,8 @@ html[data-foldable-posture='tabletop'] [data-foldable-arrangement='split'] > [da
 html[data-foldable-posture='tabletop']
   [data-foldable-arrangement='split']
   > [data-foldable-view='primary'] {
-  inset-block-start: calc((1 - var(--_arrangement-has-top)) * var(--_arrangement-bottom-start));
-  block-size: calc(
-    var(--_arrangement-has-top) * var(--_arrangement-top-size) + (1 - var(--_arrangement-has-top)) *
-      var(--_arrangement-bottom-size)
-  );
+  inset-block-start: var(--_arrangement-near-start);
+  block-size: var(--_arrangement-near-size);
 }
 
 html[data-foldable-posture='tabletop']
@@ -279,13 +295,8 @@ html:not([data-foldable-fold='active'])
  */
 html[data-foldable-posture='book'] [data-foldable-arrangement='overlay'] > [data-foldable-view] {
   --_overlay-both: calc(var(--_arrangement-has-leading) * var(--_arrangement-has-trailing));
-  --_overlay-near-start: calc(
-    (1 - var(--_arrangement-has-leading)) * var(--_arrangement-trailing-start)
-  );
-  --_overlay-near-size: calc(
-    var(--_arrangement-has-leading) * var(--_arrangement-leading-size) +
-      (1 - var(--_arrangement-has-leading)) * var(--_arrangement-trailing-size)
-  );
+  --_overlay-near-start: var(--_arrangement-near-start);
+  --_overlay-near-size: var(--_arrangement-near-size);
   --_overlay-far-start: calc(
     var(--_overlay-both) * var(--_arrangement-trailing-start) + (1 - var(--_overlay-both)) *
       var(--_overlay-near-start)
@@ -302,11 +313,8 @@ html[data-foldable-posture='tabletop']
   [data-foldable-arrangement='overlay']
   > [data-foldable-view] {
   --_overlay-both: calc(var(--_arrangement-has-top) * var(--_arrangement-has-bottom));
-  --_overlay-near-start: calc((1 - var(--_arrangement-has-top)) * var(--_arrangement-bottom-start));
-  --_overlay-near-size: calc(
-    var(--_arrangement-has-top) * var(--_arrangement-top-size) + (1 - var(--_arrangement-has-top)) *
-      var(--_arrangement-bottom-size)
-  );
+  --_overlay-near-start: var(--_arrangement-near-start);
+  --_overlay-near-size: var(--_arrangement-near-size);
   --_overlay-far-start: calc(
     var(--_overlay-both) * var(--_arrangement-bottom-start) + (1 - var(--_overlay-both)) *
       var(--_overlay-near-start)

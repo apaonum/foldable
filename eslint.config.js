@@ -9,6 +9,7 @@ export default tseslint.config(
       '**/node_modules',
       '**/.nuxt',
       '**/.output',
+      '.claude',
       'eslint.config.js',
     ],
   },

@@ -1,0 +1,68 @@
+{
+  "name": "inner-split-right",
+  "evidence": "research/safe-area-bar-probe:docs/research/safe-area-bar-probe/log.txt 14:01:07.540",
+  "viewport": {
+    "width": 469,
+    "height": 669
+  },
+  "snapshot": {
+    "fold": null,
+    "sizeClass": "compact",
+    "safeArea": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 20
+    }
+  },
+  "expected": {
+    "posture": "none",
+    "regions": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 469,
+        "height": 669
+      }
+    ]
+  },
+  "nativeInputs": {
+    "divisions": [
+      {
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "width": 13.5,
+          "height": 669
+        },
+        "isActive": false
+      }
+    ],
+    "horizontalSizeClass": "compact",
+    "safeAreaInsets": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 20
+    },
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 469,
+      "height": 669
+    },
+    "pageZoom": 1
+  }
+}

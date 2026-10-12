@@ -1,0 +1,80 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F0000000000000000000013 /* Foldable in Frameworks */ = {isa = PBXBuildFile; productRef = F0000000000000000000060 /* Foldable */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F0000000000000000000024 = {isa = PBXContainerItemProxy; containerPortal = F0000000000000000000001; proxyType = 1; remoteGlobalIDString = F0000000000000000000010; remoteInfo = FoldableHost; };
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F0000000000000000000006 /* FoldableHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoldableHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0000000000000000000007 /* HostTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HostTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		F0000000000000000000004 /* App */ = {isa = PBXFileSystemSynchronizedRootGroup; path = App; sourceTree = "<group>"; };
+		F0000000000000000000005 /* HostTests */ = {isa = PBXFileSystemSynchronizedRootGroup; path = HostTests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F0000000000000000000012 = {isa = PBXFrameworksBuildPhase; files = (F0000000000000000000013 /* Foldable in Frameworks */, ); runOnlyForDeploymentPostprocessing = 0; };
+		F0000000000000000000022 = {isa = PBXFrameworksBuildPhase; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F0000000000000000000002 = {isa = PBXGroup; children = (F0000000000000000000004 /* App */, F0000000000000000000005 /* HostTests */, F0000000000000000000003 /* Products */, ); sourceTree = "<group>"; };
+		F0000000000000000000003 /* Products */ = {isa = PBXGroup; children = (F0000000000000000000006 /* FoldableHost.app */, F0000000000000000000007 /* HostTests.xctest */, ); name = Products; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F0000000000000000000010 /* FoldableHost */ = {isa = PBXNativeTarget; buildConfigurationList = F0000000000000000000041; buildPhases = (F0000000000000000000011, F0000000000000000000012, F0000000000000000000014, ); buildRules = (); dependencies = (); fileSystemSynchronizedGroups = (F0000000000000000000004 /* App */, ); name = FoldableHost; packageProductDependencies = (F0000000000000000000060 /* Foldable */, ); productName = FoldableHost; productReference = F0000000000000000000006 /* FoldableHost.app */; productType = "com.apple.product-type.application"; };
+		F0000000000000000000020 /* HostTests */ = {isa = PBXNativeTarget; buildConfigurationList = F0000000000000000000042; buildPhases = (F0000000000000000000021, F0000000000000000000022, ); buildRules = (); dependencies = (F0000000000000000000023, ); fileSystemSynchronizedGroups = (F0000000000000000000005 /* HostTests */, ); name = HostTests; productName = HostTests; productReference = F0000000000000000000007 /* HostTests.xctest */; productType = "com.apple.product-type.bundle.unit-test"; };
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F0000000000000000000001 /* Project object */ = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = 1; LastSwiftUpdateCheck = 2710; LastUpgradeCheck = 2710; TargetAttributes = {F0000000000000000000020 = {TestTargetID = F0000000000000000000010; }; }; }; buildConfigurationList = F0000000000000000000040; compatibilityVersion = "Xcode 15.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base, ); mainGroup = F0000000000000000000002; packageReferences = (F0000000000000000000061 /* XCLocalSwiftPackageReference "../.." */, ); preferredProjectObjectVersion = 77; productRefGroup = F0000000000000000000003 /* Products */; projectDirPath = ""; projectRoot = ""; targets = (F0000000000000000000010 /* FoldableHost */, F0000000000000000000020 /* HostTests */, ); };
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F0000000000000000000014 = {isa = PBXResourcesBuildPhase; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F0000000000000000000011 = {isa = PBXSourcesBuildPhase; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		F0000000000000000000021 = {isa = PBXSourcesBuildPhase; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F0000000000000000000023 = {isa = PBXTargetDependency; target = F0000000000000000000010 /* FoldableHost */; targetProxy = F0000000000000000000024; };
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		F0000000000000000000050 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CODE_SIGN_IDENTITY = "-"; CODE_SIGN_STYLE = Automatic; DEBUG_INFORMATION_FORMAT = dwarf; ENABLE_TESTABILITY = YES; IPHONEOS_DEPLOYMENT_TARGET = 27.1; ONLY_ACTIVE_ARCH = YES; SDKROOT = iphoneos; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Debug; };
+		F0000000000000000000051 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES; INFOPLIST_KEY_UILaunchScreen_Generation = YES; INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"; PRODUCT_BUNDLE_IDENTIFIER = dev.foldable.host; PRODUCT_NAME = FoldableHost; }; name = Debug; };
+		F0000000000000000000052 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {BUNDLE_LOADER = "$(TEST_HOST)"; GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = dev.foldable.host.tests; PRODUCT_NAME = HostTests; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FoldableHost.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FoldableHost"; }; name = Debug; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F0000000000000000000040 = {isa = XCConfigurationList; buildConfigurations = (F0000000000000000000050 /* Debug */, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+		F0000000000000000000041 = {isa = XCConfigurationList; buildConfigurations = (F0000000000000000000051 /* Debug */, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+		F0000000000000000000042 = {isa = XCConfigurationList; buildConfigurations = (F0000000000000000000052 /* Debug */, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		F0000000000000000000061 /* XCLocalSwiftPackageReference "../.." */ = {isa = XCLocalSwiftPackageReference; relativePath = ../..; };
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F0000000000000000000060 /* Foldable */ = {isa = XCSwiftPackageProductDependency; productName = Foldable; };
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F0000000000000000000001 /* Project object */;
+}

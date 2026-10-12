@@ -1,0 +1,24 @@
+{
+  "name": "at-threshold-regular",
+  "evidence": "synthetic: exactly 520 on both sides",
+  "viewport": {
+    "width": 520,
+    "height": 520
+  },
+  "expected": {
+    "sizeClass": "regular",
+    "fold": null,
+    "safeArea": {
+      "top": 0,
+      "right": 0,
+      "bottom": 0,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 0,
+      "right": 20,
+      "bottom": 0,
+      "left": 20
+    }
+  }
+}

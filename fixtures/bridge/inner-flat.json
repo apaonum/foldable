@@ -1,0 +1,68 @@
+{
+  "name": "inner-flat",
+  "evidence": "research/safe-area-bar-probe:docs/research/safe-area-bar-probe/log.txt 13:59:09.543, 14:00:48.250; research/keyboard-probe:docs/research/keyboard-probe/log.jsonl rows 6, 365",
+  "viewport": {
+    "width": 951,
+    "height": 669
+  },
+  "snapshot": {
+    "fold": null,
+    "sizeClass": "regular",
+    "safeArea": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 20
+    }
+  },
+  "expected": {
+    "posture": "none",
+    "regions": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 951,
+        "height": 669
+      }
+    ]
+  },
+  "nativeInputs": {
+    "divisions": [
+      {
+        "frame": {
+          "x": 455.5,
+          "y": 0,
+          "width": 40,
+          "height": 669
+        },
+        "isActive": false
+      }
+    ],
+    "horizontalSizeClass": "regular",
+    "safeAreaInsets": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 20
+    },
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 951,
+      "height": 669
+    },
+    "pageZoom": 1
+  }
+}

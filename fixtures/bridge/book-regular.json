@@ -1,0 +1,79 @@
+{
+  "name": "book-regular",
+  "evidence": "research/safe-area-bar-probe:docs/research/safe-area-bar-probe/log-postures.txt (run 2)",
+  "viewport": {
+    "width": 951,
+    "height": 669
+  },
+  "snapshot": {
+    "fold": {
+      "x": 455.5,
+      "y": 0,
+      "width": 40,
+      "height": 669
+    },
+    "sizeClass": "regular",
+    "safeArea": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 20
+    }
+  },
+  "expected": {
+    "posture": "book",
+    "regions": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 455.5,
+        "height": 669
+      },
+      {
+        "x": 495.5,
+        "y": 0,
+        "width": 455.5,
+        "height": 669
+      }
+    ]
+  },
+  "nativeInputs": {
+    "divisions": [
+      {
+        "frame": {
+          "x": 455.5,
+          "y": 0,
+          "width": 40,
+          "height": 669
+        },
+        "isActive": true
+      }
+    ],
+    "horizontalSizeClass": "regular",
+    "safeAreaInsets": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 20
+    },
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 951,
+      "height": 669
+    },
+    "pageZoom": 1
+  }
+}

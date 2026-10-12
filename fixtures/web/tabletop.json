@@ -1,0 +1,31 @@
+{
+  "name": "tabletop",
+  "evidence": "synthetic: the tabletop Bridge fixture geometry, with Safari segments abutting at the midpoint as in row 15",
+  "viewport": {
+    "width": 669,
+    "height": 951
+  },
+  "segments": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 669,
+      "height": 475.5
+    },
+    {
+      "x": 0,
+      "y": 475.5,
+      "width": 669,
+      "height": 475.5
+    }
+  ],
+  "expected": {
+    "fold": {
+      "x": 0,
+      "y": 455.5,
+      "width": 669,
+      "height": 40
+    }
+  },
+  "bridge": "tabletop"
+}

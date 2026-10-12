@@ -1,0 +1,9 @@
+packages:
+  - packages/*
+  - examples/*
+  # Typechecked TypeScript samples quoted in docs/*.md (scripts/doc-samples.ts).
+  - docs/samples
+
+# Nuxt's esbuild gets its binary from an optional platform package; its postinstall only verifies it.
+allowBuilds:
+  esbuild: false

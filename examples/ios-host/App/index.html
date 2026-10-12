@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Foldable Host</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font:
+          15px/1.4 -apple-system,
+          system-ui,
+          sans-serif;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        box-sizing: border-box;
+        padding: var(--foldable-layout-margin-top, 0) var(--foldable-layout-margin-right, 0)
+          var(--foldable-layout-margin-bottom, 0) var(--foldable-layout-margin-left, 0);
+      }
+      /* The Fold, drawn from the CSS vars the bootstrap writes. */
+      #fold {
+        position: fixed;
+        left: var(--foldable-fold-x);
+        top: var(--foldable-fold-y);
+        width: var(--foldable-fold-width);
+        height: var(--foldable-fold-height);
+        background: repeating-linear-gradient(45deg, #f004 0 6px, transparent 6px 12px);
+        pointer-events: none;
+      }
+      [data-foldable-fold='inactive'] #fold {
+        display: none;
+      }
+      h1 {
+        font-size: 28px;
+        margin: 16px 0 4px;
+      }
+      [data-foldable-posture='book'] h1 {
+        color: #0a7;
+      }
+      [data-foldable-posture='tabletop'] h1 {
+        color: #07c;
+      }
+      pre {
+        font-size: 12px;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="fold"></div>
+    <h1 id="posture">no Bridge</h1>
+    <p id="meta"></p>
+    <pre id="state"></pre>
+    <script>
+      function render() {
+        const root = document.documentElement;
+        const bridge = window.__foldableBridge;
+        document.getElementById('posture').textContent =
+          root.getAttribute('data-foldable-posture') ?? 'no Bridge';
+        document.getElementById('meta').textContent =
+          `Size Class ${root.getAttribute('data-foldable-size-class')} · seq ${bridge?.seq}`;
+        document.getElementById('state').textContent = JSON.stringify(bridge?.state, null, 2);
+      }
+      // Internal event, used here only to show pushes arriving; apps use @foldablejs/core.
+      addEventListener('__foldablebridgechange', render);
+      render();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "missing-layout-margins",
+  "description": "No layoutMargins: approximated from the sent safeArea (left/right at least 20).",
+  "version": 1,
+  "viewport": { "width": 669, "height": 951 },
+  "probe": {
+    "safeArea": { "top": 0, "right": 0, "bottom": 0, "left": 0 },
+    "sizeClass": "regular"
+  },
+  "sent": {
+    "fold": { "x": 0, "y": 455.5, "width": 669, "height": 40 },
+    "sizeClass": "regular",
+    "safeArea": { "top": 82, "right": 0, "bottom": 34, "left": 0 }
+  },
+  "expected": {
+    "source": "bridge",
+    "state": {
+      "fold": { "x": 0, "y": 455.5, "width": 669, "height": 40 },
+      "sizeClass": "regular",
+      "safeArea": { "top": 82, "right": 0, "bottom": 34, "left": 0 },
+      "layoutMargins": { "top": 82, "right": 20, "bottom": 34, "left": 20 }
+    },
+    "posture": "tabletop"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "stale-outer",
+  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 76",
+  "viewport": {
+    "width": 466,
+    "height": 498
+  },
+  "segments": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 951,
+      "height": 646.5
+    },
+    {
+      "x": 0,
+      "y": 646.5,
+      "width": 951,
+      "height": 398.5
+    }
+  ],
+  "expected": {
+    "stale": true
+  }
+}

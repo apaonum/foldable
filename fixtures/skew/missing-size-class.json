@@ -1,0 +1,25 @@
+{
+  "name": "missing-size-class",
+  "description": "No sizeClass: it comes from the 520 px rule (regular here, at 951x669), not compact.",
+  "version": 1,
+  "viewport": { "width": 951, "height": 669 },
+  "probe": {
+    "safeArea": { "top": 0, "right": 0, "bottom": 0, "left": 0 },
+    "sizeClass": "regular"
+  },
+  "sent": {
+    "fold": { "x": 455.5, "y": 0, "width": 40, "height": 669 },
+    "safeArea": { "top": 0, "right": 84, "bottom": 34, "left": 0 },
+    "layoutMargins": { "top": 0, "right": 84, "bottom": 34, "left": 20 }
+  },
+  "expected": {
+    "source": "bridge",
+    "state": {
+      "fold": { "x": 455.5, "y": 0, "width": 40, "height": 669 },
+      "sizeClass": "regular",
+      "safeArea": { "top": 0, "right": 84, "bottom": 34, "left": 0 },
+      "layoutMargins": { "top": 0, "right": 84, "bottom": 34, "left": 20 }
+    },
+    "posture": "book"
+  }
+}

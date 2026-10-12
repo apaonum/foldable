@@ -1,0 +1,19 @@
+{
+  "name": "flat",
+  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 0",
+  "viewport": {
+    "width": 951,
+    "height": 589
+  },
+  "segments": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 951,
+      "height": 589
+    }
+  ],
+  "expected": {
+    "fold": null
+  }
+}

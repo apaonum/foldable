@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: pnpm/action-setup@v6.1.0
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @foldablejs/core exec playwright install --with-deps webkit
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm format:check
+      - run: pnpm test:scripts
+      - run: pnpm --filter @foldablejs/core test:node
+      - run: pnpm --filter @foldablejs/core test:browser
+      - run: pnpm --filter @foldablejs/vue test:node
+      - run: pnpm --filter @foldablejs/vue test:browser
+      # `...` builds the example's workspace deps (core, vue) first.
+      - run: pnpm --filter example-nuxt... build
+      - run: pnpm --filter @foldablejs/react test:node
+      - run: pnpm --filter @foldablejs/react test:browser
+      - run: pnpm --filter example-next... build
+      # ADR 0001: the Swift package ships a committed copy of the bootstrap; a stale copy fails here.
+      - run: pnpm bootstrap:sync
+      - run: git diff --exit-code -- Sources/Foldable/Resources/bootstrap.js
+
+  swift:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - run: swift format lint --strict --recursive Package.swift Sources Tests
+      # macOS has no UIKit, so these cover only the pure (contract) code; see README "What CI covers".
+      - run: swift build
+      - run: swift test

@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    // Check against the packages' source so a fresh clone needs no build first.
+    "paths": {
+      "@foldablejs/core": ["../../packages/core/src/index.ts"],
+      "@foldablejs/react": ["../../packages/react/src/index.ts"],
+      "@foldablejs/vue": ["../../packages/vue/src/index.ts"]
+    }
+  },
+  "include": ["*.ts", "*.tsx"]
+}

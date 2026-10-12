@@ -4,7 +4,9 @@
   "description": "Fold-aware state and CSS for web content on iPhone Duo.",
   "license": "MIT",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "engines": {
     "node": ">=20"
   },
@@ -19,7 +21,8 @@
     "./bootstrap": {
       "types": "./dist/bootstrap.d.mts",
       "default": "./dist/bootstrap.mjs"
-    }
+    },
+    "./primitives.css": "./dist/primitives.css"
   },
   "scripts": {
     "build": "tsdown",

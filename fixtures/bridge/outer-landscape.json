@@ -1,0 +1,35 @@
+{
+  "name": "outer-landscape",
+  "evidence": "proposed, not captured: bounds 678x466, 84 pt trailing status column (SAB.md), compact/compact (Tech Talk 111461); bottom 34 is a guess",
+  "viewport": {
+    "width": 678,
+    "height": 466
+  },
+  "snapshot": {
+    "fold": null,
+    "sizeClass": "compact",
+    "safeArea": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 20
+    }
+  },
+  "expected": {
+    "posture": "none",
+    "regions": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 678,
+        "height": 466
+      }
+    ]
+  }
+}

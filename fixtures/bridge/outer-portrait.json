@@ -1,0 +1,35 @@
+{
+  "name": "outer-portrait",
+  "evidence": "research/safe-area-bar-probe:docs/research/safe-area-bar-probe/log.txt 13:57:59.507; research/keyboard-probe:docs/research/keyboard-probe/log.jsonl row 0",
+  "viewport": {
+    "width": 466,
+    "height": 678
+  },
+  "snapshot": {
+    "fold": null,
+    "sizeClass": "compact",
+    "safeArea": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 20
+    }
+  },
+  "expected": {
+    "posture": "none",
+    "regions": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 466,
+        "height": 678
+      }
+    ]
+  }
+}

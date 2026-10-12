@@ -1,0 +1,35 @@
+{
+  "name": "inner-split-left",
+  "evidence": "research/safe-area-bar-probe:docs/research/safe-area-bar-probe/log.txt 14:00:53.245, 14:05:03.691",
+  "viewport": {
+    "width": 469,
+    "height": 669
+  },
+  "snapshot": {
+    "fold": null,
+    "sizeClass": "compact",
+    "safeArea": {
+      "top": 0,
+      "right": 0,
+      "bottom": 34,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 0,
+      "right": 20,
+      "bottom": 34,
+      "left": 0
+    }
+  },
+  "expected": {
+    "posture": "none",
+    "regions": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 469,
+        "height": 669
+      }
+    ]
+  }
+}

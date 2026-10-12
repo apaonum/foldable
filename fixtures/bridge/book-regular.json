@@ -1,0 +1,46 @@
+{
+  "name": "book-regular",
+  "evidence": "research/keyboard-probe:docs/research/keyboard-probe/log.jsonl rows 317, 450; layoutMargins proposed (not logged)",
+  "viewport": {
+    "width": 951,
+    "height": 669
+  },
+  "snapshot": {
+    "fold": {
+      "x": 455.5,
+      "y": 0,
+      "width": 40,
+      "height": 669
+    },
+    "sizeClass": "regular",
+    "safeArea": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 20
+    }
+  },
+  "expected": {
+    "posture": "book",
+    "regions": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 455.5,
+        "height": 669
+      },
+      {
+        "x": 495.5,
+        "y": 0,
+        "width": 455.5,
+        "height": 669
+      }
+    ]
+  }
+}

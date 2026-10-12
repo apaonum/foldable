@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "pnpm -r test && pnpm test:scripts",
+    "test": "pnpm --filter @foldablejs/core build && FOLDABLE_CORE_BUILT=1 pnpm -r test && pnpm test:scripts",
     "test:scripts": "node --test scripts/*.test.ts",
     "release:bump": "node scripts/release.ts bump",
     "release:check": "node scripts/release.ts check"

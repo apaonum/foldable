@@ -22,7 +22,7 @@ pnpm install
 pnpm --filter @foldablejs/core exec playwright install webkit
 pnpm typecheck
 pnpm lint
-pnpm test   # Node unit + WebKit browser (Vitest)
+pnpm test   # builds core once, then Node unit + WebKit browser (Vitest) in parallel
 pnpm build
 ```
 

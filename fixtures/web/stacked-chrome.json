@@ -1,28 +1,28 @@
 {
-  "name": "tabletop-segments",
-  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 15",
+  "name": "stacked-chrome",
+  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 97",
   "viewport": {
     "width": 669,
-    "height": 871
+    "height": 878
   },
   "segments": [
     {
       "x": 0,
       "y": 0,
       "width": 669,
-      "height": 395.5
+      "height": 402.5
     },
     {
       "x": 0,
-      "y": 395.5,
+      "y": 402.5,
       "width": 669,
-      "height": 558.5
+      "height": 549.5
     }
   ],
   "expected": {
     "fold": {
       "x": 0,
-      "y": 375.5,
+      "y": 382.5,
       "width": 669,
       "height": 40
     }

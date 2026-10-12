@@ -19,10 +19,12 @@
           #selector(WKWebView.foldableSafeAreaInsetsDidChange)
         ),
       ])
-    if !installed {
-      log.fault(
-        "Foldable: WKWebView change hooks unavailable; falling back to KVO and trait signals")
-    }
+    #if DEBUG
+      if !installed {
+        log.debug(
+          "Foldable: WKWebView change hooks unavailable; falling back to KVO and trait signals")
+      }
+    #endif
     return installed
   }()
 

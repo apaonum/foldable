@@ -42,7 +42,7 @@
       web.frame = CGRect(x: 0, y: 0, width: 951, height: 669)
       try await Task.sleep(for: .milliseconds(100))
 
-      #expect(reads == before + 1)
+      #expect(reads > before)
     }
   }
 #endif

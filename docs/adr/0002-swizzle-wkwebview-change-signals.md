@@ -1,5 +1,7 @@
 # Swizzle WKWebView's layoutSubviews and safeAreaInsetsDidChange process-wide
 
+Amended by [ADR 0003](0003-hinge-interaction-marks-the-web-view-for-layout.md): the web view doesn't get a layout pass when the Fold flips, so a hinge interaction marks it for one.
+
 A Fold activating changes neither the web view's bounds nor its traits, and iOS has no Fold-change notification, so the only signal is a layout pass on the WKWebView itself. The Host owns its web view and can't subclass it after the fact, and asking every Host to forward `layoutSubviews` makes the Bridge easy to wire wrong. So on the first `Bridge.attach(to:)` the Bridge exchanges `layoutSubviews` and `safeAreaInsetsDidChange` on the `WKWebView` class, once per process. The replacements call the original first, then refresh the attached Bridge; a web view with no Bridge pays one associated-object lookup per call. If `WKWebView` only inherits a method, an override is added to `WKWebView` first, so `UIView` is never touched.
 
 The swizzle fails safe. Both methods are looked up before anything changes; if either is missing, nothing is exchanged (debug builds log it), and every Bridge falls back to KVO on `frame` and `bounds` plus the `horizontalSizeClass` trait registration. In that mode a Fold that activates with no geometry or trait change is missed until the next one.

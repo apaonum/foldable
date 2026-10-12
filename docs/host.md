@@ -70,11 +70,12 @@ Iframes get no seed and no pushes.
 
 ### Change detection
 
-iOS has no Fold-change notification, and a Fold activating changes neither the bounds nor the traits. Only a layout pass on the web view reports it. The Bridge re-reads the native inputs on these signals:
+iOS has no Fold-change notification, and a Fold activating changes neither the bounds nor the traits. The Fold flips in a layout pass of the window's root view, which the web view sits out. The Bridge re-reads the native inputs on these signals:
 
 - `WKWebView.layoutSubviews`
 - `WKWebView.safeAreaInsetsDidChange`
 - a `horizontalSizeClass` trait change on the web view
+- a hinge update, from a `UIHingeInteraction` the Bridge adds to the web view on iOS 27.1 and later. Each update also marks the web view for layout, so it joins the pass in which the Fold flips. See [ADR 0003](adr/0003-hinge-interaction-marks-the-web-view-for-layout.md).
 
 You don't forward any callback. All signals in one run-loop turn produce one read and at most one push. The Bridge compares the new snapshot with the last one it sent and sends nothing if they are equal. It never delays or predicts a change.
 

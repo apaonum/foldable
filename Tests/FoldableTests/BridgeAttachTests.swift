@@ -43,6 +43,16 @@
       #expect(Bridge.attach(to: one) !== Bridge.attach(to: two))
     }
 
+    // The Fold flip skips the web view's own layout pass; without the hinge signal it's missed.
+    @Test(.enabled(if: runsIOS27Point1OrLater, "needs iOS 27.1 or later"))
+    func attachObservesTheHingeOnce() {
+      guard #available(iOS 27.1, *) else { return }
+      let web = WKWebView(frame: .zero)
+      Bridge.attach(to: web)
+      Bridge.attach(to: web)
+      #expect(web.interactions.count { $0 is UIHingeInteraction } == 1)
+    }
+
     @Test(.enabled(if: !runsIOS27Point1OrLater, "needs a runtime older than iOS 27.1"))
     func belowIOS27Point1TheSeedCarriesNullFold() throws {
       let controller = UIViewController()

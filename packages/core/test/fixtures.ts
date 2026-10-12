@@ -6,7 +6,12 @@ import innerSplitRight from '../../../fixtures/bridge/inner-split-right.json';
 import outerLandscape from '../../../fixtures/bridge/outer-landscape.json';
 import outerPortrait from '../../../fixtures/bridge/outer-portrait.json';
 import tabletop from '../../../fixtures/bridge/tabletop.json';
-import type { BridgeState, Posture, Rect } from '../src/types';
+import missingLayoutMargins from '../../../fixtures/skew/missing-layout-margins.json';
+import missingSafeArea from '../../../fixtures/skew/missing-safe-area.json';
+import sentPosture from '../../../fixtures/skew/sent-posture.json';
+import unknownField from '../../../fixtures/skew/unknown-field.json';
+import version2 from '../../../fixtures/skew/version-2.json';
+import type { BridgeState, Insets, Posture, Rect, Source } from '../src/types';
 
 export type BridgeFixture = {
   name: string;
@@ -27,3 +32,25 @@ export const bridgeFixtures = [
   innerSplitLeft,
   innerSplitRight,
 ] as BridgeFixture[];
+
+/** What a bootstrap of another version may put on the global, and what this core makes of it. */
+export type SkewFixture = {
+  name: string;
+  description: string;
+  /** `version` on the global. */
+  version: number;
+  viewport: { width: number; height: number };
+  /** What the page's `env()` probe reads; desktop WebKit has no safe area. */
+  probe: { safeArea: Insets };
+  /** Deliberately untyped: this is the foreign side of the boundary. */
+  sent: Record<string, unknown>;
+  expected: { source: Source; state: BridgeState; posture: Posture };
+};
+
+export const skewFixtures = [
+  unknownField,
+  sentPosture,
+  missingSafeArea,
+  missingLayoutMargins,
+  version2,
+] as SkewFixture[];

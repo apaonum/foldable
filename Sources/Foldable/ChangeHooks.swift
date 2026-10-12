@@ -7,25 +7,50 @@
   /// `safeAreaInsetsDidChange`: a Fold activating changes neither bounds nor traits, so only a
   /// layout pass reports it. The Host's web view can't be subclassed after the fact, so the two
   /// methods are exchanged once on WKWebView; web views without a Bridge only pay one lookup.
-  @MainActor let installChangeHooks: Void = {
-    exchange(#selector(UIView.layoutSubviews), with: #selector(WKWebView.foldableLayoutSubviews))
-    exchange(
-      #selector(UIView.safeAreaInsetsDidChange),
-      with: #selector(WKWebView.foldableSafeAreaInsetsDidChange))
+  /// `false` when the runtime lacks a method: nothing is exchanged and each Bridge falls back to
+  /// KVO and trait signals (see ADR 0002).
+  @MainActor let changeHooksInstalled: Bool = {
+    let installed = exchangeAll(
+      on: WKWebView.self,
+      [
+        (#selector(UIView.layoutSubviews), #selector(WKWebView.foldableLayoutSubviews)),
+        (
+          #selector(UIView.safeAreaInsetsDidChange),
+          #selector(WKWebView.foldableSafeAreaInsetsDidChange)
+        ),
+      ])
+    if !installed {
+      log.fault(
+        "Foldable: WKWebView change hooks unavailable; falling back to KVO and trait signals")
+    }
+    return installed
   }()
 
-  @MainActor private func exchange(_ original: Selector, with replacement: Selector) {
-    let cls: AnyClass = WKWebView.self
-    guard let originalMethod = class_getInstanceMethod(cls, original),
-      let replacementMethod = class_getInstanceMethod(cls, replacement)
-    else { preconditionFailure("Foldable: missing \(original) on WKWebView") }
-    // If WKWebView only inherits the method, add an override first so UIView itself is untouched.
+  /// Exchanges every pair, or none: if any method is missing on `cls`, nothing changes.
+  @MainActor func exchangeAll(on cls: AnyClass, _ pairs: [(Selector, Selector)]) -> Bool {
+    var methods: [(Selector, Method, Method)] = []
+    for (original, replacement) in pairs {
+      guard let originalMethod = class_getInstanceMethod(cls, original),
+        let replacementMethod = class_getInstanceMethod(cls, replacement)
+      else { return false }
+      methods.append((original, originalMethod, replacementMethod))
+    }
+    for (original, originalMethod, replacementMethod) in methods {
+      exchange(cls, original, originalMethod, replacementMethod)
+    }
+    return true
+  }
+
+  @MainActor private func exchange(
+    _ cls: AnyClass, _ original: Selector, _ originalMethod: Method, _ replacementMethod: Method
+  ) {
+    // If the class only inherits the method, add an override first so the superclass is untouched.
     if class_addMethod(
       cls, original, method_getImplementation(replacementMethod),
       method_getTypeEncoding(replacementMethod))
     {
       class_replaceMethod(
-        cls, replacement, method_getImplementation(originalMethod),
+        cls, method_getName(replacementMethod), method_getImplementation(originalMethod),
         method_getTypeEncoding(originalMethod))
     } else {
       method_exchangeImplementations(originalMethod, replacementMethod)
@@ -36,12 +61,17 @@
     // After the exchange these names call the original implementations.
     @objc fileprivate func foldableLayoutSubviews() {
       foldableLayoutSubviews()
-      Bridge.attached(to: self)?.setNeedsRefresh()
+      hookFired()
     }
 
     @objc fileprivate func foldableSafeAreaInsetsDidChange() {
       foldableSafeAreaInsetsDidChange()
-      Bridge.attached(to: self)?.setNeedsRefresh()
+      hookFired()
+    }
+
+    private func hookFired() {
+      guard let bridge = Bridge.attached(to: self), bridge.usesChangeHooks else { return }
+      bridge.setNeedsRefresh()
     }
   }
 #endif

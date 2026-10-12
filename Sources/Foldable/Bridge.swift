@@ -24,6 +24,9 @@
     private var refreshScheduled = false
     private let navigation = NavigationProxy()
     private var delegateObservation: NSKeyValueObservation?
+    /// Whether the swizzled `layoutSubviews`/`safeAreaInsetsDidChange` drive refreshes.
+    private(set) var usesChangeHooks = true
+    private var geometryObservations: [NSKeyValueObservation] = []
 
     private init(webView: WKWebView, readInputs: @escaping InputsReader) {
       self.webView = webView
@@ -38,15 +41,20 @@
       attach(to: webView, readInputs: NativeInputs.read(from:))
     }
 
+    /// `changeHooks: false` stands in for a runtime where the swizzle couldn't be installed.
     @discardableResult
-    static func attach(to webView: WKWebView, readInputs: @escaping InputsReader) -> Bridge {
+    static func attach(
+      to webView: WKWebView, readInputs: @escaping InputsReader,
+      changeHooks: Bool = changeHooksInstalled
+    ) -> Bridge {
       if let existing = attached(to: webView) { return existing }
       let bridge = Bridge(webView: webView, readInputs: readInputs)
       // The web view owns its Bridge, so state is per WKWebView and dies with it.
       objc_setAssociatedObject(webView, &bridgeKey, bridge, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       bridge.installSeed()
       bridge.observeCommits(of: webView)
-      installChangeHooks
+      bridge.usesChangeHooks = changeHooks
+      if !changeHooks { bridge.observeGeometry(of: webView) }
       webView.registerForTraitChanges([UITraitHorizontalSizeClass.self]) {
         (webView: WKWebView, _: UITraitCollection) in
         attached(to: webView)?.setNeedsRefresh()
@@ -108,6 +116,18 @@
           Bridge.attached(to: webView)?.wrapNavigationDelegate(of: webView)
         }
       }
+    }
+
+    /// Fallback without the change hooks: frame and bounds changes still refresh, but a Fold that
+    /// activates with no geometry or trait change is missed until the next one (ADR 0002).
+    private func observeGeometry(of webView: WKWebView) {
+      let refresh = { (webView: WKWebView) in
+        MainActor.assumeIsolated { Bridge.attached(to: webView)?.setNeedsRefresh() }
+      }
+      geometryObservations = [
+        webView.observe(\.frame) { webView, _ in refresh(webView) },
+        webView.observe(\.bounds) { webView, _ in refresh(webView) },
+      ]
     }
 
     private func wrapNavigationDelegate(of webView: WKWebView) {

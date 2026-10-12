@@ -45,7 +45,7 @@ function deepFreeze<T>(value: T): T {
 }
 
 // State is plain data built in a fixed key order, so JSON equality is exact.
-const same = (a: State, b: State): boolean => JSON.stringify(a) === JSON.stringify(b);
+const sameState = (a: State, b: State): boolean => JSON.stringify(a) === JSON.stringify(b);
 
 function attach(win: Window): Store {
   const reader = chooseReader(win);
@@ -56,7 +56,7 @@ function attach(win: Window): Store {
   reader.listen(() => {
     const next = derive(reader, win);
     applyCSS(toCSS(next), root);
-    if (same(next, attached.state)) return;
+    if (sameState(next, attached.state)) return;
     attached.state = next;
     for (const listener of [...attached.listeners]) listener(next);
   });

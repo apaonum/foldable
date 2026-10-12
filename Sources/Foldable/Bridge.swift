@@ -151,10 +151,11 @@
       }
       let next = WKUserScript(
         source: source, injectionTime: .atDocumentStart, forMainFrameOnly: true, in: .page)
-      let ucc = webView.configuration.userContentController
-      let scripts = replacingSeed(in: ucc.userScripts, current: seed, with: next)
-      ucc.removeAllUserScripts()
-      scripts.forEach(ucc.addUserScript)
+      let contentController = webView.configuration.userContentController
+      let scripts = replacingSeed(
+        in: contentController.userScripts, current: seed, with: next)
+      contentController.removeAllUserScripts()
+      scripts.forEach(contentController.addUserScript)
       seed = next
     }
   }

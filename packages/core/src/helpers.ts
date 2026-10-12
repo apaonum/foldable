@@ -17,20 +17,21 @@ function edgeTokens(edge: Edge): string {
   return [edge.inline, edge.block].filter((t) => t !== undefined).join(' ');
 }
 
-export function arrangement(o: ArrangementOptions): Attributes {
-  const attrs: Attributes = { 'data-foldable-arrangement': o.style };
-  switch (o.style) {
+export function arrangement(options: ArrangementOptions): Attributes {
+  const attrs: Attributes = { 'data-foldable-arrangement': options.style };
+  switch (options.style) {
     case 'split':
-      if (o.axes !== undefined) attrs['data-foldable-axes'] = o.axes;
+      if (options.axes !== undefined) attrs['data-foldable-axes'] = options.axes;
       return attrs;
     case 'overlay': {
-      const tokens = o.overlayEdge === undefined ? '' : edgeTokens(o.overlayEdge);
+      const tokens = options.overlayEdge === undefined ? '' : edgeTokens(options.overlayEdge);
       if (tokens !== '') attrs['data-foldable-overlay-edge'] = tokens;
-      if (o.overlayState !== undefined) attrs['data-foldable-overlay-state'] = o.overlayState;
+      if (options.overlayState !== undefined)
+        attrs['data-foldable-overlay-state'] = options.overlayState;
       return attrs;
     }
     default: {
-      const _exhaustive: never = o;
+      const _exhaustive: never = options;
       return _exhaustive;
     }
   }

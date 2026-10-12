@@ -188,6 +188,8 @@ export function MailShell() {
 }
 ```
 
+In a Host, the Bridge's bootstrap sets the `data-foldable-*` attributes and Fold vars on `<html>` before React hydrates. Add `suppressHydrationWarning` to your root `<html>` element, or React reports a hydration mismatch. It only covers that element's own attributes, not its children.
+
 `examples/next` is a full App Router app.
 
 ## `@foldablejs/vue`

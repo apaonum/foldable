@@ -8,7 +8,8 @@ export const viewport: Viewport = { viewportFit: 'cover' };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    // The Bridge's bootstrap writes data-foldable-* and the Fold vars on <html> before hydration.
+    <html lang="en" suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );

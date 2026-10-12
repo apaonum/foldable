@@ -1,5 +1,7 @@
 import type { Viewport } from '../derive';
 import type { Rect } from '../types';
+import { approximateLayoutMargins, environment } from './environment';
+import type { Reader } from './reader';
 
 /** Native reserves 20 pt on each side of the line between segments. */
 export const FOLD_MARGIN = 20;
@@ -24,4 +26,42 @@ export function webFold(segments: readonly Rect[], viewport: Viewport): Rect | n
     return { x: second.x - FOLD_MARGIN, y: 0, width: 2 * FOLD_MARGIN, height: viewport.height };
   }
   return { x: 0, y: second.y - FOLD_MARGIN, width: viewport.width, height: 2 * FOLD_MARGIN };
+}
+
+/** Viewport Segments, Safari-only behind a flag; not in TypeScript's DOM lib. */
+export type SegmentsWindow = Window & { viewport?: { segments?: readonly DOMRectReadOnly[] } };
+
+// No `segmentschange` event fires in Safari; these media queries do.
+const SEGMENT_QUERIES = ['(horizontal-viewport-segments: 2)', '(vertical-viewport-segments: 2)'];
+
+/** Safari with the Viewport Segments flag on. Device Posture is ignored. */
+export function webReader(win: SegmentsWindow): Reader {
+  const env = environment(win);
+  let fold: Rect | null = null;
+  return {
+    source: 'web',
+    read: () => {
+      const segments = (win.viewport?.segments ?? []).map(({ x, y, width, height }) => ({
+        x,
+        y,
+        width,
+        height,
+      }));
+      const next = webFold(segments, { width: win.innerWidth, height: win.innerHeight });
+      if (next !== STALE) fold = next;
+      const safeArea = env.safeArea();
+      return {
+        fold,
+        sizeClass: env.sizeClass(),
+        safeArea,
+        layoutMargins: approximateLayoutMargins(safeArea),
+      };
+    },
+    listen: (onChange) => {
+      env.listen(onChange);
+      for (const query of SEGMENT_QUERIES) {
+        win.matchMedia(query).addEventListener('change', onChange);
+      }
+    },
+  };
 }

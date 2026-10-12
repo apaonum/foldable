@@ -33,3 +33,11 @@ struct SeqSnapshot: Encodable {
     try container.encode(seq, forKey: .seq)
   }
 }
+
+/// The Host's scripts in their original order, minus the current seed (matched by identity, never
+/// by content), followed by the new seed. Generic so the ordering rule is testable without WebKit.
+func replacingSeed<Script: AnyObject>(in scripts: [Script], current: Script?, with seed: Script)
+  -> [Script]
+{
+  scripts.filter { $0 !== current } + [seed]
+}

@@ -1,10 +1,21 @@
 # foldable
 
-Fold-aware layout for web content on iPhone Duo. See `GLOSSARY.md` for vocabulary.
+Fold-aware layout for web content on iPhone Duo, mainly inside a native app's WKWebView. A Swift Bridge reports the Fold, Size Class, safe area, and layout margins to the page. `@foldablejs/core` turns them into CSS custom properties, `data-foldable-*` attributes, and a small state API. `primitives.css` adds pure-CSS Split, Overlay, and Displace layouts that follow Apple's ArrangementView rules. Terms follow [`GLOSSARY.md`](GLOSSARY.md).
+
+<!-- SCREENSHOT #39: examples/next on the inner display, book Posture, Split + Displace (docs/manual-checks/v0.1.0/inner-book-split.png) -->
+
+## Documentation
+
+- [Host integration](docs/host.md): add the Swift package, attach the Bridge, and what the Bridge does on its own.
+- [CSS reference](docs/css.md): every `--foldable-*` property and `data-foldable-*` attribute.
+- [JS reference](docs/js.md): `getState`, `subscribe`, `SERVER_STATE`, the helpers, and the React and Vue adapters.
+- [Primitive guide](docs/primitives.md): Split, Overlay, and Displace, with DOM-order guidance.
+- [Recipes](docs/recipes.md): focus restoration, `scroll-padding` for an Overlay, and the software keyboard.
+- [Known limits](docs/limits.md): what v0.1 gets wrong or leaves out.
 
 ## Development
 
-Requires Node 24 (`.nvmrc`) and pnpm (version pinned in `package.json`).
+Development needs Node 24 (`.nvmrc`) and pnpm (the version is pinned in `package.json`). Use 24.11 or later, which tsdown and Vitest need. The Nuxt example declares 24.15 or later. The published packages need only Node 20 or later.
 
 ```sh
 pnpm install
@@ -17,6 +28,8 @@ pnpm build
 
 Shared contract fixtures live in `fixtures/` and are read by both JS and Swift tests.
 
+Every `ts` and `tsx` code block in `README.md` and `docs/` must appear verbatim in a file under `docs/samples/`. `pnpm typecheck` compiles those files, and `pnpm test:scripts` fails on a code block that no sample contains.
+
 ## Packages and examples
 
 - `packages/core`: `@foldablejs/core` (state, CSS vars, `primitives.css`)
@@ -27,18 +40,16 @@ Shared contract fixtures live in `fixtures/` and are read by both JS and Swift t
 
 ## Swift package
 
-Add `Foldable` with SwiftPM by git URL (iOS 17+), then attach a Bridge to your web view before loading:
+Add `Foldable` with SwiftPM by git URL (iOS 17+), keep the WKWebView edge-to-edge, and attach a Bridge before loading:
 
 ```swift
 import Foldable
 
-webView.scrollView.contentInsetAdjustmentBehavior = .never // keep the web view edge-to-edge
+webView.scrollView.contentInsetAdjustmentBehavior = .never
 Bridge.attach(to: webView)
 ```
 
-The Bridge pushes a new full snapshot whenever the Fold, Size Class, safe area or layout margins change; the Host forwards nothing. `examples/ios-host` is a minimal Host and holds the app-hosted Simulator tests (see its README).
-
-Don't replace or re-inject the bootstrap yourself; the Bridge owns one document-start seed and keeps your own user scripts in order.
+The Bridge pushes a full snapshot whenever the Fold, Size Class, safe area, or layout margins change. The Host forwards nothing. Don't replace or re-inject the bootstrap yourself. See [Host integration](docs/host.md) for the details, including the `navigationDelegate` proxy. `examples/ios-host` is a minimal Host and holds the app-hosted Simulator tests (see its README).
 
 `Sources/Foldable/Resources/bootstrap.js` is built from `packages/core` and committed (ADR 0001). After changing the core, run `pnpm bootstrap:sync` and commit the result; CI fails on a stale copy.
 

@@ -4,7 +4,7 @@ This guide is for the developer of the native Host app. It shows how to attach a
 
 ## Add the package
 
-Add the `Foldable` library with SwiftPM by git URL (`https://github.com/apaonum/foldable`). The package supports iOS 17 and later. Fold detection needs iOS 27.1. On earlier versions the Bridge sends a valid snapshot with `fold: null`, so you need no availability checks. The package also builds with SDKs older than iOS 27.1, but an app built that way never reports a Fold.
+Add the `Foldable` library with SwiftPM by git URL (`https://github.com/apaonum/foldable`). The package supports iOS 17 and later. Fold detection needs iOS 27.1. On earlier versions the Bridge sends a valid snapshot with `fold: null`, so you need no availability checks. Building it needs the iOS 27.1 SDK (Xcode 27.1).
 
 ## Attach the Bridge
 

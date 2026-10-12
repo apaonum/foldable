@@ -60,7 +60,7 @@ swift build && swift test   # macOS: pure snapshot and seed tests
 xcodebuild test -scheme Foldable -destination "platform=iOS Simulator,id=$UDID" -collect-test-diagnostics never
 ```
 
-What CI covers: the Linux job runs every JS check, including `pnpm test:scripts`. The macOS job runs `swift format lint`, `swift build` and `swift test` (pure contract code only, since macOS has no UIKit), then builds the package for the iOS Simulator with the newest Xcode on the hosted runner. Hosted runners have no Xcode 27.1, so that build compiles out the iOS 27.1 reserved-region read and never checks it. CI runs no Simulator tests. The app-hosted suites in `examples/ios-host` and the iOS 27.1 build run locally before each release.
+What CI covers: the Linux job runs every JS check, including `pnpm test:scripts`. The macOS job runs `swift format lint`, `swift build` and `swift test`. macOS has no UIKit, so those compile and test only the pure contract code; CI never compiles anything inside `#if canImport(UIKit)` (the Bridge, change hooks and native reads) and runs no Simulator tests. That code needs the iOS 27.1 SDK, which no hosted runner has yet (#42). Before each release, and after every Swift change, build it locally with Xcode 27.1 (`xcodebuild build -scheme Foldable -destination 'generic/platform=iOS Simulator'`) and run the app-hosted suites in `examples/ios-host`.
 
 ## Releasing
 

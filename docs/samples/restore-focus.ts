@@ -7,7 +7,7 @@ export function restoreFocus(fallback: HTMLElement): () => void {
     if (event.target instanceof Element) last = event.target;
   };
   const check = (): void => {
-    if (last !== null && last.isConnected && !last.checkVisibility()) {
+    if (last !== null && last.isConnected && !last.checkVisibility({ visibilityProperty: true })) {
       last = null;
       fallback.focus();
     }

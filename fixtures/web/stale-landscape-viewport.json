@@ -1,0 +1,25 @@
+{
+  "name": "stale-landscape-viewport",
+  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 17",
+  "viewport": {
+    "width": 951,
+    "height": 589
+  },
+  "segments": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 669,
+      "height": 395.5
+    },
+    {
+      "x": 0,
+      "y": 395.5,
+      "width": 669,
+      "height": 642.5
+    }
+  ],
+  "expected": {
+    "stale": true
+  }
+}

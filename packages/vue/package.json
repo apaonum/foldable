@@ -1,6 +1,6 @@
 {
   "name": "@foldablejs/vue",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Vue composable for foldable state on iPhone Duo.",
   "license": "MIT",
   "repository": {

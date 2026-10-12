@@ -1,6 +1,6 @@
 {
   "name": "@foldablejs/react",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "React hook for foldable state on iPhone Duo.",
   "license": "MIT",
   "repository": {

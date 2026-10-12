@@ -26,6 +26,15 @@ import Testing
     return context
   }
 
+  /// Cross-language guard: the bundled bootstrap's starting `seq` (JS `SEED_SEQ - 1`) must sit just
+  /// below Swift's `seedSeq`, or the seed is dropped or a live push is mistaken for an old one.
+  @Test func bundledBootstrapStartsOneBelowTheSeedSeq() throws {
+    let context = try run(bootstrapSource)
+
+    let initial = context.evaluateScript("window.__foldableBridge.seq")?.toInt32()
+    #expect(initial.map(Int.init) == seedSeq - 1)
+  }
+
   @Test func seedHandsTheStateToTheBundledBootstrapAtSeqOne() throws {
     let fixture = try #require(try BridgeFixture.all().first { $0.name == "book-regular" })
     let state = snapshot(from: fixture.nativeInputs)

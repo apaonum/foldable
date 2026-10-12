@@ -8,7 +8,8 @@ let bootstrapSource: String = {
   return source
 }()
 
-/// The seed is always `seq` 1; the bootstrap global starts at 0, and live pushes continue from here.
+/// The seed is always `seq` 1; the bootstrap global starts one below (JS `SEED_SEQ - 1` in
+/// bridge-global.ts), and live pushes continue from here. SeedTests guards the pair.
 let seedSeq = 1
 
 /// Bootstrap plus the current state. The snapshot is embedded as a JSON literal, which is

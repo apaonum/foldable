@@ -1,5 +1,5 @@
 // Entry of the bootstrap IIFE the Bridge injects at document start; never imported as ESM.
-import { BRIDGE_CHANGE_EVENT, BRIDGE_GLOBAL, BRIDGE_VERSION } from './bridge-global';
+import { BRIDGE_CHANGE_EVENT, BRIDGE_GLOBAL, BRIDGE_VERSION, SEED_SEQ } from './bridge-global';
 import type { BridgeGlobal, BridgeSnapshot, BridgeWindow } from './bridge-global';
 import { applyCSS, toCSS } from './css';
 import { posture } from './derive';
@@ -9,7 +9,7 @@ function installBootstrap(win: BridgeWindow): void {
   const bridge: BridgeGlobal = {
     version: BRIDGE_VERSION,
     state: null,
-    seq: 0,
+    seq: SEED_SEQ - 1,
     receive({ seq, ...state }: BridgeSnapshot) {
       if (seq <= bridge.seq) return;
       bridge.seq = seq;

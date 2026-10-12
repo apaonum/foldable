@@ -19,6 +19,8 @@
     /// The `seq` of the last snapshot handed to the page; the seed counts as the first.
     private var seq = seedSeq
     private var refreshScheduled = false
+    private let navigation = NavigationProxy()
+    private var delegateObservation: NSKeyValueObservation?
 
     private init(webView: WKWebView, readInputs: @escaping InputsReader) {
       self.webView = webView
@@ -40,6 +42,7 @@
       // The web view owns its Bridge, so state is per WKWebView and dies with it.
       objc_setAssociatedObject(webView, &bridgeKey, bridge, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       bridge.installSeed()
+      bridge.observeCommits(of: webView)
       installChangeHooks
       webView.registerForTraitChanges([UITraitHorizontalSizeClass.self]) {
         (webView: WKWebView, _: UITraitCollection) in
@@ -92,6 +95,25 @@
         "window.__foldableBridge.receive(s)", arguments: ["s": argument], in: nil, in: .page)
     }
 
+    /// A page committed while the state changed may carry an older seed, so every commit gets a
+    /// push. The proxy wraps whatever delegate the Host has set, now or later, and forwards to it.
+    private func observeCommits(of webView: WKWebView) {
+      navigation.onCommit = { [weak self] in self?.push() }
+      wrapNavigationDelegate(of: webView)
+      delegateObservation = webView.observe(\.navigationDelegate) { webView, _ in
+        MainActor.assumeIsolated {
+          Bridge.attached(to: webView)?.wrapNavigationDelegate(of: webView)
+        }
+      }
+    }
+
+    private func wrapNavigationDelegate(of webView: WKWebView) {
+      guard webView.navigationDelegate !== navigation else { return }
+      navigation.host = webView.navigationDelegate
+      // Re-setting also makes WebKit re-read which delegate methods the proxy now responds to.
+      webView.navigationDelegate = navigation
+    }
+
     private func installSeed() {
       guard let webView else { return }
       let source: String
@@ -113,6 +135,28 @@
   }
 
   nonisolated(unsafe) private var bridgeKey: UInt8 = 0
+
+  /// Sits in `navigationDelegate` in front of the Host's delegate: it sees `didCommit`, and every
+  /// message the Host's delegate handles, `didCommit` included, is forwarded to it unchanged.
+  /// `navigationDelegate` therefore reads back as this proxy, not the Host's object.
+  private final class NavigationProxy: NSObject, WKNavigationDelegate {
+    // WebKit queries `responds(to:)` and forwarding outside Swift's actor model, on the main thread.
+    nonisolated(unsafe) weak var host: (any WKNavigationDelegate)?
+    var onCommit: (() -> Void)?
+
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+      onCommit?()
+      host?.webView?(webView, didCommit: navigation)
+    }
+
+    override func responds(to selector: Selector!) -> Bool {
+      super.responds(to: selector) || host?.responds(to: selector) == true
+    }
+
+    override func forwardingTarget(for selector: Selector!) -> Any? {
+      host?.responds(to: selector) == true ? host : super.forwardingTarget(for: selector)
+    }
+  }
 
   /// The spec's change signals are the WKWebView's own `layoutSubviews` and
   /// `safeAreaInsetsDidChange`: a Fold activating changes neither bounds nor traits, so only a

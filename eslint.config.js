@@ -10,6 +10,9 @@ export default tseslint.config(
       '**/.nuxt',
       '**/.output',
       '.claude',
+      '**/.next',
+      // Typechecked by `next build` against the built packages instead.
+      'examples/next/**',
       'eslint.config.js',
     ],
   },

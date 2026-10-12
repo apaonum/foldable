@@ -27,3 +27,6 @@ jobs:
       - run: pnpm --filter @foldablejs/vue test:browser
       # `...` builds the example's workspace deps (core, vue) first.
       - run: pnpm --filter example-nuxt... build
+      - run: pnpm --filter @foldablejs/react test:node
+      - run: pnpm --filter @foldablejs/react test:browser
+      - run: pnpm --filter example-next... build

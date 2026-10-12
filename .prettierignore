@@ -2,3 +2,4 @@ dist
 dist-iife
 pnpm-lock.yaml
 .claude
+.next

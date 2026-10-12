@@ -35,6 +35,12 @@ describe('Region derivation', () => {
     ]);
   });
 
+  test('a Fold clipped to the window edge leaves one Region, not a zero-width one', () => {
+    expect(regions({ x: 455.5, y: 0, width: 13.5, height: 669 }, { width: 469, height: 669 })).toEqual([
+      { x: 0, y: 0, width: 455.5, height: 669 },
+    ]);
+  });
+
   test('no Fold gives one Region covering the viewport', () => {
     expect(regions(null, { width: 466, height: 678 })).toEqual([
       { x: 0, y: 0, width: 466, height: 678 },

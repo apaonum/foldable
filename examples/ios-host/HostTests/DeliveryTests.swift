@@ -12,7 +12,8 @@ import WebKit
 
     let seen = try await page.eval(
       "return [window.seenAtParse, window.firstFrame, window.__foldableBridge.seq]")
-    #expect(seen as? [String] == ["book", "book", "1"])
+    // The seed is seq 1; the push after didCommit is 2 and carries the same state.
+    #expect(seen as? [String] == ["book", "book", "2"])
   }
 
   @Test func changedInputsArriveAsOnePushPerRunLoopTurn() async throws {
@@ -29,7 +30,7 @@ import WebKit
     try await page.settle()
 
     let pushes = try await page.pushes()
-    #expect(pushes == ["2:tabletop"])
+    #expect(pushes == ["3:tabletop"])
     let value =
       try await page.eval("return document.documentElement.dataset.foldablePosture") as? String
     #expect(value == "tabletop")
@@ -66,7 +67,7 @@ import WebKit
     try await page.settle()
 
     let pushes = try await page.pushes()
-    #expect(pushes == ["2:book", "3:book", "4:tabletop"])
+    #expect(pushes == ["3:book", "4:book", "5:tabletop"])
     let value = try await page.eval("return window.__foldableBridge.state.sizeClass") as? String
     #expect(value == "regular")
   }
@@ -82,7 +83,7 @@ import WebKit
       "window.__foldableBridge.receive(s)", arguments: ["s": stale], contentWorld: .page)
 
     let pushes = try await page.pushes()
-    #expect(pushes == ["2:book"])
+    #expect(pushes == ["3:book"])
     let value =
       try await page.eval("return document.documentElement.dataset.foldablePosture") as? String
     #expect(value == "book")

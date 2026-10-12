@@ -8,7 +8,8 @@ import WebKit
   var inputs: NativeInputs
   let owner = UIViewController()
   let web = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
-  private let navigation = NavigationWaiter()
+  /// The Host's own navigation delegate, set after `Bridge.attach` as a Host would.
+  let navigation = NavigationWaiter()
 
   private static let html = """
     <!doctype html><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -23,8 +24,9 @@ import WebKit
     </script>
     """
 
-  init(inputs: NativeInputs) async throws {
+  init(inputs: NativeInputs, hostScripts: [WKUserScript] = []) async throws {
     self.inputs = inputs
+    hostScripts.forEach(web.configuration.userContentController.addUserScript)
     let root = try await Self.rootViewController()
     root.addChild(owner)
     owner.view.frame = root.view.bounds
@@ -51,7 +53,7 @@ import WebKit
   func load() async throws {
     navigation.reset()
     web.loadHTMLString(Self.html, baseURL: URL(string: "https://test.localhost/"))
-    await navigation.finished()
+    try await navigation.finished()
     // Two frames so the first-paint probe has run; then drop pushes caused by setting up the page.
     _ = try await web.callAsyncJavaScript(
       "await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))); window.pushes = [];",
@@ -93,22 +95,62 @@ import WebKit
   }
 }
 
-enum HarnessError: Error { case noKeyWindow }
+enum HarnessError: Error { case noKeyWindow, navigationTimedOut }
 
+/// The Host's navigation delegate in tests. `finished()` throws on a failed navigation or after a
+/// timeout, so a navigation that never finishes fails the test instead of hanging the run.
 @MainActor final class NavigationWaiter: NSObject, WKNavigationDelegate {
-  private var continuation: CheckedContinuation<Void, Never>?
-  private var done = false
+  private var continuation: CheckedContinuation<Void, any Error>?
+  private var outcome: Result<Void, any Error>?
+  /// Runs while a navigation is still provisional, before WebKit allows it.
+  var beforeAllowing: (() async throws -> Void)?
+  var onCommit: (() -> Void)?
+  private(set) var commits = 0
 
-  func reset() { done = false }
+  func reset() { outcome = nil }
 
-  func finished() async {
-    if done { return }
-    await withCheckedContinuation { continuation = $0 }
+  func finished(timeout: Duration = .seconds(10)) async throws {
+    if let outcome { return try outcome.get() }
+    let timer = Task { [weak self] in
+      try await Task.sleep(for: timeout)
+      self?.complete(.failure(HarnessError.navigationTimedOut))
+    }
+    defer { timer.cancel() }
+    try await withCheckedThrowingContinuation { continuation = $0 }
+  }
+
+  private func complete(_ result: Result<Void, any Error>) {
+    guard outcome == nil else { return }
+    outcome = result
+    continuation?.resume(with: result)
+    continuation = nil
+  }
+
+  func webView(_ webView: WKWebView, decidePolicyFor action: WKNavigationAction) async
+    -> WKNavigationActionPolicy
+  {
+    try? await beforeAllowing?()
+    return .allow
+  }
+
+  func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+    commits += 1
+    onCommit?()
   }
 
   func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    done = true
-    continuation?.resume()
-    continuation = nil
+    complete(.success(()))
+  }
+
+  func webView(
+    _ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!,
+    withError error: any Error
+  ) {
+    complete(.failure(error))
+  }
+
+  func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: any Error)
+  {
+    complete(.failure(error))
   }
 }

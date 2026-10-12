@@ -1,0 +1,24 @@
+{
+  "name": "just-under-width-compact",
+  "evidence": "synthetic: one px under the width threshold",
+  "viewport": {
+    "width": 519,
+    "height": 800
+  },
+  "expected": {
+    "sizeClass": "compact",
+    "fold": null,
+    "safeArea": {
+      "top": 0,
+      "right": 0,
+      "bottom": 0,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 0,
+      "right": 20,
+      "bottom": 0,
+      "left": 20
+    }
+  }
+}

@@ -2,22 +2,27 @@ import { page } from 'vitest/browser';
 import { describe, expect, test } from 'vitest';
 import { getState, subscribe } from '../src/index';
 import type { State } from '../src/index';
+import type { BridgeState } from '../src/types';
+import { fallbackFixtures } from './fixtures';
 import { readHtml } from './support/html';
 
-// Desktop WebKit has no safe area, so the probe reads 0 and margins are the system minimum.
-const html = (sizeClass: 'compact' | 'regular'): Record<string, string> => ({
+const html = ({
+  sizeClass,
+  safeArea: s,
+  layoutMargins: m,
+}: BridgeState): Record<string, string> => ({
   '--foldable-fold-x': '0px',
   '--foldable-fold-y': '0px',
   '--foldable-fold-width': '0px',
   '--foldable-fold-height': '0px',
-  '--foldable-safe-area-top': '0px',
-  '--foldable-safe-area-right': '0px',
-  '--foldable-safe-area-bottom': '0px',
-  '--foldable-safe-area-left': '0px',
-  '--foldable-layout-margin-top': '0px',
-  '--foldable-layout-margin-right': '20px',
-  '--foldable-layout-margin-bottom': '0px',
-  '--foldable-layout-margin-left': '20px',
+  '--foldable-safe-area-top': `${s.top}px`,
+  '--foldable-safe-area-right': `${s.right}px`,
+  '--foldable-safe-area-bottom': `${s.bottom}px`,
+  '--foldable-safe-area-left': `${s.left}px`,
+  '--foldable-layout-margin-top': `${m.top}px`,
+  '--foldable-layout-margin-right': `${m.right}px`,
+  '--foldable-layout-margin-bottom': `${m.bottom}px`,
+  '--foldable-layout-margin-left': `${m.left}px`,
   'data-foldable-posture': 'none',
   'data-foldable-size-class': sizeClass,
   'data-foldable-fold': 'inactive',
@@ -32,25 +37,17 @@ async function resizeTo(width: number, height: number): Promise<void> {
   await settle();
 }
 
-describe.each([
-  [466, 498, 'compact'],
-  [678, 466, 'compact'],
-  [519, 800, 'compact'],
-  [520, 520, 'regular'],
-  [951, 589, 'regular'],
-] as const)('fallback at %d×%d', (width, height, sizeClass) => {
-  test(`is ${sizeClass}`, async () => {
+describe.each(fallbackFixtures.map((f) => [f.name, f] as const))('fallback %s', (_, f) => {
+  test(`is ${f.expected.sizeClass}`, async () => {
+    const { width, height } = f.viewport;
     await resizeTo(width, height);
     const state = getState();
 
-    expect(readHtml()).toEqual(html(sizeClass));
+    expect(readHtml()).toEqual(html(f.expected));
     expect(state).toEqual({
+      ...f.expected,
       posture: 'none',
-      fold: null,
       regions: [{ x: 0, y: 0, width, height }],
-      sizeClass,
-      safeArea: { top: 0, right: 0, bottom: 0, left: 0 },
-      layoutMargins: { top: 0, right: 20, bottom: 0, left: 20 },
       source: 'fallback',
     });
   });

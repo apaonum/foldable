@@ -1,4 +1,9 @@
 import bookCompact from '../../../fixtures/bridge/book-compact.json';
+import atThresholdRegular from '../../../fixtures/fallback/at-threshold-regular.json';
+import innerLandscapeRegular from '../../../fixtures/fallback/inner-landscape-regular.json';
+import justUnderWidthCompact from '../../../fixtures/fallback/just-under-width-compact.json';
+import outerLandscapeCompact from '../../../fixtures/fallback/outer-landscape-compact.json';
+import outerPortraitCompact from '../../../fixtures/fallback/outer-portrait-compact.json';
 import bookRegular from '../../../fixtures/bridge/book-regular.json';
 import innerFlat from '../../../fixtures/bridge/inner-flat.json';
 import innerSplitLeft from '../../../fixtures/bridge/inner-split-left.json';
@@ -103,3 +108,19 @@ export const webFixture = (name: string): WebFixture => {
   if (found === undefined) throw new Error(`no web fixture ${name}`);
   return found;
 };
+
+/** The `fallback` source at one viewport size, in desktop WebKit (no safe area). */
+export type FallbackFixture = {
+  name: string;
+  evidence: string;
+  viewport: { width: number; height: number };
+  expected: BridgeState;
+};
+
+export const fallbackFixtures = [
+  outerPortraitCompact,
+  outerLandscapeCompact,
+  justUnderWidthCompact,
+  atThresholdRegular,
+  innerLandscapeRegular,
+] as FallbackFixture[];

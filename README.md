@@ -26,7 +26,7 @@ pnpm test   # Node unit + WebKit browser (Vitest)
 pnpm build
 ```
 
-Shared contract fixtures live in `fixtures/` and are read by both JS and Swift tests.
+Shared contract fixtures live in `fixtures/` and are read by both JS and Swift tests. `fixtures/fallback/` holds the `fallback` source on both sides of 520 px and is read by the JS tests only.
 
 Every `ts` and `tsx` code block in `README.md` and `docs/` must appear verbatim in a file under `docs/samples/`. `pnpm typecheck` compiles those files, and `pnpm test:scripts` fails on a code block that no sample contains.
 

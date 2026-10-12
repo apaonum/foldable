@@ -28,4 +28,9 @@ export default tseslint.config(
       '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
     },
   },
+  {
+    // node:test's test() returns a promise the runner already tracks.
+    files: ['scripts/**/*.test.ts'],
+    rules: { '@typescript-eslint/no-floating-promises': 'off' },
+  },
 );

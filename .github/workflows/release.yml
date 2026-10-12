@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  # Rehearses a release from any ref: runs the gate, build and pack, then `npm publish --dry-run`.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Tag to rehearse (vX.Y.Z)
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  npm:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # OIDC trusted publishing and provenance; no npm token
+    env:
+      TAG: ${{ github.event_name == 'push' && github.ref_name || inputs.tag }}
+      DRY_RUN: ${{ github.event_name == 'push' && 'false' || 'true' }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v6.1.0
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+          # No dependency cache in release builds.
+      # Trusted publishing needs npm >= 11.5.1; don't depend on the version bundled with Node.
+      - run: npm install -g npm@11.21.0
+      # Gate first: a tag without its committed, fully ticked manual checklist publishes nothing.
+      - run: node scripts/release.ts check "$TAG"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter './packages/*' build
+      # The Swift package ships from the same tag (ADR 0001), so its bootstrap must match this core.
+      - run: cp packages/core/dist-iife/bootstrap.iife.js Sources/Foldable/Resources/bootstrap.js
+      - run: git diff --exit-code -- Sources/Foldable/Resources/bootstrap.js
+      # `pnpm pack` rewrites workspace:* to the lockstep version.
+      - run: pnpm --filter './packages/*' pack --pack-destination "$RUNNER_TEMP/tarballs"
+      - name: Check tarball contents
+        run: |
+          for tarball in "$RUNNER_TEMP"/tarballs/*.tgz; do
+            echo "$tarball"
+            tar -tzf "$tarball" | node scripts/release.ts check-tarball
+          done
+      - name: Publish
+        run: |
+          flags=(--provenance --access public)
+          if [ "$DRY_RUN" = true ]; then flags+=(--dry-run); fi
+          # Core first: the adapters depend on it.
+          version="${TAG#v}"
+          for name in core react vue; do
+            npm publish "$RUNNER_TEMP/tarballs/foldablejs-$name-$version.tgz" "${flags[@]}"
+          done

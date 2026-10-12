@@ -48,3 +48,14 @@ swift build && swift test   # macOS: pure snapshot and seed tests
 # iOS Simulator (UIKit/WebKit tests); select the iPhone Duo by id, not name:
 xcodebuild test -scheme Foldable -destination "platform=iOS Simulator,id=$UDID" -collect-test-diagnostics never
 ```
+
+## Releasing
+
+The Swift package and every npm package (`@foldablejs/core`, `react`, `vue`) ship together from one `vX.Y.Z` tag.
+
+1. `pnpm release:bump X.Y.Z` sets that version on every published package.
+2. Run the manual checks on the iPhone Duo Simulator and commit `docs/manual-checks/vX.Y.Z.md` (see [`docs/manual-checks/`](docs/manual-checks/README.md)).
+3. `pnpm release:check vX.Y.Z` runs the same gate as the release workflow.
+4. Merge, then tag the merged commit `vX.Y.Z` and push the tag.
+
+`.github/workflows/release.yml` runs on the tag. It refuses to publish unless the versions match the tag and the checklist is committed with every item ticked, then publishes the `pnpm pack` tarballs with `npm publish --provenance` through npm trusted publishing (OIDC, no tokens). Run it by hand (`workflow_dispatch`) to rehearse a tag with `npm publish --dry-run`.

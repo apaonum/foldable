@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { arrangement, view } from '../src/index';
+import { arrangement, displace, view } from '../src/index';
 
 describe('arrangement() for Overlay', () => {
   test('overlay with no options gives only the style', () => {
@@ -50,5 +50,25 @@ describe('arrangement()', () => {
 describe('view()', () => {
   test.each(['primary', 'secondary'] as const)('%s', (role) => {
     expect(view(role)).toEqual({ 'data-foldable-view': role });
+  });
+});
+
+describe('displace()', () => {
+  test('no edge gives an empty attribute for the Posture default', () => {
+    expect(displace()).toEqual({ 'data-foldable-displace': '' });
+  });
+
+  test('an empty edge also uses the Posture default', () => {
+    expect(displace({})).toEqual({ 'data-foldable-displace': '' });
+  });
+
+  test.each([
+    [{ inline: 'leading' }, 'leading'],
+    [{ inline: 'trailing' }, 'trailing'],
+    [{ block: 'top' }, 'top'],
+    [{ block: 'bottom' }, 'bottom'],
+    [{ inline: 'trailing', block: 'top' }, 'trailing top'],
+  ] as const)('edge %o is "%s"', (edge, tokens) => {
+    expect(displace(edge)).toEqual({ 'data-foldable-displace': tokens });
   });
 });

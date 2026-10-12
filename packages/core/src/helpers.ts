@@ -39,3 +39,7 @@ export function arrangement(o: ArrangementOptions): Attributes {
 export function view(role: 'primary' | 'secondary'): Attributes {
   return { 'data-foldable-view': role };
 }
+
+export function displace(edge: Edge = {}): Attributes {
+  return { 'data-foldable-displace': edgeTokens(edge) };
+}

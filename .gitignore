@@ -3,5 +3,10 @@ node_modules/
 dist/
 dist-iife/
 .vitest/
+.build/
+.swiftpm/
 .nuxt/
 .output/
+.next/
+next-env.d.ts
+*.tsbuildinfo

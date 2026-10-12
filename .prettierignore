@@ -2,3 +2,6 @@ dist
 dist-iife
 pnpm-lock.yaml
 .claude
+.next
+Sources/Foldable/Resources/bootstrap.js
+.build

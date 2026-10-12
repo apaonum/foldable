@@ -1,0 +1,39 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  padding: var(--foldable-layout-margin-top, 0px) var(--foldable-layout-margin-right, 16px)
+    var(--foldable-layout-margin-bottom, 0px) var(--foldable-layout-margin-left, 16px);
+}
+
+section {
+  margin-block: 24px;
+}
+
+[data-foldable-arrangement] {
+  min-height: 240px;
+  border: 1px solid #ccc;
+}
+
+[data-foldable-view] {
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+[data-foldable-view='primary'] {
+  background: #e8f0fe;
+}
+
+[data-foldable-view='secondary'] {
+  background: #fef7e0;
+}
+
+[data-foldable-displace] {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 24px;
+}
+
+[data-foldable-displace] > button {
+  pointer-events: auto;
+}

@@ -3,6 +3,13 @@
   "version": "0.0.0",
   "description": "Vue composable for foldable state on iPhone Duo.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apaonum/foldable.git",
+    "directory": "packages/vue"
+  },
+  "homepage": "https://github.com/apaonum/foldable#readme",
+  "bugs": "https://github.com/apaonum/foldable/issues",
   "type": "module",
   "sideEffects": false,
   "engines": {
@@ -11,6 +18,10 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",

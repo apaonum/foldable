@@ -3,6 +3,13 @@
   "version": "0.0.0",
   "description": "Fold-aware state and CSS for web content on iPhone Duo.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apaonum/foldable.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/apaonum/foldable#readme",
+  "bugs": "https://github.com/apaonum/foldable/issues",
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -13,6 +20,10 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",

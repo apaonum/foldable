@@ -4,7 +4,8 @@ import type { Insets } from '../src/types';
 import { bridgeFixtures, skewFixtures } from './fixtures';
 
 const PROBE: Insets = { top: 0, right: 84, bottom: 34, left: 0 };
-const env = { safeArea: () => PROBE };
+// What the 520 px rule says for the page; a Bridge never sends `regular` for an unknown value.
+const env = { safeArea: () => PROBE, sizeClass: () => 'regular' as const };
 
 const VALID = {
   fold: { x: 455.5, y: 0, width: 40, height: 669 },
@@ -29,15 +30,21 @@ describe('parseSnapshot', () => {
     expect(parseSnapshot({ ...VALID, posture: 'tabletop' }, env)).toEqual(VALID);
   });
 
-  test.each([['large'], [''], [2], [null], [undefined]])(
-    'sizeClass %j becomes compact',
-    (sizeClass) => {
-      expect(parseSnapshot({ ...VALID, sizeClass }, env)).toEqual({
-        ...VALID,
-        sizeClass: 'compact',
-      });
-    },
-  );
+  test.each([['large'], [''], [2], [null]])('unknown sizeClass %j becomes compact', (sizeClass) => {
+    expect(parseSnapshot({ ...VALID, sizeClass }, env)).toEqual({
+      ...VALID,
+      sizeClass: 'compact',
+    });
+  });
+
+  test('a missing sizeClass comes from the 520 px rule', () => {
+    const { sizeClass: _, ...sent } = VALID;
+    expect(parseSnapshot(sent, { ...env, sizeClass: () => 'compact' })).toEqual({
+      ...VALID,
+      sizeClass: 'compact',
+    });
+    expect(parseSnapshot(sent, env)).toEqual({ ...VALID, sizeClass: 'regular' });
+  });
 
   test.each([
     ['missing', undefined],
@@ -106,7 +113,7 @@ describe('parseSnapshot', () => {
   ])('a snapshot that is %s gets every fallback value', (_, raw) => {
     expect(parseSnapshot(raw, env)).toEqual({
       fold: null,
-      sizeClass: 'compact',
+      sizeClass: 'regular',
       safeArea: PROBE,
       layoutMargins: { top: 0, right: 84, bottom: 34, left: 20 },
     });
@@ -125,7 +132,7 @@ describe('isSupportedVersion', () => {
 
 describe.each(skewFixtures.map((f) => [f.name, f] as const))('skew fixture %s', (_, f) => {
   test('parses to the expected state, or is rejected by version', () => {
-    const fixtureEnv = { safeArea: () => f.probe.safeArea };
+    const fixtureEnv = { safeArea: () => f.probe.safeArea, sizeClass: () => f.probe.sizeClass };
     if (f.expected.source === 'bridge') {
       expect(isSupportedVersion(f.version)).toBe(true);
       expect(parseSnapshot(f.sent, fixtureEnv)).toEqual(f.expected.state);

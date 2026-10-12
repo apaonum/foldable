@@ -3,7 +3,10 @@
   "description": "The global reports version 2: Bridge state is ignored and the core reports its fallback state, re-applying its CSS after each bootstrap write.",
   "version": 2,
   "viewport": { "width": 951, "height": 669 },
-  "probe": { "safeArea": { "top": 0, "right": 0, "bottom": 0, "left": 0 } },
+  "probe": {
+    "safeArea": { "top": 0, "right": 0, "bottom": 0, "left": 0 },
+    "sizeClass": "regular"
+  },
   "sent": {
     "fold": { "x": 455.5, "y": 0, "width": 40, "height": 669 },
     "sizeClass": "compact",

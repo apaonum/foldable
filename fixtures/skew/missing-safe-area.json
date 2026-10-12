@@ -3,7 +3,10 @@
   "description": "No safeArea: it comes from the env() probe; the sent layoutMargins are kept.",
   "version": 1,
   "viewport": { "width": 951, "height": 669 },
-  "probe": { "safeArea": { "top": 0, "right": 0, "bottom": 0, "left": 0 } },
+  "probe": {
+    "safeArea": { "top": 0, "right": 0, "bottom": 0, "left": 0 },
+    "sizeClass": "regular"
+  },
   "sent": {
     "fold": { "x": 455.5, "y": 0, "width": 40, "height": 669 },
     "sizeClass": "regular",

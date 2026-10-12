@@ -8,6 +8,7 @@ import outerPortrait from '../../../fixtures/bridge/outer-portrait.json';
 import tabletop from '../../../fixtures/bridge/tabletop.json';
 import missingLayoutMargins from '../../../fixtures/skew/missing-layout-margins.json';
 import missingSafeArea from '../../../fixtures/skew/missing-safe-area.json';
+import missingSizeClass from '../../../fixtures/skew/missing-size-class.json';
 import sentPosture from '../../../fixtures/skew/sent-posture.json';
 import unknownField from '../../../fixtures/skew/unknown-field.json';
 import version2 from '../../../fixtures/skew/version-2.json';
@@ -24,7 +25,7 @@ import webStaleOuter from '../../../fixtures/web/stale-outer.json';
 import webStalePortraitViewport from '../../../fixtures/web/stale-portrait-viewport.json';
 import webTabletop from '../../../fixtures/web/tabletop.json';
 import webUnfoldTransient from '../../../fixtures/web/unfold-transient.json';
-import type { BridgeState, Insets, Posture, Rect, Source } from '../src/types';
+import type { BridgeState, Insets, Posture, Rect, SizeClass, Source } from '../src/types';
 
 export type BridgeFixture = {
   name: string;
@@ -53,8 +54,8 @@ export type SkewFixture = {
   /** `version` on the global. */
   version: number;
   viewport: { width: number; height: number };
-  /** What the page's `env()` probe reads; desktop WebKit has no safe area. */
-  probe: { safeArea: Insets };
+  /** What the page reads on its own: the `env()` probe (desktop WebKit has no safe area) and the 520 px rule. */
+  probe: { safeArea: Insets; sizeClass: SizeClass };
   /** Deliberately untyped: this is the foreign side of the boundary. */
   sent: Record<string, unknown>;
   expected: { source: Source; state: BridgeState; posture: Posture };
@@ -65,6 +66,7 @@ export const skewFixtures = [
   sentPosture,
   missingSafeArea,
   missingLayoutMargins,
+  missingSizeClass,
   version2,
 ] as SkewFixture[];
 

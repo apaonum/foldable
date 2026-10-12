@@ -3,7 +3,10 @@
   "description": "A sent posture is ignored; the core derives Posture from fold (here null, so none).",
   "version": 1,
   "viewport": { "width": 951, "height": 669 },
-  "probe": { "safeArea": { "top": 0, "right": 0, "bottom": 0, "left": 0 } },
+  "probe": {
+    "safeArea": { "top": 0, "right": 0, "bottom": 0, "left": 0 },
+    "sizeClass": "regular"
+  },
   "sent": {
     "fold": null,
     "sizeClass": "regular",

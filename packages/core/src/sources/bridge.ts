@@ -14,7 +14,11 @@ export const isSupportedVersion = (version: unknown): boolean => version === BRI
 const isFields = (value: unknown): value is Fields =>
   value !== null && typeof value === 'object' && !Array.isArray(value);
 
-const parseSizeClass = (value: unknown): SizeClass => (value === 'regular' ? 'regular' : 'compact');
+// Missing means an older bootstrap that never sent it, so the page's own rule applies.
+function parseSizeClass(value: unknown, fallback: () => SizeClass): SizeClass {
+  if (value === undefined) return fallback();
+  return value === 'regular' ? 'regular' : 'compact';
+}
 
 const isFiniteNumber = (value: unknown): value is number =>
   typeof value === 'number' && Number.isFinite(value);
@@ -38,15 +42,19 @@ function parseInsets(value: unknown): Insets | null {
 /**
  * Bridge Contract v1 boundary. Within v1 the contract is additive only, so an
  * older or newer bootstrap may send fields this core doesn't know or omit ones
- * it expects; each bad field falls back to what `web`/`fallback` would report.
+ * it expects; each missing or bad field falls back to what `web`/`fallback` would report,
+ * except an unknown `sizeClass`, which is `compact`.
  */
-export function parseSnapshot(raw: unknown, env: Pick<Environment, 'safeArea'>): BridgeState {
+export function parseSnapshot(
+  raw: unknown,
+  env: Pick<Environment, 'safeArea' | 'sizeClass'>,
+): BridgeState {
   const fields: Fields = isFields(raw) ? raw : {};
   // Only probe when needed: the probe inserts an element into the page.
   const safeArea = parseInsets(fields.safeArea) ?? env.safeArea();
   return {
     fold: parseRect(fields.fold),
-    sizeClass: parseSizeClass(fields.sizeClass),
+    sizeClass: parseSizeClass(fields.sizeClass, env.sizeClass),
     safeArea,
     layoutMargins: parseInsets(fields.layoutMargins) ?? approximateLayoutMargins(safeArea),
   };

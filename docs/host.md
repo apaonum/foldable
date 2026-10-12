@@ -145,7 +145,7 @@ So on a new page, the seed applies first and the `didCommit` push, which carries
 The bootstrap and the Bridge always ship together. The only seam is between the bootstrap and the page's `@foldablejs/core`, which may be older or newer. Within v1 the contract is additive only, and the core parses each snapshot:
 
 - It ignores unknown fields, including a `posture` field.
-- It reads an unknown `sizeClass` as `compact`.
+- It reads an unknown `sizeClass` as `compact`, and replaces a missing one with the 520 px rule the `fallback` source uses.
 - It replaces a missing or invalid `fold` with `null`, a missing or invalid `safeArea` with the `env(safe-area-inset-*)` value, and missing or invalid `layoutMargins` with the approximation the `fallback` source uses.
 - If `version` isn't `1`, it ignores Bridge state and reports `source: 'fallback'`. It still re-writes its own CSS after every bootstrap write.
 

@@ -5,8 +5,8 @@ Fold-aware layout for web content running on iPhone Duo, primarily inside a nati
 ## Device
 
 **Posture**:
-The physical configuration of the device at a moment, such as book, flat, or tent.
-_Avoid_: Mode, pose, orientation
+How the Fold divides the available space at a moment: book (the Fold runs top to bottom, giving side-by-side Regions), tabletop (the Fold runs side to side, giving stacked Regions), or none (no active Fold). It follows the Fold, not the hinge: a flat or closed device has no Posture.
+_Avoid_: Mode, pose, orientation, hinge state
 
 **Fold**:
 The reserved strip where the device bends, which nothing interactive may occupy; it is inactive (absent) when the device is flat.
@@ -49,7 +49,7 @@ The native app that embeds the web content in a WKWebView.
 _Avoid_: Shell, container app, wrapper
 
 **Bridge**:
-The native component in the Host that reports Posture, Fold, Regions, and Size Class to the web content.
+The native component in the Host that reports the Fold and Size Class to the web content; the web content derives Posture and Regions from them.
 _Avoid_: Plugin, native module
 
 **Bridge Contract**:

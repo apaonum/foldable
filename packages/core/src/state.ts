@@ -4,6 +4,7 @@ import { applyCSS, toCSS } from './css';
 import { posture, regions } from './derive';
 import { SERVER_STATE } from './server-state';
 import { bridgeReader } from './sources/bridge';
+import { fallbackReader } from './sources/fallback';
 import { placeholderReader } from './sources/placeholder';
 import type { Reader } from './sources/reader';
 import type { State } from './types';
@@ -17,9 +18,9 @@ function chooseReader(win: BridgeWindow): Reader {
   const bridge = win[BRIDGE_GLOBAL];
   if (bridge !== undefined) return bridgeReader(win, bridge);
   if ((win as { viewport?: { segments?: unknown } }).viewport?.segments !== undefined) {
-    return placeholderReader('web');
+    return placeholderReader();
   }
-  return placeholderReader('fallback');
+  return fallbackReader(win);
 }
 
 function derive(reader: Reader, win: Window): State {

@@ -1,0 +1,42 @@
+{
+  "name": "@foldablejs/vue",
+  "version": "0.0.0",
+  "description": "Vue composable for foldable state on iPhone Duo.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:node": "vitest run --project node",
+    "test:browser": "vitest run --project webkit"
+  },
+  "dependencies": {
+    "@foldablejs/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "vue": ">=3.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "@vitest/browser-playwright": "5.0.3",
+    "playwright": "1.64.0",
+    "tsdown": "0.23.1",
+    "typescript": "6.0.3",
+    "vitest": "5.0.3",
+    "vue": "3.5.43"
+  }
+}

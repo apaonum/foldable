@@ -1,0 +1,19 @@
+{
+  "name": "outer-portrait",
+  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 36",
+  "viewport": {
+    "width": 382,
+    "height": 580
+  },
+  "segments": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 382,
+      "height": 580
+    }
+  ],
+  "expected": {
+    "fold": null
+  }
+}

@@ -42,7 +42,7 @@ The Bridge reports geometry in CSS px over the WKWebView's bounds. If the web vi
 
 `examples/ios-host` is a working Host. Its README explains how to run it on the iPhone Duo Simulator.
 
-<!-- SCREENSHOT #39: examples/ios-host in book Posture on the inner display (docs/manual-checks/v0.1.0/host-book.png) -->
+![examples/ios-host in book Posture on the inner display, showing the state the Bridge sent](manual-checks/v0.1.0/host-book.png)
 
 ## What `attach(to:)` does
 

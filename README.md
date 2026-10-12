@@ -2,7 +2,7 @@
 
 Fold-aware layout for web content on iPhone Duo, mainly inside a native app's WKWebView. A Swift Bridge reports the Fold, Size Class, safe area, and layout margins to the page. `@foldablejs/core` turns them into CSS custom properties, `data-foldable-*` attributes, and a small state API. `primitives.css` adds pure-CSS Split, Overlay, and Displace layouts that follow Apple's ArrangementView rules. Terms follow [`GLOSSARY.md`](GLOSSARY.md).
 
-<!-- SCREENSHOT #39: examples/next on the inner display, book Posture, Split + Displace (docs/manual-checks/v0.1.0/inner-book-split.png) -->
+![examples/next on the iPhone Duo inner display in book Posture: Split puts one view in each Region, with the Fold as the gutter](docs/manual-checks/v0.1.0/inner-book-split.png)
 
 ## Documentation
 

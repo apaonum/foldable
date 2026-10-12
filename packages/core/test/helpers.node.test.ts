@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { arrangement } from '../src/index';
+import { arrangement, view } from '../src/index';
 
 describe('arrangement() for Overlay', () => {
   test('overlay with no options gives only the style', () => {
@@ -44,5 +44,11 @@ describe('arrangement()', () => {
       'data-foldable-arrangement': 'split',
       'data-foldable-axes': axes,
     });
+  });
+});
+
+describe('view()', () => {
+  test.each(['primary', 'secondary'] as const)('%s', (role) => {
+    expect(view(role)).toEqual({ 'data-foldable-view': role });
   });
 });

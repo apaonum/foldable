@@ -1,3 +1,204 @@
+/* Arrangement */
+
+/*
+ * Shared by Split and Overlay. The box is an app shell with an author-set definite size;
+ * the views are positioned absolutely inside it because a container query can style only
+ * the container's descendants. The defaults use :where() so authors can override them.
+ */
+:where([data-foldable-arrangement]) {
+  position: relative;
+  overflow: hidden;
+}
+
+/*
+ * Region geometry in box coordinates, logical (inline = horizontal, block = vertical).
+ * The --foldable-fold-* vars are physical and viewport-relative, so they are shifted by the
+ * author's box offset and, under RTL, mirrored so "leading" is the physical right Region.
+ */
+[data-foldable-arrangement] {
+  container: foldable-arrangement / size;
+  --_arrangement-fold-x: calc(
+    var(--foldable-fold-x, 0px) - var(--foldable-arrangement-offset-x, 0px)
+  );
+  --_arrangement-fold-inline-start: var(--_arrangement-fold-x);
+  --_arrangement-fold-block-start: calc(
+    var(--foldable-fold-y, 0px) - var(--foldable-arrangement-offset-y, 0px)
+  );
+}
+
+[data-foldable-arrangement]:dir(rtl) {
+  --_arrangement-fold-inline-start: calc(
+    100cqi - var(--_arrangement-fold-x) - var(--foldable-fold-width, 0px)
+  );
+}
+
+/*
+ * Regions, read by the styles: leading/trailing along the inline axis (book),
+ * top/bottom along the block axis (tabletop). The has-* flags are 1 when that Region has
+ * size; the 0.5px threshold absorbs WebKit's float error. Declared on the views so cqi/cqb
+ * measure the Arrangement box.
+ */
+[data-foldable-arrangement] > [data-foldable-view] {
+  --_arrangement-leading-size: clamp(0px, var(--_arrangement-fold-inline-start), 100cqi);
+  --_arrangement-trailing-start: clamp(
+    0px,
+    var(--_arrangement-fold-inline-start) + var(--foldable-fold-width, 0px),
+    100cqi
+  );
+  --_arrangement-trailing-size: calc(100cqi - var(--_arrangement-trailing-start));
+  --_arrangement-top-size: clamp(0px, var(--_arrangement-fold-block-start), 100cqb);
+  --_arrangement-bottom-start: clamp(
+    0px,
+    var(--_arrangement-fold-block-start) + var(--foldable-fold-height, 0px),
+    100cqb
+  );
+  --_arrangement-bottom-size: calc(100cqb - var(--_arrangement-bottom-start));
+  --_arrangement-has-leading: max(0, sign(var(--_arrangement-leading-size) - 0.5px));
+  --_arrangement-has-trailing: max(0, sign(var(--_arrangement-trailing-size) - 0.5px));
+  --_arrangement-has-top: max(0, sign(var(--_arrangement-top-size) - 0.5px));
+  --_arrangement-has-bottom: max(0, sign(var(--_arrangement-bottom-size) - 0.5px));
+}
+
+/* Every view fills the box until a style places it. */
+[data-foldable-arrangement] > [data-foldable-view] {
+  position: absolute;
+  box-sizing: border-box;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  inline-size: 100cqi;
+  block-size: 100cqb;
+}
+
+/* End Arrangement */
+
+/* Split */
+
+/* No Fold: the axis follows the box's aspect ratio and the primary takes the ratio. */
+@container foldable-arrangement (orientation: landscape) {
+  html:not([data-foldable-fold='active'])
+    [data-foldable-arrangement='split']
+    > [data-foldable-view='primary'] {
+    inline-size: calc(var(--foldable-split-ratio, 0.5) * 100cqi);
+  }
+
+  html:not([data-foldable-fold='active'])
+    [data-foldable-arrangement='split']
+    > [data-foldable-view='secondary'] {
+    inset-inline-start: calc(var(--foldable-split-ratio, 0.5) * 100cqi);
+    inline-size: calc((1 - var(--foldable-split-ratio, 0.5)) * 100cqi);
+  }
+}
+
+@container foldable-arrangement (orientation: portrait) {
+  html:not([data-foldable-fold='active'])
+    [data-foldable-arrangement='split']
+    > [data-foldable-view='primary'] {
+    block-size: calc(var(--foldable-split-ratio, 0.5) * 100cqb);
+  }
+
+  html:not([data-foldable-fold='active'])
+    [data-foldable-arrangement='split']
+    > [data-foldable-view='secondary'] {
+    inset-block-start: calc(var(--foldable-split-ratio, 0.5) * 100cqb);
+    block-size: calc((1 - var(--foldable-split-ratio, 0.5)) * 100cqb);
+  }
+}
+
+/*
+ * Fold active: one view per Region, the Fold is the gutter, and the ratio is ignored.
+ * If the Fold is clipped to the box edge (book in Split View) the leading Region can be
+ * missing; then the primary takes the only Region, so it is never the one left empty.
+ */
+html[data-foldable-posture='book'] [data-foldable-arrangement='split'] > [data-foldable-view] {
+  inset-block-start: 0;
+  block-size: 100cqb;
+}
+
+html[data-foldable-posture='book']
+  [data-foldable-arrangement='split']
+  > [data-foldable-view='primary'] {
+  inset-inline-start: calc(
+    (1 - var(--_arrangement-has-leading)) * var(--_arrangement-trailing-start)
+  );
+  inline-size: calc(
+    var(--_arrangement-has-leading) * var(--_arrangement-leading-size) +
+      (1 - var(--_arrangement-has-leading)) * var(--_arrangement-trailing-size)
+  );
+}
+
+html[data-foldable-posture='book']
+  [data-foldable-arrangement='split']
+  > [data-foldable-view='secondary'] {
+  inset-inline-start: var(--_arrangement-trailing-start);
+  inline-size: calc(var(--_arrangement-has-leading) * var(--_arrangement-trailing-size));
+}
+
+html[data-foldable-posture='tabletop'] [data-foldable-arrangement='split'] > [data-foldable-view] {
+  inset-inline-start: 0;
+  inline-size: 100cqi;
+}
+
+html[data-foldable-posture='tabletop']
+  [data-foldable-arrangement='split']
+  > [data-foldable-view='primary'] {
+  inset-block-start: calc((1 - var(--_arrangement-has-top)) * var(--_arrangement-bottom-start));
+  block-size: calc(
+    var(--_arrangement-has-top) * var(--_arrangement-top-size) + (1 - var(--_arrangement-has-top)) *
+      var(--_arrangement-bottom-size)
+  );
+}
+
+html[data-foldable-posture='tabletop']
+  [data-foldable-arrangement='split']
+  > [data-foldable-view='secondary'] {
+  inset-block-start: var(--_arrangement-bottom-start);
+  block-size: calc(var(--_arrangement-has-top) * var(--_arrangement-bottom-size));
+}
+
+/*
+ * Axis restriction: when the axis the Split would use is not allowed, only the primary is
+ * shown. The secondary stays mounted. With no Fold the primary fills the box; with a Fold
+ * it keeps its Region, because the Fold is reserved.
+ */
+@container foldable-arrangement (orientation: landscape) {
+  html:not([data-foldable-fold='active'])
+    [data-foldable-arrangement='split'][data-foldable-axes='vertical']
+    > [data-foldable-view='primary'] {
+    inline-size: 100cqi;
+  }
+
+  html:not([data-foldable-fold='active'])
+    [data-foldable-arrangement='split'][data-foldable-axes='vertical']
+    > [data-foldable-view='secondary'] {
+    display: none;
+  }
+}
+
+@container foldable-arrangement (orientation: portrait) {
+  html:not([data-foldable-fold='active'])
+    [data-foldable-arrangement='split'][data-foldable-axes='horizontal']
+    > [data-foldable-view='primary'] {
+    block-size: 100cqb;
+  }
+
+  html:not([data-foldable-fold='active'])
+    [data-foldable-arrangement='split'][data-foldable-axes='horizontal']
+    > [data-foldable-view='secondary'] {
+    display: none;
+  }
+}
+
+html[data-foldable-posture='book']
+  [data-foldable-arrangement='split'][data-foldable-axes='vertical']
+  > [data-foldable-view='secondary'],
+html[data-foldable-posture='tabletop']
+  [data-foldable-arrangement='split'][data-foldable-axes='horizontal']
+  > [data-foldable-view='secondary'] {
+  display: none;
+}
+
+/* End Split */
+
 /* Displace */
 
 /*

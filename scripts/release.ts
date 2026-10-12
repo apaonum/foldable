@@ -22,28 +22,31 @@ function packageDirs(root: string): string[] {
     .filter((dir) => readManifest(dir).private !== true);
 }
 
-function readManifest(dir: string): Manifest {
-  const path = join(dir, 'package.json');
+/** The full manifest object, so a caller can write it back without dropping fields. */
+type ManifestRecord = Record<string, unknown> & Manifest;
+
+function manifestPath(dir: string): string {
+  return join(dir, 'package.json');
+}
+
+function readManifest(dir: string): ManifestRecord {
+  const path = manifestPath(dir);
   const raw: unknown = JSON.parse(readFileSync(path, 'utf8'));
-  const manifest = parseManifest(raw);
-  if (manifest === undefined) throw new Error(`${path} is not a valid package manifest`);
-  return manifest;
+  if (!isManifest(raw)) throw new Error(`${path} is not a valid package manifest`);
+  return raw;
 }
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   value !== null && typeof value === 'object' && !Array.isArray(value);
 
-function parseManifest(raw: unknown): Manifest | undefined {
-  if (!isRecord(raw)) return undefined;
+function isManifest(raw: unknown): raw is ManifestRecord {
+  if (!isRecord(raw)) return false;
   const { name, version, private: isPrivate } = raw;
-  if (typeof name !== 'string') return undefined;
-  if (version !== undefined && typeof version !== 'string') return undefined;
-  if (isPrivate !== undefined && typeof isPrivate !== 'boolean') return undefined;
-  return {
-    name,
-    ...(version === undefined ? {} : { version }),
-    ...(isPrivate === undefined ? {} : { private: isPrivate }),
-  };
+  return (
+    typeof name === 'string' &&
+    (version === undefined || typeof version === 'string') &&
+    (isPrivate === undefined || typeof isPrivate === 'boolean')
+  );
 }
 
 export function checklistPath(root: string, version: string): string {
@@ -54,12 +57,11 @@ export function checklistPath(root: string, version: string): string {
 export function bumpVersion(root: string, version: string): void {
   if (!VERSION.test(version)) throw new Error(`Expected X.Y.Z, got "${version}"`);
   for (const dir of packageDirs(root)) {
-    const path = join(dir, 'package.json');
-    const manifest: unknown = JSON.parse(readFileSync(path, 'utf8'));
-    if (!isRecord(manifest) || typeof manifest.version !== 'string')
-      throw new Error(`${path} is not a valid package manifest`);
+    const manifest = readManifest(dir);
+    // A published package without a version means the manifest was hand-edited wrong.
+    if (manifest.version === undefined) throw new Error(`${manifestPath(dir)} has no version`);
     manifest.version = version;
-    writeFileSync(path, JSON.stringify(manifest, null, 2) + '\n');
+    writeFileSync(manifestPath(dir), JSON.stringify(manifest, null, 2) + '\n');
   }
 }
 

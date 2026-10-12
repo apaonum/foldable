@@ -129,3 +129,27 @@ test('releaseProblems rejects a malformed package.json, naming the file', () => 
     );
   }
 });
+
+test('bumpVersion refuses a published package with no version, naming the file', () => {
+  const root = fakeRepo();
+  writeJson(join(root, 'packages/vue/package.json'), { name: '@foldablejs/vue' });
+
+  assert.throws(() => {
+    bumpVersion(root, '0.1.0');
+  }, /packages\/vue\/package\.json has no version/);
+});
+
+test('bumpVersion keeps every other manifest field', () => {
+  const root = fakeRepo();
+
+  bumpVersion(root, '0.1.0');
+
+  const react: unknown = JSON.parse(
+    readFileSync(join(root, 'packages/react/package.json'), 'utf8'),
+  );
+  assert.deepEqual(react, {
+    name: '@foldablejs/react',
+    version: '0.1.0',
+    dependencies: { '@foldablejs/core': 'workspace:*' },
+  });
+});

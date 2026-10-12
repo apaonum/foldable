@@ -36,6 +36,8 @@ webView.scrollView.contentInsetAdjustmentBehavior = .never // keep the web view 
 Bridge.attach(to: webView)
 ```
 
+The Bridge pushes a new full snapshot whenever the Fold, Size Class, safe area or layout margins change; the Host forwards nothing. `examples/ios-host` is a minimal Host and holds the app-hosted Simulator tests (see its README).
+
 Don't replace or re-inject the bootstrap yourself; the Bridge owns one document-start seed and keeps your own user scripts in order.
 
 `Sources/Foldable/Resources/bootstrap.js` is built from `packages/core` and committed (ADR 0001). After changing the core, run `pnpm bootstrap:sync` and commit the result; CI fails on a stale copy.

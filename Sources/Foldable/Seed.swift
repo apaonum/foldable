@@ -16,7 +16,8 @@ let seedSeq = 1
 func seedSource(for state: BridgeState) throws -> String {
   let encoder = JSONEncoder()
   encoder.outputFormatting = [.sortedKeys]
-  let json = String(decoding: try encoder.encode(SeqSnapshot(state: state, seq: seedSeq)), as: UTF8.self)
+  let json = String(
+    decoding: try encoder.encode(SeqSnapshot(state: state, seq: seedSeq)), as: UTF8.self)
   return bootstrapSource + "\nwindow.__foldableBridge.receive(\(json));\n"
 }
 

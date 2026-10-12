@@ -37,8 +37,9 @@ import Testing
     #expect(bridge.forProperty("seq").toInt32() == 1)
     let stateJSON = context.evaluateScript("JSON.stringify(window.__foldableBridge.state)")
     #expect(
-      try canonicalJSON(fromObject: JSONSerialization.jsonObject(
-        with: Data(try #require(stateJSON?.toString()).utf8))) == fixture.snapshotJSON)
+      try canonicalJSON(
+        fromObject: JSONSerialization.jsonObject(
+          with: Data(try #require(stateJSON?.toString()).utf8))) == fixture.snapshotJSON)
     #expect(context.evaluateScript("written['data-foldable-posture']").toString() == "book")
     #expect(context.evaluateScript("written['--foldable-fold-x']").toString() == "455.5px")
   }

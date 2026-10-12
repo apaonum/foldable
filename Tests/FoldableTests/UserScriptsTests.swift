@@ -23,6 +23,7 @@ import Testing
     let lookalike = Script("seed")
     let new = Script("seed2")
     let result = replacingSeed(in: [a, old, b, lookalike], current: old, with: new)
-    #expect(result.map { ObjectIdentifier($0) } == [a, b, lookalike, new].map { ObjectIdentifier($0) })
+    #expect(
+      result.map { ObjectIdentifier($0) } == [a, b, lookalike, new].map { ObjectIdentifier($0) })
   }
 }

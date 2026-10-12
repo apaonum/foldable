@@ -122,12 +122,13 @@
     /// Fallback without the change hooks: frame and bounds changes still refresh, but a Fold that
     /// activates with no geometry or trait change is missed until the next one (ADR 0002).
     private func observeGeometry(of webView: WKWebView) {
-      let refresh = { (webView: WKWebView) in
-        MainActor.assumeIsolated { Bridge.attached(to: webView)?.setNeedsRefresh() }
-      }
       geometryObservations = [
-        webView.observe(\.frame) { webView, _ in refresh(webView) },
-        webView.observe(\.bounds) { webView, _ in refresh(webView) },
+        webView.observe(\.frame) { webView, _ in
+          MainActor.assumeIsolated { Bridge.attached(to: webView)?.setNeedsRefresh() }
+        },
+        webView.observe(\.bounds) { webView, _ in
+          MainActor.assumeIsolated { Bridge.attached(to: webView)?.setNeedsRefresh() }
+        },
       ]
     }
 

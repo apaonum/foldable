@@ -56,7 +56,8 @@ export function bumpVersion(root: string, version: string): void {
   for (const dir of packageDirs(root)) {
     const path = join(dir, 'package.json');
     const manifest: unknown = JSON.parse(readFileSync(path, 'utf8'));
-    if (!isRecord(manifest)) throw new Error(`${path} is not a valid package manifest`);
+    if (!isRecord(manifest) || typeof manifest.version !== 'string')
+      throw new Error(`${path} is not a valid package manifest`);
     manifest.version = version;
     writeFileSync(path, JSON.stringify(manifest, null, 2) + '\n');
   }

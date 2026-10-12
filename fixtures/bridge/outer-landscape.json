@@ -31,5 +31,28 @@
         "height": 466
       }
     ]
+  },
+  "nativeInputs": {
+    "divisions": [],
+    "horizontalSizeClass": "compact",
+    "safeAreaInsets": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 20
+    },
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 678,
+      "height": 466
+    },
+    "pageZoom": 1
   }
 }

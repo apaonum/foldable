@@ -1,3 +1,5 @@
 dist
 dist-iife
 pnpm-lock.yaml
+Sources/Foldable/Resources/bootstrap.js
+.build

@@ -71,14 +71,18 @@
       web.navigationDelegate = navigation
       web.loadHTMLString(
         """
-        <script>window.seenAtParse = document.documentElement.getAttribute('data-foldable-posture');</script>
+        <script>
+          window.seenAtParse = document.documentElement.getAttribute('data-foldable-posture');
+          window.seqAtParse = window.__foldableBridge.seq;
+        </script>
         """,
         baseURL: URL(string: "https://test.localhost/"))
       await navigation.finished()
 
       let seen =
         try await web.callAsyncJavaScript(
-          "return [window.seenAtParse, window.__foldableBridge.seq, window.__foldableBridge.state.fold.x]",
+          // Read at parse time: by didFinish the didCommit re-push has already raised `seq`.
+          "return [window.seenAtParse, window.seqAtParse, window.__foldableBridge.state.fold.x]",
           contentWorld: .page) as? [Any]
       #expect(seen?[0] as? String == "book")
       #expect(seen?[1] as? Int == 1)

@@ -12,6 +12,22 @@ section {
 [data-foldable-arrangement] {
   min-height: 240px;
   border: 1px solid #ccc;
+  /* The box starts after the body's left padding and its own border; the Fold vars don't. */
+  --foldable-arrangement-offset-x: calc(var(--foldable-layout-margin-left, 16px) + 1px);
+}
+
+/* An Arrangement is a non-scrolling app frame: #split or #overlay shows that one full-viewport,
+   so it lines up with the Fold in every Posture. */
+body:has(h2:target) section:not(:has(> h2:target)) {
+  display: none;
+}
+
+section:has(> h2:target) > [data-foldable-arrangement] {
+  position: fixed;
+  inset: 0;
+  border: 0;
+  background: Canvas;
+  --foldable-arrangement-offset-x: 0px;
 }
 
 [data-foldable-view] {

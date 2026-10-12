@@ -22,23 +22,27 @@ describe('Region derivation', () => {
   });
 
   test('a book Fold splits the viewport into left then right', () => {
-    expect(regions({ x: 455.5, y: 0, width: 40, height: 669 }, { width: 951, height: 669 })).toEqual([
+    expect(
+      regions({ x: 455.5, y: 0, width: 40, height: 669 }, { width: 951, height: 669 }),
+    ).toEqual([
       { x: 0, y: 0, width: 455.5, height: 669 },
       { x: 495.5, y: 0, width: 455.5, height: 669 },
     ]);
   });
 
   test('a tabletop Fold splits the viewport into top then bottom', () => {
-    expect(regions({ x: 0, y: 455.5, width: 669, height: 40 }, { width: 669, height: 951 })).toEqual([
+    expect(
+      regions({ x: 0, y: 455.5, width: 669, height: 40 }, { width: 669, height: 951 }),
+    ).toEqual([
       { x: 0, y: 0, width: 669, height: 455.5 },
       { x: 0, y: 495.5, width: 669, height: 455.5 },
     ]);
   });
 
   test('a Fold clipped to the window edge leaves one Region, not a zero-width one', () => {
-    expect(regions({ x: 455.5, y: 0, width: 13.5, height: 669 }, { width: 469, height: 669 })).toEqual([
-      { x: 0, y: 0, width: 455.5, height: 669 },
-    ]);
+    expect(
+      regions({ x: 455.5, y: 0, width: 13.5, height: 669 }, { width: 469, height: 669 }),
+    ).toEqual([{ x: 0, y: 0, width: 455.5, height: 669 }]);
   });
 
   test('no Fold gives one Region covering the viewport', () => {

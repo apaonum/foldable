@@ -18,13 +18,16 @@ function recordingGlobal(name: string, touched: string[]): object {
   );
 }
 
-test.each(['../src/index', '../src/bootstrap'])('importing %s touches no window or document', async (path) => {
-  const touched: string[] = [];
-  globals.window = recordingGlobal('window', touched);
-  globals.document = recordingGlobal('document', touched);
+test.each(['../src/index', '../src/bootstrap'])(
+  'importing %s touches no window or document',
+  async (path) => {
+    const touched: string[] = [];
+    globals.window = recordingGlobal('window', touched);
+    globals.document = recordingGlobal('document', touched);
 
-  const mod: unknown = await import(path);
+    const mod: unknown = await import(path);
 
-  expect(mod).toBeTypeOf('object');
-  expect(touched).toEqual([]);
-});
+    expect(mod).toBeTypeOf('object');
+    expect(touched).toEqual([]);
+  },
+);

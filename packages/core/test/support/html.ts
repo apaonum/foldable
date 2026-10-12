@@ -24,8 +24,9 @@ const ATTRIBUTES = [
 export function readHtml(): Record<string, string | null> {
   const root = document.documentElement;
   const style = getComputedStyle(root);
-  return Object.fromEntries([
-    ...NAMES.map((n) => [n, style.getPropertyValue(n).trim()]),
-    ...ATTRIBUTES.map((a) => [a, root.getAttribute(a)]),
-  ]);
+  const entries: [string, string | null][] = [
+    ...NAMES.map((n): [string, string] => [n, style.getPropertyValue(n).trim()]),
+    ...ATTRIBUTES.map((a): [string, string | null] => [a, root.getAttribute(a)]),
+  ];
+  return Object.fromEntries(entries);
 }

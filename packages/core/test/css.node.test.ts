@@ -1,23 +1,23 @@
 import { describe, expect, test } from 'vitest';
 import { toCSS } from '../src/css';
 import { SERVER_STATE } from '../src/server-state';
+import type { State } from '../src/types';
 
 describe('toCSS', () => {
   test('book state writes the Fold rect, insets and attributes', () => {
-    expect(
-      toCSS({
-        posture: 'book',
-        fold: { x: 455.5, y: 0, width: 40, height: 669 },
-        regions: [
-          { x: 0, y: 0, width: 455.5, height: 669 },
-          { x: 495.5, y: 0, width: 455.5, height: 669 },
-        ],
-        sizeClass: 'regular',
-        safeArea: { top: 0, right: 84, bottom: 34, left: 0 },
-        layoutMargins: { top: 0, right: 84, bottom: 34, left: 20 },
-        source: 'bridge',
-      }),
-    ).toEqual({
+    const state: State = {
+      posture: 'book',
+      fold: { x: 455.5, y: 0, width: 40, height: 669 },
+      regions: [
+        { x: 0, y: 0, width: 455.5, height: 669 },
+        { x: 495.5, y: 0, width: 455.5, height: 669 },
+      ],
+      sizeClass: 'regular',
+      safeArea: { top: 0, right: 84, bottom: 34, left: 0 },
+      layoutMargins: { top: 0, right: 84, bottom: 34, left: 20 },
+      source: 'bridge',
+    };
+    expect(toCSS(state)).toEqual({
       properties: {
         '--foldable-fold-x': '455.5px',
         '--foldable-fold-y': '0px',

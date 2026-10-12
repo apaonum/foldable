@@ -117,3 +117,15 @@ test('tarballs may hold only built ESM, types, primitives.css and package metada
     'package/dist/index.mjs.map',
   ]);
 });
+
+test('releaseProblems rejects a malformed package.json, naming the file', () => {
+  for (const manifest of [[], { version: '0.1.0' }, { name: 2 }, { name: 'x', version: 1 }]) {
+    const root = fakeRepo();
+    writeJson(join(root, 'packages/vue/package.json'), manifest);
+
+    assert.throws(
+      () => releaseProblems(root, 'v0.1.0'),
+      /packages\/vue\/package\.json is not a valid package manifest/,
+    );
+  }
+});

@@ -23,7 +23,24 @@ function packageDirs(root: string): string[] {
 }
 
 function readManifest(dir: string): Manifest {
-  return JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8')) as Manifest;
+  const path = join(dir, 'package.json');
+  const raw: unknown = JSON.parse(readFileSync(path, 'utf8'));
+  const manifest = parseManifest(raw);
+  if (manifest === undefined) throw new Error(`${path} is not a valid package manifest`);
+  return manifest;
+}
+
+function parseManifest(raw: unknown): Manifest | undefined {
+  if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) return undefined;
+  const { name, version, private: isPrivate } = raw as Record<string, unknown>;
+  if (typeof name !== 'string') return undefined;
+  if (version !== undefined && typeof version !== 'string') return undefined;
+  if (isPrivate !== undefined && typeof isPrivate !== 'boolean') return undefined;
+  return {
+    name,
+    ...(version === undefined ? {} : { version }),
+    ...(isPrivate === undefined ? {} : { private: isPrivate }),
+  };
 }
 
 export function checklistPath(root: string, version: string): string {

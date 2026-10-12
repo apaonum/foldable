@@ -1,6 +1,6 @@
 import type { Viewport } from '../derive';
 import type { Rect } from '../types';
-import { approximateLayoutMargins, environment } from './environment';
+import { environment, viewportOf } from './environment';
 import type { Reader } from './reader';
 
 /** Native reserves 20 pt on each side of the line between segments. */
@@ -47,15 +47,9 @@ export function webReader(win: SegmentsWindow): Reader {
         width,
         height,
       }));
-      const next = webFold(segments, { width: win.innerWidth, height: win.innerHeight });
+      const next = webFold(segments, viewportOf(win));
       if (next !== STALE) fold = next;
-      const safeArea = env.safeArea();
-      return {
-        fold,
-        sizeClass: env.sizeClass(),
-        safeArea,
-        layoutMargins: approximateLayoutMargins(safeArea),
-      };
+      return { fold, ...env.read() };
     },
     listen: (onChange) => {
       env.listen(onChange);

@@ -4,6 +4,7 @@ import { applyCSS, toCSS } from './css';
 import { posture, regions } from './derive';
 import { SERVER_STATE } from './server-state';
 import { bridgeReader } from './sources/bridge';
+import { viewportOf } from './sources/environment';
 import { fallbackReader } from './sources/fallback';
 import type { Reader } from './sources/reader';
 import { webReader } from './sources/web';
@@ -27,7 +28,7 @@ function derive(reader: Reader, win: Window): State {
   return deepFreeze({
     posture: posture(input.fold),
     fold: input.fold === null ? null : { ...input.fold },
-    regions: regions(input.fold, { width: win.innerWidth, height: win.innerHeight }),
+    regions: regions(input.fold, viewportOf(win)),
     sizeClass: input.sizeClass,
     safeArea: { ...input.safeArea },
     layoutMargins: { ...input.layoutMargins },

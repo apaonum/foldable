@@ -42,5 +42,38 @@
         "height": 455.5
       }
     ]
+  },
+  "nativeInputs": {
+    "divisions": [
+      {
+        "frame": {
+          "x": 0,
+          "y": 455.5,
+          "width": 669,
+          "height": 40
+        },
+        "isActive": true
+      }
+    ],
+    "horizontalSizeClass": "regular",
+    "safeAreaInsets": {
+      "top": 82,
+      "right": 0,
+      "bottom": 34,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 82,
+      "right": 20,
+      "bottom": 34,
+      "left": 20
+    },
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 669,
+      "height": 951
+    },
+    "pageZoom": 1
   }
 }

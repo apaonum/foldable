@@ -7,6 +7,8 @@ export default tseslint.config(
       '**/dist',
       '**/dist-iife',
       '**/node_modules',
+      'Sources/Foldable/Resources',
+      '.build',
       '**/.nuxt',
       '**/.output',
       '.claude',

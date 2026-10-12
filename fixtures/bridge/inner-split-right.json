@@ -31,5 +31,38 @@
         "height": 669
       }
     ]
+  },
+  "nativeInputs": {
+    "divisions": [
+      {
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "width": 13.5,
+          "height": 669
+        },
+        "isActive": false
+      }
+    ],
+    "horizontalSizeClass": "compact",
+    "safeAreaInsets": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 0
+    },
+    "layoutMargins": {
+      "top": 0,
+      "right": 84,
+      "bottom": 34,
+      "left": 20
+    },
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 469,
+      "height": 669
+    },
+    "pageZoom": 1
   }
 }

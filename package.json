@@ -5,6 +5,7 @@
   "packageManager": "pnpm@11.7.0",
   "scripts": {
     "build": "pnpm -r build",
+    "bootstrap:sync": "pnpm --filter @foldablejs/core build && cp packages/core/dist-iife/bootstrap.iife.js Sources/Foldable/Resources/bootstrap.js",
     "typecheck": "pnpm -r typecheck",
     "lint": "eslint .",
     "format": "prettier --write .",

@@ -30,3 +30,14 @@ jobs:
       - run: pnpm --filter @foldablejs/react test:node
       - run: pnpm --filter @foldablejs/react test:browser
       - run: pnpm --filter example-next... build
+      # ADR 0001: the Swift package ships a committed copy of the bootstrap; a stale copy fails here.
+      - run: pnpm bootstrap:sync
+      - run: git diff --exit-code -- Sources/Foldable/Resources/bootstrap.js
+
+  swift:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - run: swift format lint --strict --recursive Package.swift Sources Tests
+      - run: swift build
+      - run: swift test

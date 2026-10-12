@@ -4,7 +4,7 @@ Each recipe solves one problem the primitives leave to you. The TypeScript in th
 
 ## Restore focus when an Arrangement hides the focused view
 
-When a Split hides its secondary with `display: none`, for example after a rotation into a box where the axis isn't allowed, a focused element inside it loses focus. An expanded Overlay does the same with `visibility: hidden` when the Fold goes away. Focus moves to `<body>`, and a keyboard or VoiceOver user loses their place. foldable has no built-in fix.
+When a Split hides its secondary with `display: none`, for example after a rotation into a box where the axis isn't allowed or when the Fold is clipped to the window edge, a focused element inside it loses focus. An expanded Overlay does the same with `visibility: hidden` when the Fold goes away. Focus moves to `<body>`, and a keyboard or VoiceOver user loses their place. foldable has no built-in fix.
 
 To restore focus, remember the last focused element and check it on every state change and every resize:
 

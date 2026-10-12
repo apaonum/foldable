@@ -59,6 +59,31 @@
   --_arrangement-has-bottom: max(0, sign(var(--_arrangement-bottom-size) - 0.5px));
 }
 
+/*
+ * 1 when an active Fold is clipped to the viewport edge (book in Split View), so only one
+ * Region exists. It lives on the box, where a style query can read it, so it is measured
+ * against the viewport (no cqi there); registered so the query compares a number.
+ */
+@property --_arrangement-one-region {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+html[data-foldable-posture='book'] [data-foldable-arrangement] {
+  --_arrangement-one-region: calc(
+    1 - max(0, sign(var(--foldable-fold-x) - 0.5px)) *
+      max(0, sign(100vw - var(--foldable-fold-x) - var(--foldable-fold-width) - 0.5px))
+  );
+}
+
+html[data-foldable-posture='tabletop'] [data-foldable-arrangement] {
+  --_arrangement-one-region: calc(
+    1 - max(0, sign(var(--foldable-fold-y) - 0.5px)) *
+      max(0, sign(100vh - var(--foldable-fold-y) - var(--foldable-fold-height) - 0.5px))
+  );
+}
+
 /* Every view fills the box until a style places it. */
 [data-foldable-arrangement] > [data-foldable-view] {
   position: absolute;
@@ -155,6 +180,13 @@ html[data-foldable-posture='tabletop']
   block-size: calc(var(--_arrangement-has-top) * var(--_arrangement-bottom-size));
 }
 
+/* A clipped Fold leaves one Region: the primary takes it and the secondary stays mounted. */
+@container foldable-arrangement style(--_arrangement-one-region: 1) {
+  [data-foldable-arrangement='split'] > [data-foldable-view='secondary'] {
+    display: none;
+  }
+}
+
 /*
  * Axis restriction: when the axis the Split would use is not allowed, only the primary is
  * shown. The secondary stays mounted. With no Fold the primary fills the box; with a Fold
@@ -240,7 +272,8 @@ html:not([data-foldable-fold='active'])
  * Separated (Fold active): one view per Region along the Fold's axis. "Near" is the leading
  * (or top) Region and "far" the trailing (or bottom) one. If the Fold is clipped to the box
  * edge (book in Split View) only one Region exists: near and far both become that Region,
- * and the views layer inside it as when flat, so neither collapses to zero size.
+ * and the views layer inside it as when flat, so neither collapses to zero size; `expanded`
+ * then applies as when flat.
  * The min-size flag makes the primary fill its Region when both exist and fall back to its
  * intrinsic size, end-aligned, when they share one.
  */
@@ -345,6 +378,26 @@ html[data-foldable-posture='tabletop']
   block-size: auto;
   min-block-size: calc(var(--_overlay-both) * var(--_overlay-block-size));
   max-block-size: var(--_overlay-block-size);
+}
+
+/* Expanded fills the Region; when both Regions exist the primary already fills its own. */
+html[data-foldable-posture='book']
+  [data-foldable-arrangement='overlay'][data-foldable-overlay-state='expanded']
+  > [data-foldable-view='primary'] {
+  min-block-size: 100cqb;
+}
+
+html[data-foldable-posture='tabletop']
+  [data-foldable-arrangement='overlay'][data-foldable-overlay-state='expanded']
+  > [data-foldable-view='primary'] {
+  min-block-size: var(--_overlay-block-size);
+}
+
+@container foldable-arrangement style(--_arrangement-one-region: 1) {
+  [data-foldable-arrangement='overlay'][data-foldable-overlay-state='expanded']
+    > [data-foldable-view='secondary'] {
+    visibility: hidden;
+  }
 }
 
 /* End Overlay */

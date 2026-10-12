@@ -9,7 +9,8 @@ import { installBridge } from './support/install-bridge';
 import type { BridgeState } from '../src/types';
 
 type Rect = { x: number; y: number; width: number; height: number };
-type Expected = { primary: Rect; secondary: Rect };
+/** `hidden`: the secondary gets `display: none` and stays mounted. */
+type Expected = { primary: Rect; secondary: Rect | 'hidden' };
 
 document.body.style.margin = '0';
 
@@ -89,9 +90,14 @@ async function expectSplit(
   snapshot: BridgeState = f.snapshot,
 ): Promise<void> {
   const { primary, secondary } = await mount(snapshot, f.viewport, o);
-  expect(getComputedStyle(secondary).display).not.toBe('none');
   expectRect(rect(primary), expected.primary);
-  expectRect(rect(secondary), expected.secondary);
+  if (expected.secondary === 'hidden') {
+    expect(getComputedStyle(secondary).display).toBe('none');
+    expect(secondary.isConnected).toBe(true);
+  } else {
+    expect(getComputedStyle(secondary).display).not.toBe('none');
+    expectRect(rect(secondary), expected.secondary);
+  }
 }
 
 const r = (x: number, y: number, width: number, height: number): Rect => ({ x, y, width, height });
@@ -105,7 +111,8 @@ const ltr: Record<string, Expected> = {
   'inner-split-right': { primary: r(0, 0, 469, 334.5), secondary: r(0, 334.5, 469, 334.5) },
   'book-regular': { primary: r(0, 0, 455.5, 669), secondary: r(495.5, 0, 455.5, 669) },
   // Split View left app: the Fold is clipped to the window edge, so only the leading Region exists.
-  'book-compact': { primary: r(0, 0, 455.5, 669), secondary: r(469, 0, 0, 669) },
+  // The primary takes it and the secondary is hidden.
+  'book-compact': { primary: r(0, 0, 455.5, 669), secondary: 'hidden' },
   tabletop: { primary: r(0, 0, 669, 455.5), secondary: r(0, 495.5, 669, 455.5) },
 };
 
@@ -117,7 +124,7 @@ const rtl: Record<string, Expected> = {
   'book-regular': { primary: r(495.5, 0, 455.5, 669), secondary: r(0, 0, 455.5, 669) },
   // The clipped Fold sits on the trailing (left) edge in RTL, so the leading Region is missing
   // and the primary takes the only Region.
-  'book-compact': { primary: r(0, 0, 455.5, 669), secondary: r(455.5, 0, 0, 669) },
+  'book-compact': { primary: r(0, 0, 455.5, 669), secondary: 'hidden' },
 };
 
 test('every Bridge fixture has a Split case', () => {

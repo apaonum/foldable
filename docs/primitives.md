@@ -83,7 +83,7 @@ After the device unfolds, the Size Class can change 2 to 4 s after the Fold. A S
 
 ### Split with a clipped Fold
 
-In book Posture with Split View, the Fold can be clipped to the window edge, which leaves the window one Region. The primary then takes that Region and the secondary gets a size of 0. The secondary isn't set to `display: none`.
+In book Posture with Split View, the Fold can be clipped to the window edge, which leaves the window one Region. The primary then takes that Region, and the secondary gets `display: none` and stays mounted, as when the axis isn't allowed.
 
 ## Overlay
 
@@ -102,7 +102,7 @@ The primary has `z-index: 1` in every state, so it stays on top whatever the DOM
 
 ### Expand and collapse
 
-`data-foldable-overlay-state` is yours to set. The stylesheet never changes it, so the state survives Fold changes. A separated Overlay ignores `expanded`. If the attribute is still `expanded` when the Fold goes away, the primary fills the box again.
+`data-foldable-overlay-state` is yours to set. The stylesheet never changes it, so the state survives Fold changes. A separated Overlay (two Regions) ignores `expanded`. If the attribute is still `expanded` when the Fold goes away, the primary fills the box again.
 
 ```html
 <div data-foldable-arrangement="overlay" data-foldable-overlay-state="collapsed" class="shell">
@@ -126,7 +126,7 @@ Apple has no documented default edge. foldable puts the primary trailing in book
 
 ### Overlay with a clipped Fold
 
-When the Fold is clipped to the window edge and only one Region is left, the two views layer inside that Region the same way as with no Fold. The Fold is still active, so `expanded` does nothing there.
+When the Fold is clipped to the window edge and only one Region is left, the two views layer inside that Region the same way as with no Fold, and `expanded` works as it does with no Fold: the primary fills the Region and the secondary gets `visibility: hidden`.
 
 ## Displace
 

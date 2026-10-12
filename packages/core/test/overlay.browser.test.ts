@@ -208,7 +208,7 @@ describe('separated edge override', () => {
 
 describe('separated', () => {
   test('expanded does nothing and the secondary stays visible', async () => {
-    for (const name of ['book-regular', 'tabletop', 'book-compact']) {
+    for (const name of ['book-regular', 'tabletop']) {
       const { secondary } = await expectOverlay(fixture(name), ltr[name] ?? fail(), {
         state: 'expanded',
       });
@@ -300,6 +300,34 @@ describe('layered stacking', () => {
     );
     expect(primary.contains(document.elementFromPoint(475, 620))).toBe(true);
     expect(document.elementFromPoint(475, 300)).toBe(secondary);
+  });
+});
+
+describe('clipped Fold (one Region) expanded', () => {
+  // Layered inside the only Region, so `expanded` applies as when flat.
+  test.each([
+    ['LTR', 'ltr'],
+    ['RTL', 'rtl'],
+  ] as const)('%s: the primary fills the Region and the secondary is hidden', async (_, dir) => {
+    const region = r(0, 0, 455.5, 669);
+    const { primary, secondary } = await expectOverlay(
+      fixture('book-compact'),
+      { primary: region, secondary: region },
+      { state: 'expanded', dir },
+    );
+    expect(getComputedStyle(secondary).visibility).toBe('hidden');
+    expect(primary.contains(document.elementFromPoint(200, 300))).toBe(true);
+  });
+
+  test('collapsed keeps the secondary visible', async () => {
+    const { secondary } = await expectOverlay(
+      fixture('book-compact'),
+      ltr['book-compact'] ?? fail(),
+      {
+        state: 'collapsed',
+      },
+    );
+    expect(getComputedStyle(secondary).visibility).toBe('visible');
   });
 });
 

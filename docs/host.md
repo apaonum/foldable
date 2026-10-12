@@ -75,7 +75,8 @@ iOS has no Fold-change notification, and a Fold activating changes neither the b
 - `WKWebView.layoutSubviews`
 - `WKWebView.safeAreaInsetsDidChange`
 - a `horizontalSizeClass` trait change on the web view
-- a hinge update, from a `UIHingeInteraction` the Bridge adds to the web view on iOS 27.1 and later. Each update also marks the web view for layout, so it joins the pass in which the Fold flips. See [ADR 0003](adr/0003-hinge-interaction-marks-the-web-view-for-layout.md).
+
+On iOS 27.1 and later the `layoutSubviews` hook also reads the division regions inside the pass. UIKit then lays the web view out again when a region flips, so the hook fires for the Fold change too. See [ADR 0003](adr/0003-read-the-division-regions-inside-layout.md).
 
 You don't forward any callback. All signals in one run-loop turn produce one read and at most one push. The Bridge compares the new snapshot with the last one it sent and sends nothing if they are equal. It never delays or predicts a change.
 

@@ -39,7 +39,7 @@ import WebKit
     owner.view.addSubview(web)
     owner.view.layoutIfNeeded()
 
-    // WebKit can keep the web view alive past this page, and hinge updates still refresh it.
+    // WebKit can keep the web view alive past this page, and later layout passes still refresh it.
     Bridge.attach(to: web, readInputs: { [weak self] _ in self?.inputs ?? inputs })
     web.navigationDelegate = navigation
     try await load()

@@ -54,7 +54,6 @@
       bridge.observeCommits(of: webView)
       bridge.usesChangeHooks = changeHooks
       if !changeHooks { bridge.observeGeometry(of: webView) }
-      bridge.observeHinge(of: webView)
       webView.registerForTraitChanges([UITraitHorizontalSizeClass.self]) {
         (webView: WKWebView, _: UITraitCollection) in
         attached(to: webView)?.setNeedsRefresh()
@@ -129,19 +128,6 @@
           MainActor.assumeIsolated { Bridge.attached(to: webView)?.setNeedsRefresh() }
         },
       ]
-    }
-
-    /// The Fold flips in a layout pass of the window's root view that skips the web view, since
-    /// its bounds don't change. A hinge update arrives just before, so mark the web view dirty:
-    /// it joins that pass and the `layoutSubviews` hook reads the new Fold (ADR 0003).
-    private func observeHinge(of webView: WKWebView) {
-      guard #available(iOS 27.1, *) else { return }
-      webView.addInteraction(
-        UIHingeInteraction { [weak webView] _, _ in
-          guard let webView else { return }
-          webView.setNeedsLayout()
-          Bridge.attached(to: webView)?.setNeedsRefresh()
-        })
     }
 
     private func reportEncodeFailure(_ error: Error) {

@@ -1,0 +1,25 @@
+{
+  "name": "stale-at-load",
+  "evidence": "docs/manual-checks/v0.1.0.md notes; Safari probe 15-57 ms after a new tab opens in book: segments sum to 980 against a 951 viewport and catch up at ~136 ms with no resize or media query change",
+  "viewport": {
+    "width": 951,
+    "height": 543
+  },
+  "segments": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 475.5,
+      "height": 689
+    },
+    {
+      "x": 475.5,
+      "y": 0,
+      "width": 504.5,
+      "height": 689
+    }
+  ],
+  "expected": {
+    "stale": true
+  }
+}

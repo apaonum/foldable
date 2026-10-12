@@ -123,3 +123,23 @@ describe('one segment', () => {
     expect(foldVars()).toMatchObject({ width: '0px', fold: 'inactive' });
   });
 });
+
+describe('segments that catch up with no event', () => {
+  test('give the Fold once they match the viewport', async () => {
+    await showFixture('flat');
+    await showFixture('stale-at-load');
+    expect(getState().fold).toBeNull();
+
+    stub.segments = [
+      { x: 0, y: 0, width: 475.5, height: 543 },
+      { x: 475.5, y: 0, width: 475.5, height: 543 },
+    ];
+    await settle();
+
+    expect(getState()).toMatchObject({
+      posture: 'book',
+      fold: { x: 455.5, y: 0, width: 40, height: 543 },
+      source: 'web',
+    });
+  });
+});

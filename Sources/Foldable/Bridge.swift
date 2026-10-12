@@ -54,7 +54,7 @@
       return bridge
     }
 
-    fileprivate static func attached(to webView: WKWebView) -> Bridge? {
+    static func attached(to webView: WKWebView) -> Bridge? {
       objc_getAssociatedObject(webView, &bridgeKey) as? Bridge
     }
 
@@ -158,86 +158,6 @@
 
     override func forwardingTarget(for selector: Selector!) -> Any? {
       host?.responds(to: selector) == true ? host : super.forwardingTarget(for: selector)
-    }
-  }
-
-  /// The spec's change signals are the WKWebView's own `layoutSubviews` and
-  /// `safeAreaInsetsDidChange`: a Fold activating changes neither bounds nor traits, so only a
-  /// layout pass reports it. The Host's web view can't be subclassed after the fact, so the two
-  /// methods are exchanged once on WKWebView; web views without a Bridge only pay one lookup.
-  @MainActor private let installChangeHooks: Void = {
-    exchange(#selector(UIView.layoutSubviews), with: #selector(WKWebView.foldableLayoutSubviews))
-    exchange(
-      #selector(UIView.safeAreaInsetsDidChange),
-      with: #selector(WKWebView.foldableSafeAreaInsetsDidChange))
-  }()
-
-  @MainActor private func exchange(_ original: Selector, with replacement: Selector) {
-    let cls: AnyClass = WKWebView.self
-    guard let originalMethod = class_getInstanceMethod(cls, original),
-      let replacementMethod = class_getInstanceMethod(cls, replacement)
-    else { preconditionFailure("Foldable: missing \(original) on WKWebView") }
-    // If WKWebView only inherits the method, add an override first so UIView itself is untouched.
-    if class_addMethod(
-      cls, original, method_getImplementation(replacementMethod),
-      method_getTypeEncoding(replacementMethod))
-    {
-      class_replaceMethod(
-        cls, replacement, method_getImplementation(originalMethod),
-        method_getTypeEncoding(originalMethod))
-    } else {
-      method_exchangeImplementations(originalMethod, replacementMethod)
-    }
-  }
-
-  extension WKWebView {
-    // After the exchange these names call the original implementations.
-    @objc fileprivate func foldableLayoutSubviews() {
-      foldableLayoutSubviews()
-      Bridge.attached(to: self)?.setNeedsRefresh()
-    }
-
-    @objc fileprivate func foldableSafeAreaInsetsDidChange() {
-      foldableSafeAreaInsetsDidChange()
-      Bridge.attached(to: self)?.setNeedsRefresh()
-    }
-  }
-
-  extension NativeInputs {
-    @MainActor static func read(from webView: WKWebView) -> NativeInputs {
-      NativeInputs(
-        divisions: divisions(of: webView),
-        horizontalSizeClass: webView.traitCollection.horizontalSizeClass == .regular
-          ? .regular : .compact,
-        safeAreaInsets: Insets(webView.safeAreaInsets),
-        // The web view's own layoutMargins omit the system minimum; the owner's view has it.
-        layoutMargins: ownerView(of: webView).map { Insets($0.layoutMargins) }
-          ?? Insets(top: 0, right: 0, bottom: 0, left: 0),
-        bounds: Rect(webView.bounds),
-        pageZoom: Double(webView.pageZoom)
-      )
-    }
-
-    @MainActor private static func divisions(of webView: WKWebView) -> [Division] {
-      // UIKit 9127.0.85 is the iOS 27.1 SDK, the first with reserved regions; older SDKs still
-      // build, and their apps report no Fold.
-      #if canImport(UIKit, _version: 9127.0.85)
-        guard #available(iOS 27.1, *) else { return [] }
-        return webView.reservedRegions(kind: .division).map {
-          Division(frame: Rect($0.frame), isActive: $0.isActive)
-        }
-      #else
-        return []
-      #endif
-    }
-
-    @MainActor private static func ownerView(of view: UIView) -> UIView? {
-      var responder: UIResponder? = view
-      while let next = responder {
-        if let controller = next as? UIViewController { return controller.view }
-        responder = next.next
-      }
-      return nil
     }
   }
 

@@ -46,6 +46,8 @@ Inner display, flat (no Posture):
 
 - [ ] The seed lands before first paint (no flash of the fallback layout on launch)
 - [ ] State survives a reload and a navigation
+- [ ] Below iOS 27.1 (e.g. an iOS 17.5 Simulator): the Host builds and runs, the page gets `fold: null` and `data-foldable-fold="inactive"`, and nothing crashes. CI never runs this path
+- [ ] Book + Split View with the Fold clipped to the window edge: Split shows only the primary; Overlay layers in the one Region and `expanded` fills it
 
 ## Notes
 

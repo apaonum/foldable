@@ -24,7 +24,6 @@
     private var refreshScheduled = false
     private let navigation = NavigationProxy()
     private var delegateObservation: NSKeyValueObservation?
-    /// Whether the swizzled `layoutSubviews`/`safeAreaInsetsDidChange` drive refreshes.
     private(set) var usesChangeHooks = true
     private var geometryObservations: [NSKeyValueObservation] = []
 
@@ -97,8 +96,7 @@
       do {
         argument = try pushArgument(for: state, seq: seq)
       } catch {
-        log.error("Foldable: could not encode Bridge state: \(String(describing: error))")
-        assertionFailure("Foldable: could not encode Bridge state: \(error)")
+        reportEncodeFailure(error)
         return
       }
       // Fails harmlessly when no seeded page is loaded yet (e.g. before the first navigation);
@@ -132,6 +130,11 @@
       ]
     }
 
+    private func reportEncodeFailure(_ error: Error) {
+      log.error("Foldable: could not encode Bridge state: \(String(describing: error))")
+      assertionFailure("Foldable: could not encode Bridge state: \(error)")
+    }
+
     private func wrapNavigationDelegate(of webView: WKWebView) {
       guard webView.navigationDelegate !== navigation else { return }
       navigation.host = webView.navigationDelegate
@@ -146,8 +149,7 @@
         source = try seedSource(for: state)
       } catch {
         // Only non-finite geometry can fail to encode; without a seed the page falls back on its own.
-        log.error("Foldable: could not encode Bridge state: \(String(describing: error))")
-        assertionFailure("Foldable: could not encode Bridge state: \(error)")
+        reportEncodeFailure(error)
         return
       }
       let next = WKUserScript(

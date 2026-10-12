@@ -1,29 +1,29 @@
 {
   "name": "book-compact",
-  "evidence": "proposed, not captured: book-regular geometry before the Size Class flips (the 2-4 s Size Class lag)",
+  "evidence": "research/safe-area-bar-probe:docs/research/safe-area-bar-probe/log-postures.txt (run 2); book + Split View, left app (Fold clipped to the window)",
   "viewport": {
-    "width": 951,
+    "width": 469,
     "height": 669
   },
   "snapshot": {
     "fold": {
       "x": 455.5,
       "y": 0,
-      "width": 40,
+      "width": 13.5,
       "height": 669
     },
     "sizeClass": "compact",
     "safeArea": {
       "top": 0,
-      "right": 84,
+      "right": 0,
       "bottom": 34,
       "left": 0
     },
     "layoutMargins": {
       "top": 0,
-      "right": 84,
+      "right": 20,
       "bottom": 34,
-      "left": 20
+      "left": 0
     }
   },
   "expected": {
@@ -31,12 +31,6 @@
     "regions": [
       {
         "x": 0,
-        "y": 0,
-        "width": 455.5,
-        "height": 669
-      },
-      {
-        "x": 495.5,
         "y": 0,
         "width": 455.5,
         "height": 669

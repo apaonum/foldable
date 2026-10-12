@@ -1,6 +1,6 @@
 {
   "name": "outer-landscape",
-  "evidence": "proposed, not captured: bounds 678x466, 84 pt trailing status column (SAB.md), compact/compact (Tech Talk 111461); bottom 34 is a guess",
+  "evidence": "research/safe-area-bar-probe:docs/research/safe-area-bar-probe/log-postures.txt (run 2)",
   "viewport": {
     "width": 678,
     "height": 466

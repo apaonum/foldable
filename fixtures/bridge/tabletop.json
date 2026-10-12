@@ -1,6 +1,6 @@
 {
   "name": "tabletop",
-  "evidence": "research/keyboard-probe:docs/research/keyboard-probe/log.jsonl rows 303, 464; layoutMargins proposed (not logged)",
+  "evidence": "research/safe-area-bar-probe:docs/research/safe-area-bar-probe/log-postures.txt (run 2); captured upside-down (orient=2), upright not captured",
   "viewport": {
     "width": 669,
     "height": 951

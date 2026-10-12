@@ -18,5 +18,9 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "typescript": "6.0.3"
-  }
+  },
+  "browserslist": [
+    "ios_saf >= 17",
+    "safari >= 17"
+  ]
 }

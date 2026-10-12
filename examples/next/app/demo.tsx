@@ -3,7 +3,7 @@
 import { arrangement, displace, SERVER_STATE, useFoldable, view } from '@foldablejs/react';
 import { useState } from 'react';
 
-export function Demo() {
+export function Demo({ overlayEdge }: { overlayEdge: 'leading' | 'trailing' | undefined }) {
   const state = useFoldable();
   const [overlayState, setOverlayState] = useState<'collapsed' | 'expanded'>('collapsed');
 
@@ -38,7 +38,13 @@ export function Demo() {
       <section aria-labelledby="overlay">
         <h2 id="overlay">Overlay</h2>
         {/* Overlay DOM order is secondary then primary, so reading order matches stacking. */}
-        <div {...arrangement({ style: 'overlay', overlayState })}>
+        <div
+          {...arrangement({
+            style: 'overlay',
+            overlayState,
+            ...(overlayEdge && { overlayEdge: { inline: overlayEdge } }),
+          })}
+        >
           <div {...view('secondary')}>Secondary: underneath when flat.</div>
           <div {...view('primary')}>
             Primary: on top when flat, its own Region when the Fold is active.

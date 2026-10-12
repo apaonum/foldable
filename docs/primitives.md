@@ -182,6 +182,12 @@ Leading and trailing follow `direction`: the Arrangement box's for Split and Ove
 
 Tabletop top and bottom don't change with `direction`.
 
+Keep `:dir()` intact in your CSS build. Lightning CSS (Next.js) and postcss-preset-env rewrite `:dir(rtl)` into a list of `:lang()` selectors when your browserslist includes browsers older than Safari 16.4. The rewrite matches only the `lang` attribute, so a page that sets `dir="rtl"` gets the LTR layout. Target Safari 17 or later, as `examples/next` does:
+
+```json
+"browserslist": ["ios_saf >= 17", "safari >= 17"]
+```
+
 ## See the examples
 
 `examples/next` (React, App Router) and `examples/nuxt` (Vue) use every primitive. Their Simulator screenshots come from the release's manual check, in `docs/manual-checks/`.

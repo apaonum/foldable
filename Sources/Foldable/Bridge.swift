@@ -97,6 +97,7 @@
       do {
         argument = try pushArgument(for: state, seq: seq)
       } catch {
+        log.error("Foldable: could not encode Bridge state: \(String(describing: error))")
         assertionFailure("Foldable: could not encode Bridge state: \(error)")
         return
       }
@@ -144,6 +145,7 @@
         source = try seedSource(for: state)
       } catch {
         // Only non-finite geometry can fail to encode; without a seed the page falls back on its own.
+        log.error("Foldable: could not encode Bridge state: \(String(describing: error))")
         assertionFailure("Foldable: could not encode Bridge state: \(error)")
         return
       }

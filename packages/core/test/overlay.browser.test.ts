@@ -179,6 +179,24 @@ describe('separated edge override', () => {
     );
   });
 
+  test.each([['top'], ['leading top'], ['trailing top']])(
+    'tabletop RTL: %s puts the primary in the top Region (block edges do not mirror)',
+    async (edge) => {
+      await expectOverlay(
+        fixture('tabletop'),
+        { primary: r(0, 0, 669, 455.5), secondary: r(0, 495.5, 669, 455.5) },
+        { edge, dir: 'rtl' },
+      );
+    },
+  );
+
+  test('tabletop RTL: an inline-only token keeps the bottom default', async () => {
+    await expectOverlay(fixture('tabletop'), ltr.tabletop ?? fail(), {
+      edge: 'leading',
+      dir: 'rtl',
+    });
+  });
+
   test('tokens for the other axis do not affect it', async () => {
     await expectOverlay(fixture('book-regular'), ltr['book-regular'] ?? fail(), { edge: 'top' });
     document.body.replaceChildren();

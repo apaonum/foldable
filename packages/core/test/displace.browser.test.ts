@@ -70,6 +70,12 @@ describe.each([
   ['outer-portrait', 'trailing', 'ltr', { x: 0, y: 0, width: 382, height: 644 }],
   // The Fold is clipped to the window, so the only Region is the fallback target.
   ['book-compact', '', 'ltr', { x: 0, y: 0, width: 455.5, height: 635 }],
+  ['book-compact', 'leading', 'ltr', { x: 0, y: 0, width: 455.5, height: 635 }],
+  // RTL: trailing is the physical left Region, which exists; leading (physical right) is
+  // missing, so it falls back to the same Region.
+  ['book-compact', '', 'rtl', { x: 0, y: 0, width: 455.5, height: 635 }],
+  ['book-compact', 'trailing', 'rtl', { x: 0, y: 0, width: 455.5, height: 635 }],
+  ['book-compact', 'leading', 'rtl', { x: 0, y: 0, width: 455.5, height: 635 }],
 ] as const)('%s, displace="%s", %s', (name, tokens, dir, expected) => {
   test('the box covers the target Region inside the safe area', async () => {
     await show(fixture(name));

@@ -234,6 +234,32 @@ describe('axes restriction', () => {
     await expectPrimaryOnly(fixture('tabletop'), 'horizontal', r(0, 0, 669, 455.5));
   });
 
+  test('RTL: an allowed axis with a custom ratio mirrors the primary to the right', async () => {
+    await expectSplit(
+      fixture('inner-flat'),
+      { primary: r(665.7, 0, 285.3, 669), secondary: r(0, 0, 665.7, 669) },
+      { axes: 'horizontal', ratio: '0.3', dir: 'rtl' },
+    );
+  });
+
+  test('RTL: a disallowed axis with a custom ratio shows only the primary, filling the box', async () => {
+    const views = await mount(fixture('inner-flat').snapshot, fixture('inner-flat').viewport, {
+      axes: 'vertical',
+      ratio: '0.3',
+      dir: 'rtl',
+    });
+    expect(getComputedStyle(views.secondary).display).toBe('none');
+    expectRect(rect(views.primary), r(0, 0, 951, 669));
+  });
+
+  test('RTL: a vertical split with a custom ratio is unchanged', async () => {
+    await expectSplit(
+      fixture('outer-portrait'),
+      { primary: r(0, 0, 466, 474.6), secondary: r(0, 474.6, 466, 203.4) },
+      { axes: 'vertical', ratio: '0.7', dir: 'rtl' },
+    );
+  });
+
   test('an allowed axis still splits', async () => {
     const f = fixture('book-regular');
     await expectSplit(f, ltr['book-regular'] ?? fail(), { axes: 'horizontal' });

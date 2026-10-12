@@ -29,6 +29,11 @@ export default tseslint.config(
     },
   },
   {
+    // Doc signatures are ambient declarations compared by type against the real exports.
+    files: ['docs/samples/*-signature.ts'],
+    rules: { '@typescript-eslint/no-unused-vars': 'off' },
+  },
+  {
     // node:test's test() returns a promise the runner already tracks.
     files: ['scripts/**/*.test.ts'],
     rules: { '@typescript-eslint/no-floating-promises': 'off' },

@@ -190,7 +190,7 @@ Keep `:dir()` intact in your CSS build. Lightning CSS (Next.js), Vite's default 
 
 and `examples/nuxt` does in `nuxt.config.ts`:
 
-```ts
+```js
 vite: { build: { cssTarget: ['safari17', 'ios17'] } },
 ```
 

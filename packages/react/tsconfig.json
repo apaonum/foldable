@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    // Typecheck and lint against the core source so they don't depend on a prior core build.
+    // Typecheck against core's source so a fresh clone needs no build first.
     "paths": { "@foldablejs/core": ["../core/src/index.ts"] }
   },
   "include": ["src", "test", "../core/test/support/raw.d.ts", "*.config.ts"]

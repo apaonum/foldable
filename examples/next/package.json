@@ -1,5 +1,5 @@
 {
-  "name": "@foldablejs/example-next",
+  "name": "example-next",
   "private": true,
   "type": "module",
   "scripts": {

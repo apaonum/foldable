@@ -12,9 +12,15 @@ pnpm --filter @foldablejs/core exec playwright install webkit
 pnpm typecheck
 pnpm lint
 pnpm test   # Node unit + WebKit browser (Vitest)
-pnpm build  # packages, then examples/* against them
+pnpm build
 ```
 
-`examples/next` (App Router) uses `@foldablejs/react` and `@foldablejs/core/primitives.css`; run it with `pnpm --filter @foldablejs/example-next dev` after `pnpm build`.
-
 Shared contract fixtures live in `fixtures/` and are read by both JS and Swift tests.
+
+## Packages and examples
+
+- `packages/core`: `@foldablejs/core` (state, CSS vars, `primitives.css`)
+- `packages/react`: `@foldablejs/react` (`useFoldable()` hook, React ≥ 18, `'use client'` entry)
+- `packages/vue`: `@foldablejs/vue` (`useFoldable()` composable, Vue ≥ 3.3)
+- `examples/nuxt`: Nuxt app using every primitive. `pnpm --filter example-nuxt... build`
+- `examples/next`: Next.js App Router app using every primitive. `pnpm --filter example-next... build`

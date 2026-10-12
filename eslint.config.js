@@ -2,14 +2,16 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  // examples/* import the built packages, so `next build` / `nuxt build` typecheck them after `pnpm build`.
   {
     ignores: [
       '**/dist',
       '**/dist-iife',
       '**/node_modules',
+      '**/.nuxt',
+      '**/.output',
       '**/.next',
-      'examples/**',
+      // Typechecked by `next build` against the built packages instead.
+      'examples/next/**',
       'eslint.config.js',
     ],
   },

@@ -3,6 +3,8 @@ node_modules/
 dist/
 dist-iife/
 .vitest/
+.nuxt/
+.output/
 .next/
 next-env.d.ts
 *.tsbuildinfo

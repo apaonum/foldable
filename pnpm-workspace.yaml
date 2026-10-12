@@ -1,3 +1,7 @@
 packages:
   - packages/*
   - examples/*
+
+# Nuxt's esbuild gets its binary from an optional platform package; its postinstall only verifies it.
+allowBuilds:
+  esbuild: false

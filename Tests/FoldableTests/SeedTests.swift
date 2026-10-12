@@ -56,3 +56,19 @@ import Testing
     #expect(context.evaluateScript("written['data-foldable-fold']").toString() == "inactive")
   }
 }
+
+@Suite struct PushArgumentTests {
+  @Test func flattensTheStateAndSeqIntoPlainJSONValues() throws {
+    let state = BridgeState(
+      fold: nil, sizeClass: .compact,
+      safeArea: Insets(top: 0, right: 84, bottom: 34, left: 0),
+      layoutMargins: Insets(top: 0, right: 84, bottom: 34, left: 20))
+
+    let argument = try pushArgument(for: state, seq: 2)
+
+    #expect(
+      try canonicalJSON(fromObject: argument)
+        == #"{"fold":null,"layoutMargins":{"bottom":34,"left":20,"right":84,"top":0},"safeArea":{"bottom":34,"left":0,"right":84,"top":0},"seq":2,"sizeClass":"compact"}"#
+    )
+  }
+}

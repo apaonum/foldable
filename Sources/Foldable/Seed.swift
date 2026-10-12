@@ -21,6 +21,16 @@ func seedSource(for state: BridgeState) throws -> String {
   return bootstrapSource + "\nwindow.__foldableBridge.receive(\(json));\n"
 }
 
+/// A push's `callAsyncJavaScript` argument. WebKit only accepts JSON-like Foundation values, so the
+/// snapshot goes through the same encoder as the seed and is never built as a JS string.
+func pushArgument(for state: BridgeState, seq: Int) throws -> [String: Any] {
+  let data = try JSONEncoder().encode(SeqSnapshot(state: state, seq: seq))
+  guard let object = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+    preconditionFailure("SeqSnapshot always encodes to a JSON object")
+  }
+  return object
+}
+
 /// Wire form of a push: the full state plus `seq`, flattened into one object.
 struct SeqSnapshot: Encodable {
   var state: BridgeState

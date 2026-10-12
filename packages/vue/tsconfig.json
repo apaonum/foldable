@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // Typecheck against core's source so a fresh clone needs no build first.
+    "paths": { "@foldablejs/core": ["../core/src/index.ts"] }
+  },
+  "include": ["src", "test", "*.config.ts", "../core/test/support/raw.d.ts"]
+}

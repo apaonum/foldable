@@ -5,3 +5,5 @@ dist-iife/
 .vitest/
 .build/
 .swiftpm/
+.nuxt/
+.output/

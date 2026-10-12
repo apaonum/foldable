@@ -4,8 +4,10 @@ import { applyCSS, toCSS } from './css';
 import { posture, regions } from './derive';
 import { SERVER_STATE } from './server-state';
 import { bridgeReader } from './sources/bridge';
-import { placeholderReader } from './sources/placeholder';
+import { fallbackReader } from './sources/fallback';
 import type { Reader } from './sources/reader';
+import { webReader } from './sources/web';
+import type { SegmentsWindow } from './sources/web';
 import type { State } from './types';
 
 type Listener = (state: State) => void;
@@ -13,13 +15,11 @@ type Store = { state: State; listeners: Set<Listener> };
 
 let store: Store | undefined;
 
-function chooseReader(win: BridgeWindow): Reader {
+function chooseReader(win: BridgeWindow & SegmentsWindow): Reader {
   const bridge = win[BRIDGE_GLOBAL];
   if (bridge !== undefined) return bridgeReader(win, bridge);
-  if ((win as { viewport?: { segments?: unknown } }).viewport?.segments !== undefined) {
-    return placeholderReader('web');
-  }
-  return placeholderReader('fallback');
+  if (win.viewport?.segments !== undefined) return webReader(win);
+  return fallbackReader(win);
 }
 
 function derive(reader: Reader, win: Window): State {

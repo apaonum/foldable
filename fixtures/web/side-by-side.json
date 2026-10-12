@@ -1,0 +1,30 @@
+{
+  "name": "side-by-side",
+  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 5",
+  "viewport": {
+    "width": 951,
+    "height": 589
+  },
+  "segments": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 475.5,
+      "height": 954
+    },
+    {
+      "x": 475.5,
+      "y": 0,
+      "width": 475.5,
+      "height": 954
+    }
+  ],
+  "expected": {
+    "fold": {
+      "x": 455.5,
+      "y": 0,
+      "width": 40,
+      "height": 589
+    }
+  }
+}

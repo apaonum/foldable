@@ -6,9 +6,11 @@ export default tseslint.config(
     ignores: [
       '**/dist',
       '**/dist-iife',
+      '**/node_modules',
       'Sources/Foldable/Resources',
       '.build',
-      '**/node_modules',
+      '**/.nuxt',
+      '**/.output',
       'eslint.config.js',
     ],
   },

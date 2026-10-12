@@ -17,6 +17,12 @@ pnpm build
 
 Shared contract fixtures live in `fixtures/` and are read by both JS and Swift tests.
 
+## Packages and examples
+
+- `packages/core`: `@foldablejs/core` (state, CSS vars, `primitives.css`)
+- `packages/vue`: `@foldablejs/vue` (`useFoldable()` composable, Vue ≥ 3.3)
+- `examples/nuxt`: Nuxt app using every primitive. `pnpm --filter example-nuxt... build`
+
 ## Swift package
 
 Add `Foldable` with SwiftPM by git URL (iOS 17+), then attach a Bridge to your web view before loading:

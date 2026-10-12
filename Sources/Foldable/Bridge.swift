@@ -8,6 +8,9 @@
   /// Keep the web view edge-to-edge in its view controller's view and set
   /// `scrollView.contentInsetAdjustmentBehavior = .never`, or the reported geometry lands in the
   /// wrong coordinate space. Don't replace or re-inject the bootstrap yourself.
+  ///
+  /// Set `navigationDelegate` before or after attaching; the Bridge forwards every callback to
+  /// it. Reading `navigationDelegate` back returns the Bridge's forwarding proxy.
   @MainActor public final class Bridge {
     /// Reads native inputs; tests substitute it to drive delivery without scripting Posture.
     typealias InputsReader = @MainActor (WKWebView) -> NativeInputs

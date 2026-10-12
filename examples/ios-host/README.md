@@ -26,6 +26,7 @@ xcodebuild test -project FoldableHost.xcodeproj -scheme FoldableHost \
 - Always pass `-collect-test-diagnostics never`. Without it, a failing run hangs for 600 s collecting diagnostics.
 - A run takes about 1–2 minutes end to end. The tests themselves take about 8 s.
 - Every run logs `invalidDigitCount(94232)` and `IDERunDestination` lines. They're harmless.
+- `NavigationTests` cover reloads, a state change while a navigation is in flight, the re-push after `didCommit`, the Host's own `navigationDelegate` (set after `attach`, then replaced) and Host script order across many seed replacements.
 - The tests drive the Bridge's internal input closure, so they need no Posture setup and pass on either display. Each change signal is real: a layout pass, `safeAreaInsetsDidChange`, or a `horizontalSizeClass` trait override.
 
 ## Example Host by hand

@@ -47,12 +47,28 @@ The WKWebView's own `layoutMargins` equal its safe area (`l0 r84`), while a plai
 
 In Split View the inactive Fold sits on the app's edge facing the other app (x −26.5…13.5 on the right app, then clipped to 0…13.5). A stale out-of-bounds frame (`x 455.5`) showed up for one layout pass after the move to the left.
 
+## Run 2: rotation and Postures
+
+Same build and device, run 2026-10-12 16:00. Raw log: [`log-postures.txt`](safe-area-bar-probe/log-postures.txt).
+
+| State | Window | `orient` | Size Class | Fold (`division`) | `safeAreaInsets` | `systemMinimumLayoutMargins` | `layoutMargins` (root view) | Page `env()` |
+|---|---|---|---|---|---|---|---|---|
+| Outer display, landscape | 678×466 | 4 | compact | none | r84 b34 | lead20 trail0 | l20 r84 b34 | r84 b34 |
+| Inner, book | 951×669 | 4 | regular | active, x 455.5, 40×669 | r84 b34 | lead20 trail0 | l20 r84 b34 | r84 b34 |
+| Inner, tabletop | 669×951 | 2 | regular | active, y 455.5, 669×40 | t82 b34 | lead20 trail20 | t82 l20 r20 b34 | t82 b34 |
+| Inner, book, Split View, app on the **left** | 469×669 | 4 | **compact** | active, x 455.5, 13.5×669 (clipped) | b34 | lead0 trail20 | l0 r20 b34 | b34 |
+
+- The outer display's bottom inset is 34 in landscape, the same as in portrait.
+- An active Fold adds nothing to the safe area or the layout margins. In book they match flat full screen exactly.
+- In tabletop, the status area moves to the top edge (occlusion `{535,0} 134×82`), so the 84 pt trailing inset becomes an 82 pt top inset and both horizontal system minimums are 20. Device Hub put the device in `orient=2` (portrait upside-down). Upright portrait was not captured.
+- Book plus Split View gives an active Fold with compact Size Class. The probe sees the 13.5 pt of the Fold that falls inside its window. Margins match the flat Split View left-app row from run 1. During the move, two layout passes reported `x −26.5`, which is the right app's frame, before the final `x 455.5` frame arrived.
+
 ## Probe caveat
 
 The `win=` field in the log (window frame in screen coordinates) is wrong: it reads `{0,0}` on both halves. Use the Fold frame to tell the halves apart.
 
 ## Not covered
 
-- Inner display in portrait: the earlier probe saw a top inset of 82. Margins were not checked.
-- Book Posture with an active Fold, in Split View.
+- Inner display in upright portrait (`orient=1`). Run 2 captured only upside-down (`orient=2`).
+- Book plus Split View with the app on the right.
 - Real hardware.

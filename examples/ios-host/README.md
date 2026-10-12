@@ -40,6 +40,12 @@ xcrun simctl launch "$UDID" dev.foldable.host
 xcrun simctl io "$UDID" screenshot --display=primary-1 inner.png   # primary = outer display
 ```
 
+To check the primitives in the Host, serve `examples/next` (`pnpm --filter example-next build && pnpm --filter example-next exec next start`) and launch the Host against it:
+
+```sh
+SIMCTL_CHILD_FOLDABLE_HOST_URL=http://localhost:3000 xcrun simctl launch --terminate-running-process "$UDID" dev.foldable.host
+```
+
 You can't script Posture. Set it in Device Hub (Xcode 27.1 → Open Developer Tool) with Rotate / Closed / Book / Open. In each Posture, check:
 
 - **Book**: heading `book`, a vertical striped Fold at x 455.5 (40 wide), Size Class `regular`, and `seq` higher than 1.

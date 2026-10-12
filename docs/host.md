@@ -42,7 +42,7 @@ The Bridge reports geometry in CSS px over the WKWebView's bounds. If the web vi
 
 `examples/ios-host` is a working Host. Its README explains how to run it on the iPhone Duo Simulator.
 
-<!-- SCREENSHOT #39: examples/ios-host in book Posture on the inner display (docs/manual-checks/v0.1.0/host-book.png) -->
+![examples/ios-host in book Posture on the inner display, showing the state the Bridge sent](manual-checks/v0.1.0/host-book.png)
 
 ## What `attach(to:)` does
 
@@ -70,11 +70,13 @@ Iframes get no seed and no pushes.
 
 ### Change detection
 
-iOS has no Fold-change notification, and a Fold activating changes neither the bounds nor the traits. Only a layout pass on the web view reports it. The Bridge re-reads the native inputs on these signals:
+iOS has no Fold-change notification, and a Fold activating changes neither the bounds nor the traits. The Fold flips in a layout pass of the window's root view, which the web view sits out. The Bridge re-reads the native inputs on these signals:
 
 - `WKWebView.layoutSubviews`
 - `WKWebView.safeAreaInsetsDidChange`
 - a `horizontalSizeClass` trait change on the web view
+
+On iOS 27.1 and later the `layoutSubviews` hook also reads the division regions inside the pass. UIKit then lays the web view out again when a region flips, so the hook fires for the Fold change too. See [ADR 0003](adr/0003-read-the-division-regions-inside-layout.md).
 
 You don't forward any callback. All signals in one run-loop turn produce one read and at most one push. The Bridge compares the new snapshot with the last one it sent and sends nothing if they are equal. It never delays or predicts a change.
 

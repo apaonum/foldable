@@ -34,10 +34,30 @@ export type SegmentsWindow = Window & { viewport?: { segments?: readonly DOMRect
 // No `segmentschange` event fires in Safari; these media queries do.
 const SEGMENT_QUERIES = ['(horizontal-viewport-segments: 2)', '(vertical-viewport-segments: 2)'];
 
+// Segments can lag the viewport (at load, and ~1 s after rotation) and catch up with no event.
+const STALE_FRAMES = 180;
+
 /** Safari with the Viewport Segments flag on. Device Posture is ignored. */
 export function webReader(win: SegmentsWindow): Reader {
   const env = environment(win);
   let fold: Rect | null = null;
+  let stale = false;
+  let notify: (() => void) | undefined;
+  let polling = false;
+
+  // While the segments disagree with the viewport, re-read every frame until they agree.
+  const pollWhileStale = (): void => {
+    if (polling || notify === undefined) return;
+    polling = true;
+    let frames = 0;
+    const tick = (): void => {
+      notify?.();
+      if (stale && ++frames < STALE_FRAMES) win.requestAnimationFrame(tick);
+      else polling = false;
+    };
+    win.requestAnimationFrame(tick);
+  };
+
   return {
     source: 'web',
     read: () => {
@@ -48,14 +68,18 @@ export function webReader(win: SegmentsWindow): Reader {
         height,
       }));
       const next = webFold(segments, viewportOf(win));
+      stale = next === STALE;
       if (next !== STALE) fold = next;
+      else pollWhileStale();
       return { fold, ...env.read() };
     },
     listen: (onChange) => {
+      notify = onChange;
       env.listen(onChange);
       for (const query of SEGMENT_QUERIES) {
         win.matchMedia(query).addEventListener('change', onChange);
       }
+      if (stale) pollWhileStale();
     },
   };
 }

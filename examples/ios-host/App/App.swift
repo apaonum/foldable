@@ -45,6 +45,13 @@ final class HostViewController: UIViewController {
     view.addSubview(webView)
 
     Bridge.attach(to: webView)
+    // The bundled page shows state only; the manual checks point the Host at a primitives demo.
+    if let override = ProcessInfo.processInfo.environment["FOLDABLE_HOST_URL"],
+      let url = URL(string: override)
+    {
+      webView.load(URLRequest(url: url))
+      return
+    }
     guard let page = Bundle.main.url(forResource: "index", withExtension: "html") else {
       preconditionFailure("index.html is missing from the app bundle")
     }

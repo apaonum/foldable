@@ -182,15 +182,25 @@ Leading and trailing follow `direction`: the Arrangement box's for Split and Ove
 
 Tabletop top and bottom don't change with `direction`.
 
+Keep `:dir()` intact in your CSS build. Lightning CSS (Next.js), Vite's default CSS target (Nuxt) and postcss-preset-env rewrite `:dir(rtl)` into a list of `:lang()` selectors when they target browsers older than Safari 16.4. The rewrite matches only the `lang` attribute, so a page that sets `dir="rtl"` gets the LTR layout. Target Safari 17 or later, as `examples/next` does in `package.json`:
+
+```json
+"browserslist": ["ios_saf >= 17", "safari >= 17"]
+```
+
+and `examples/nuxt` does in `nuxt.config.ts`:
+
+```js
+vite: { build: { cssTarget: ['safari17', 'ios17'] } },
+```
+
 ## See the examples
 
 `examples/next` (React, App Router) and `examples/nuxt` (Vue) use every primitive. Their Simulator screenshots come from the release's manual check, in `docs/manual-checks/`.
 
-<!-- SCREENSHOT #39: replace each "pending" cell with an image from docs/manual-checks/v0.1.0/. -->
-
-| Posture                 | `examples/next`          | `examples/nuxt`          |
-| ----------------------- | ------------------------ | ------------------------ |
-| Outer display, no Fold  | Screenshot pending (#39) | Screenshot pending (#39) |
-| Inner display, flat     | Screenshot pending (#39) | Screenshot pending (#39) |
-| Inner display, book     | Screenshot pending (#39) | Screenshot pending (#39) |
-| Inner display, tabletop | Screenshot pending (#39) | Screenshot pending (#39) |
+| Posture                 | `examples/next`                                                   | `examples/nuxt`                                                        |
+| ----------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Outer display, no Fold  | ![Split, outer](manual-checks/v0.1.0/outer-split.png)             | ![Split, outer](manual-checks/v0.1.0/nuxt-outer-split.png)             |
+| Inner display, flat     | ![Split, flat](manual-checks/v0.1.0/inner-flat-split.png)         | ![Split, flat](manual-checks/v0.1.0/nuxt-inner-flat-split.png)         |
+| Inner display, book     | ![Split, book](manual-checks/v0.1.0/inner-book-split.png)         | ![Split, book](manual-checks/v0.1.0/nuxt-inner-book-split.png)         |
+| Inner display, tabletop | ![Split, tabletop](manual-checks/v0.1.0/inner-tabletop-split.png) | ![Split, tabletop](manual-checks/v0.1.0/nuxt-inner-tabletop-split.png) |

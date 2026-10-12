@@ -16,13 +16,13 @@ const expanded = ref(false);
       >, {{ state.regions.length }} Region(s).
     </p>
 
-    <h2>Split</h2>
+    <h2 id="split">Split</h2>
     <section class="frame" v-bind="arrangement({ style: 'split' })">
       <div class="view-content" v-bind="view('primary')">Primary (list)</div>
       <div class="view-content" v-bind="view('secondary')">Secondary (detail)</div>
     </section>
 
-    <h2>Split, vertical axis only</h2>
+    <h2 id="split-vertical">Split, vertical axis only</h2>
     <section class="frame" v-bind="arrangement({ style: 'split', axes: 'vertical' })">
       <div class="view-content" v-bind="view('primary')">Primary</div>
       <div class="view-content" v-bind="view('secondary')">
@@ -30,7 +30,7 @@ const expanded = ref(false);
       </div>
     </section>
 
-    <h2>Overlay</h2>
+    <h2 id="overlay">Overlay</h2>
     <!-- Overlay DOM order: secondary first, then primary. -->
     <section
       class="frame"

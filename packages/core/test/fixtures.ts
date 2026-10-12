@@ -25,6 +25,7 @@ import webSideBySideChrome from '../../../fixtures/web/side-by-side-chrome.json'
 import webSideBySideTaller from '../../../fixtures/web/side-by-side-taller.json';
 import webStackedChrome from '../../../fixtures/web/stacked-chrome.json';
 import webStacked from '../../../fixtures/web/stacked.json';
+import webStaleAtLoad from '../../../fixtures/web/stale-at-load.json';
 import webStaleLandscapeViewport from '../../../fixtures/web/stale-landscape-viewport.json';
 import webStaleOuter from '../../../fixtures/web/stale-outer.json';
 import webStalePortraitViewport from '../../../fixtures/web/stale-portrait-viewport.json';
@@ -98,6 +99,7 @@ export const webFixtures = [
   webStalePortraitViewport,
   webStaleLandscapeViewport,
   webStaleOuter,
+  webStaleAtLoad,
   webOuterPortrait,
   webBookRegular,
   webTabletop,

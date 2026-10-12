@@ -63,6 +63,11 @@
     // After the exchange these names call the original implementations.
     @objc fileprivate func foldableLayoutSubviews() {
       foldableLayoutSubviews()
+      // Reading the division regions inside the pass makes UIKit lay the web view out again
+      // when one flips; the read in the deferred refresh alone misses it (ADR 0003).
+      if #available(iOS 27.1, *), Bridge.attached(to: self)?.usesChangeHooks == true {
+        _ = reservedRegions(kind: .division)
+      }
       hookFired()
     }
 

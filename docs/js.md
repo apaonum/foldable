@@ -55,7 +55,7 @@ The core writes its CSS in the same task as each bootstrap write. Under version 
 | `web`      | else, `window.viewport.segments` exists           | Derived from Safari's Viewport Segments |
 | `fallback` | otherwise, or the Bridge has another `version`    | Always `null`                           |
 
-The `web` source exists only in Safari with the **Viewport Segments API** feature flag on. It ignores Device Posture. Its Fold is the line between the two segments, plus 20 px (`FOLD_MARGIN`) on each side, spanning the full viewport height in book or width in tabletop. After a rotation Safari fires `resize` about 1 s before the segments update. While the union width of the segments differs from the viewport width, the core keeps the previous Fold.
+The `web` source exists only in Safari with the **Viewport Segments API** feature flag on. It ignores Device Posture. Its Fold is the line between the two segments, plus 20 px (`FOLD_MARGIN`) on each side, spanning the full viewport height in book or width in tabletop. After a rotation Safari fires `resize` about 1 s before the segments update. Right after a page loads, the segments can also describe an older geometry for about 100 ms. While the union width of the segments differs from the viewport width, the core keeps the previous Fold and re-reads every animation frame, for up to 180 frames, because Safari fires no event when the segments catch up.
 
 `web` and `fallback` compute the rest themselves:
 
@@ -187,6 +187,8 @@ export function MailShell() {
   );
 }
 ```
+
+In a Host, the Bridge's bootstrap sets the `data-foldable-*` attributes and Fold vars on `<html>` before React hydrates. Add `suppressHydrationWarning` to your root `<html>` element, or React reports a hydration mismatch. It only covers that element's own attributes, not its children.
 
 `examples/next` is a full App Router app.
 

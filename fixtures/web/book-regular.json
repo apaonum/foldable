@@ -1,0 +1,31 @@
+{
+  "name": "book-regular",
+  "evidence": "synthetic: the book-regular Bridge fixture geometry, with Safari segments abutting at the midpoint as in row 5",
+  "viewport": {
+    "width": 951,
+    "height": 669
+  },
+  "segments": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 475.5,
+      "height": 669
+    },
+    {
+      "x": 475.5,
+      "y": 0,
+      "width": 475.5,
+      "height": 669
+    }
+  ],
+  "expected": {
+    "fold": {
+      "x": 455.5,
+      "y": 0,
+      "width": 40,
+      "height": 669
+    }
+  },
+  "bridge": "book-regular"
+}

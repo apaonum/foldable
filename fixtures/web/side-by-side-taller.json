@@ -1,0 +1,30 @@
+{
+  "name": "side-by-side-taller",
+  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 19; segment extents along the line are not clipped",
+  "viewport": {
+    "width": 951,
+    "height": 589
+  },
+  "segments": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 475.5,
+      "height": 1038
+    },
+    {
+      "x": 475.5,
+      "y": 0,
+      "width": 475.5,
+      "height": 1038
+    }
+  ],
+  "expected": {
+    "fold": {
+      "x": 455.5,
+      "y": 0,
+      "width": 40,
+      "height": 589
+    }
+  }
+}

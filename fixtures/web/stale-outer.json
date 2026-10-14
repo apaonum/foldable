@@ -1,6 +1,6 @@
 {
   "name": "stale-outer",
-  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 76",
+  "evidence": "docs/research/safari-web-probe/log.jsonl row 76",
   "viewport": {
     "width": 466,
     "height": 498

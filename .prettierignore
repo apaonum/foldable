@@ -5,3 +5,5 @@ pnpm-lock.yaml
 .next
 Sources/Foldable/Resources/bootstrap.js
 .build
+# Archived research and probe captures, kept as recorded
+docs/research

@@ -1,6 +1,6 @@
 {
   "name": "inner-split-right",
-  "evidence": "research/safe-area-bar-probe:docs/research/safe-area-bar-probe/log.txt 14:01:07.540",
+  "evidence": "docs/research/safe-area-bar-probe/log.txt 14:01:07.540",
   "viewport": {
     "width": 469,
     "height": 669

@@ -1,6 +1,6 @@
 {
   "name": "outer-portrait",
-  "evidence": "research/safe-area-bar-probe:docs/research/safe-area-bar-probe/log.txt 13:57:59.507; research/keyboard-probe:docs/research/keyboard-probe/log.jsonl row 0",
+  "evidence": "docs/research/safe-area-bar-probe/log.txt 13:57:59.507; docs/research/keyboard-probe/log.jsonl row 0",
   "viewport": {
     "width": 466,
     "height": 678

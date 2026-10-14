@@ -1,6 +1,6 @@
 {
   "name": "side-by-side-taller",
-  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 19; segment extents along the line are not clipped",
+  "evidence": "docs/research/safari-web-probe/log.jsonl row 19; segment extents along the line are not clipped",
   "viewport": {
     "width": 951,
     "height": 589

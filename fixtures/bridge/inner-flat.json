@@ -1,6 +1,6 @@
 {
   "name": "inner-flat",
-  "evidence": "research/safe-area-bar-probe:docs/research/safe-area-bar-probe/log.txt 13:59:09.543, 14:00:48.250; research/keyboard-probe:docs/research/keyboard-probe/log.jsonl rows 6, 365",
+  "evidence": "docs/research/safe-area-bar-probe/log.txt 13:59:09.543, 14:00:48.250; docs/research/keyboard-probe/log.jsonl rows 6, 365",
   "viewport": {
     "width": 951,
     "height": 669

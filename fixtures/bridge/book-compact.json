@@ -1,6 +1,6 @@
 {
   "name": "book-compact",
-  "evidence": "research/safe-area-bar-probe:docs/research/safe-area-bar-probe/log-postures.txt (run 2); book + Split View, left app (Fold clipped to the window)",
+  "evidence": "docs/research/safe-area-bar-probe/log-postures.txt (run 2); book + Split View, left app (Fold clipped to the window)",
   "viewport": {
     "width": 469,
     "height": 669

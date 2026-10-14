@@ -1,6 +1,6 @@
 {
   "name": "stale-portrait-viewport",
-  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 11; resize fires before the segments update",
+  "evidence": "docs/research/safari-web-probe/log.jsonl row 11; resize fires before the segments update",
   "viewport": {
     "width": 669,
     "height": 871

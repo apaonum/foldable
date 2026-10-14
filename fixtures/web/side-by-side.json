@@ -1,6 +1,6 @@
 {
   "name": "side-by-side",
-  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 5",
+  "evidence": "docs/research/safari-web-probe/log.jsonl row 5",
   "viewport": {
     "width": 951,
     "height": 589

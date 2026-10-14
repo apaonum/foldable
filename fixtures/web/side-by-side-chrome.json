@@ -1,6 +1,6 @@
 {
   "name": "side-by-side-chrome",
-  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 69; innerHeight 596, clientHeight 567",
+  "evidence": "docs/research/safari-web-probe/log.jsonl row 69; innerHeight 596, clientHeight 567",
   "viewport": {
     "width": 951,
     "height": 596

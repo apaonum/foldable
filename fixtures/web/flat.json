@@ -1,6 +1,6 @@
 {
   "name": "flat",
-  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 0",
+  "evidence": "docs/research/safari-web-probe/log.jsonl row 0",
   "viewport": {
     "width": 951,
     "height": 589

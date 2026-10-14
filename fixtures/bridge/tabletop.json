@@ -1,6 +1,6 @@
 {
   "name": "tabletop",
-  "evidence": "research/safe-area-bar-probe:docs/research/safe-area-bar-probe/log-postures.txt (run 2); captured upside-down (orient=2), upright not captured",
+  "evidence": "docs/research/safe-area-bar-probe/log-postures.txt (run 2); captured upside-down (orient=2), upright not captured",
   "viewport": {
     "width": 669,
     "height": 951

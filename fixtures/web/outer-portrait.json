@@ -1,6 +1,6 @@
 {
   "name": "outer-portrait",
-  "evidence": "research/safari-web-probe:docs/research/safari-web-probe/log.jsonl row 36",
+  "evidence": "docs/research/safari-web-probe/log.jsonl row 36",
   "viewport": {
     "width": 382,
     "height": 580
